@@ -1,10 +1,24 @@
 - defaults:
     link:
-      relink: true
+        create: true
+        relink: true
 
-- clean: ['~']
+- clean: ['~', '~/.config']
 
 - link:
+    ~/.dotfiles: ''
+    ~/bin:
+    ~/.tmux.conf:
+    ~/.zshrc:
+    ~/.zprofile:
+    ~/.aliases:
+    ~/.gitconfig:
+    ~/.gitconfig_aliases:
+    ~/.ipython:
+    ~/.config/:
+        glob: true
+        path: config/*
+
     ~/.bashrc: bashrc
     ~/.zshrc: zshrc
     ~/.vimrc: vimrc
