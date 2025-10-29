@@ -1,0 +1,49 @@
+# -*-mode:gitconfig-*- vim:ft=gitconfig
+
+# ~/.gitconfig_alias
+# =============================================================================
+# Aliases for Git sourced by `~/.gitconfig`.
+
+[alias]
+    # Lists aliases.
+    aliases = config --get-regexp ^alias\\.
+ 
+    # Clones a repository including all submodules.
+    c = clone --recursive
+
+    # Commits all changes.
+    ca = !git add -A && git commit -av
+
+    # Shows short SHA, description, and history graph of last 20 commits.
+    l = log --pretty=oneline -n 20 --graph --abbrev-commit
+
+    # Shows short SHA, description, history graph, time, and author of commits.
+    ll = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+
+    # Pulls in remote changes for the current repository and all its submodules.
+    p = git pull --recurse-submodules
+
+    # Rebases interactively.
+    ri = "!f(){ git fetch origin && git rebase --interactive origin/${1-master}; }; f"
+
+    # Shows the current working tree status using the short format.
+    s = status -sb
+
+    # Saves savepoint.
+    save = !git add -A && git commit -m 'SAVEPOINT'
+
+    # Sets origin remote.
+    set-origin = remote set-url origin
+
+    # Views the current working tree status.
+    st = status
+
+    # Brings in remote changes and syncs back.
+    sync = !git pull --rebase && git push
+
+    # Undos commit and leaves files (only for non-public commits).
+    uncommit = reset --soft HEAD^
+
+    # Undos last commit.
+    undo = reset HEAD~1 --mixed
+

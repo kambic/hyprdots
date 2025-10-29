@@ -1,0 +1,81 @@
+# =============================================================================
+# User-specific Git configuration file.
+#
+# See https://git-scm.com/docs/git-config
+#
+##
+# Sources:
+#     https://delicious-insights.com/en/posts/mastering-git-submodules/
+#     https://github.com/haacked/dotfiles
+#     https://github.com/holman/dotfiles
+#     https://github.com/jayharris/dotfiles-windows
+#     https://github.com/mathiasbynens/dotfiles
+#     https://git-scm.com/docs/git-config/
+#
+#     https://gitlab.com/carmenbianca/dotfiles/-/blob/master/dot_gitconfig?ref_type=heads
+
+[user]
+    # Specify the email address of the author/committer.
+    email = "rok.kambic@mx.si"
+
+    # Specify the username of the author/committer.
+  name = "rok"
+  signingKey = ~/.ssh/id_ed25519
+
+[init]
+    defaultBranch = master
+
+[merge]
+    ff = true
+
+[pull]
+    rebase = true
+
+[push]
+    default = simple
+    autoSetupRemote = true
+
+[apply]
+    # Detect whitespace errors when applying a patch.
+    whitespace = fix
+
+
+[core]
+    # Speed up commands involving untracked files such as `git status`.
+    # See https://git-scm.com/docs/git-update-index#_untracked_cache
+    untrackedCache = true
+	autocrlf = input
+
+[diff]
+    # List submodules commits in the range.
+    submodule = log
+
+
+[help]
+    # Correct and execute mistyped commands.
+    autocorrect = 1
+
+[rebase]
+    # Create a temporary stash entry before the operation begins.
+    autostash = true
+
+[status]
+    # Enable submodule summary of commits.
+    submoduleSummary = true
+
+[color]
+  ui = auto
+# [credential "https://gitlab.com"]
+# helper = !/usr/bin/glab auth git-credential
+
+[credential]
+  helper = store
+
+[include]
+    # Include aliases.
+    path = .gitconfig_aliases
+
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	program = ssh-keygen
