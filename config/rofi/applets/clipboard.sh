@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# File containing clipboard history
-history_file="$HOME/.cache/wl-clipboard-history"
-
 # Theme
 theme="$HOME/.config/rofi/configs/dmenu.rasi"
 

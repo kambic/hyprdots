@@ -6,7 +6,7 @@ alias ip='ip --color=always'
 alias lsusb='cyme'
 # SSH shortcuts
 alias sshp='ssh -p 2222' # Example for custom port servers
-
+alias v='$EDITOR'
 # Multiplexed SSH sessions
 alias mosh='mosh --ssh="ssh -i ~/.ssh/id_rsa"'
 
