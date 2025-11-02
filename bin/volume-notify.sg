@@ -1,0 +1,10 @@
+#!/bin/bash
+# ~/.local/bin/volume-notify
+
+vol=$(wpctl get-volume @DEFAULT_AUDIO_SINK@)
+if echo "$vol" | grep -q MUTED; then
+    notify-send -e -u low -h string:x-canonical-private-synchronous:volume_notif -h int:value:0 "Volume: Muted"
+else
+    percent=$(echo "$vol" | awk '{printf "%d", $2*100}')
+    notify-send -e -u low -h string:x-canonical-private-synchronous:volume_notif -h int:value:$percent "Volume: $percent%"
+fi
