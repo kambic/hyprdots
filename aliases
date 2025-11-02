@@ -1,5 +1,5 @@
 ## Always mkdir a path (this doesn't inhibit functionality to make a single dir)
-export PATH=$HOME/.nix-profile/bin:$PATH
+export PATH=$HOME/bin:$HOME/.nix-profile/bin:$PATH
 
 alias mkdir='mkdir -p'
 alias ip='ip --color=always'

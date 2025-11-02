@@ -1,7 +1,7 @@
 /* ================================================================
 => Colors (Pywal + GTK)
 ================================================================*/
-@import "../../../../.cache/wal/colors-waybar.css";
+/* @import "../../../../.cache/wal/colors-waybar.css"; */
 
 @define-color accent shade(alpha(@accent_color, 0.9), 1.25);
 @define-color background shade(alpha(@theme_bg_color, 0.9), 0.9);
