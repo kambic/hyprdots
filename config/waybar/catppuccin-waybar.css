@@ -1,0 +1,149 @@
+/* ───────────────────────────────
+   🌈 Catppuccin Transparent Theme for Waybar
+   Flavors: latte | frappe | macchiato | mocha
+   Switch by changing the --flavor variable
+   ─────────────────────────────── */
+
+:root {
+  --flavor: "mocha"; /* Change to: latte | frappe | macchiato | mocha */
+}
+
+/* ───────────────────────────────
+   🧁 LATTE (Light)
+   ─────────────────────────────── */
+:root[style*='--flavor: "latte"'] {
+  --accent: rgba(30, 102, 245, 0.85);
+  --background: rgba(239, 241, 245, 0.8);
+  --border: rgba(188, 192, 204, 0.25);
+  --border-alt: rgba(172, 176, 190, 0.45);
+  --text: rgba(76, 79, 105, 0.95);
+  --text-alt: rgba(220, 138, 120, 0.95);
+  --hover: rgba(30, 102, 245, 0.4);
+  --green: rgba(64, 160, 43, 0.9);
+  --yellow: rgba(223, 142, 29, 0.9);
+  --red: rgba(210, 15, 57, 0.9);
+}
+
+/* ───────────────────────────────
+   🍨 FRAPPE (Cool Mid-Dark)
+   ─────────────────────────────── */
+:root[style*='--flavor: "frappe"'] {
+  --accent: rgba(140, 170, 238, 0.85);
+  --background: rgba(48, 52, 70, 0.75);
+  --border: rgba(81, 87, 109, 0.25);
+  --border-alt: rgba(65, 69, 89, 0.45);
+  --text: rgba(198, 208, 245, 0.95);
+  --text-alt: rgba(242, 213, 207, 0.95);
+  --hover: rgba(140, 170, 238, 0.4);
+  --green: rgba(166, 209, 137, 0.9);
+  --yellow: rgba(229, 200, 144, 0.9);
+  --red: rgba(231, 130, 132, 0.9);
+}
+
+/* ───────────────────────────────
+   ☕ MACCHIATO (Warm Dark)
+   ─────────────────────────────── */
+:root[style*='--flavor: "macchiato"'] {
+  --accent: rgba(138, 173, 244, 0.85);
+  --background: rgba(36, 39, 58, 0.75);
+  --border: rgba(91, 96, 120, 0.25);
+  --border-alt: rgba(73, 77, 100, 0.45);
+  --text: rgba(202, 211, 245, 0.95);
+  --text-alt: rgba(244, 219, 214, 0.95);
+  --hover: rgba(138, 173, 244, 0.4);
+  --green: rgba(166, 218, 149, 0.9);
+  --yellow: rgba(238, 212, 159, 0.9);
+  --red: rgba(237, 135, 150, 0.9);
+}
+
+/* ───────────────────────────────
+   🧋 MOCHA (Dark)
+   ─────────────────────────────── */
+:root[style*='--flavor: "mocha"'] {
+  --accent: rgba(137, 180, 250, 0.85);
+  --background: rgba(30, 30, 46, 0.75);
+  --border: rgba(88, 91, 112, 0.25);
+  --border-alt: rgba(69, 71, 90, 0.45);
+  --text: rgba(205, 214, 244, 0.95);
+  --text-alt: rgba(245, 224, 220, 0.95);
+  --hover: rgba(137, 180, 250, 0.4);
+  --green: rgba(166, 227, 161, 0.9);
+  --yellow: rgba(249, 226, 175, 0.9);
+  --red: rgba(243, 139, 168, 0.9);
+}
+
+/* ───────────────────────────────
+   🪄 Waybar Styling
+   ─────────────────────────────── */
+
+* {
+  font-family: "JetBrainsMono Nerd Font", monospace;
+  font-size: 12px;
+  border: none;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+window#waybar {
+  background: var(--background);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin: 6px 6px;
+  padding: 2px 8px;
+}
+
+#workspaces button {
+  background: transparent;
+  color: var(--text-alt);
+  padding: 4px 10px;
+  margin: 0 3px;
+  border-radius: 6px;
+  transition: 0.2s;
+}
+
+#workspaces button.active {
+  background: var(--accent);
+  color: var(--background);
+}
+
+#workspaces button:hover {
+  background: var(--hover);
+}
+
+#clock,
+#battery,
+#network,
+#cpu,
+#memory,
+#pulseaudio,
+#tray {
+  padding: 0 8px;
+  border-left: 1px solid var(--border-alt);
+}
+
+#clock {
+  color: var(--yellow);
+}
+
+#battery.charging {
+  color: var(--green);
+}
+
+#battery.critical {
+  color: var(--red);
+}
+
+#pulseaudio.muted {
+  color: var(--red);
+  opacity: 0.6;
+}
+
+tooltip {
+  background: var(--background);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 4px 8px;
+}

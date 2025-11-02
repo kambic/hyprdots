@@ -2,7 +2,7 @@
 => Colors (Pywal + GTK)
 ================================================================*/
 /* @import "../../../../.cache/wal/colors-waybar.css"; */
-
+/* @import "catppuccin-waybar.css"; */
 @define-color accent shade(alpha(@accent_color, 0.9), 1.25);
 @define-color background shade(alpha(@theme_bg_color, 0.9), 0.9);
 @define-color border alpha(@color11, 0.3);
@@ -13,6 +13,37 @@
 @define-color green @success_color;
 @define-color yellow @warning_color;
 @define-color red @error_color;
+
+@define-color accent #89b4fa; /* Blue */
+@define-color background #1e1e2e; /* Base */
+@define-color border #585b70; /* Surface1 */
+@define-color border-alt #45475a; /* Surface0 */
+@define-color text #cdd6f4; /* Text */
+@define-color text-alt #f5e0dc; /* Rosewater */
+@define-color hover shade(alpha(#89b4fa, 0.5), 1.25); /* Accent hover */
+@define-color green #a6e3a1; /* Green */
+@define-color yellow #f9e2af; /* Yellow */
+@define-color red #f38ba8; /* Red */
+
+/* Optional derived colors */
+@define-color accent-alt shade(alpha(@accent, 0.9), 1.25);
+@define-color background-alt shade(alpha(@background, 0.9), 0.9);
+
+/* Catppuccin Mocha — Transparent Theme */
+
+@define-color accent shade(alpha(#89b4fa, 0.85), 1.25); /* Blue accent w/ slight transparency */
+@define-color background alpha(#1e1e2e, 0.75); /* Semi-transparent background */
+@define-color border alpha(#585b70, 0.25); /* Soft translucent border */
+@define-color border-alt alpha(#45475a, 0.45); /* Slightly more opaque border */
+@define-color text alpha(#cdd6f4, 0.95); /* Nearly opaque text */
+@define-color text-alt alpha(#f5e0dc, 0.95); /* Alt text color */
+@define-color hover shade(alpha(#89b4fa, 0.4), 1.25); /* Soft hover tint */
+@define-color green alpha(#a6e3a1, 0.9);
+@define-color yellow alpha(#f9e2af, 0.9);
+@define-color red alpha(#f38ba8, 0.9);
+
+/* Optional “glass” overlay effect */
+@define-color background-alt shade(alpha(#1e1e2e, 0.6), 0.9);
 
 /*================================================================
 => General
@@ -214,12 +245,13 @@ tooltip label {
 #clock {
   margin: 2px 4px;
   padding: 0px 8px 0px 8px;
-  border: 2px solid @accent;
+  border: 1px solid alpha(@border, 0.33);
+  /* border: 2px solid @accent; */
   border-radius: 6px;
-  border-top: none;
+  /* border-top: none; */
   /* border-bottom: none; */
-  border-left: none;
-  border-right: none;
+  /* border-left: none; */
+  /* border-right: none; */
   color: @text;
   background: @background;
 }
