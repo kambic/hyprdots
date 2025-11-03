@@ -17,7 +17,7 @@ notify() {
 case "$ACTION" in
 
     vol-up)
-        wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
+        wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ -l 1
         vol=$(wpctl get-volume @DEFAULT_AUDIO_SINK@)
         if echo "$vol" | grep -q MUTED; then
             notify 0 "Volume: Muted" "volume_notif"
