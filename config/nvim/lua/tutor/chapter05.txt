@@ -1,0 +1,239 @@
+
+*05*	Search and replace
+
+This chapter gives some simple ways to make global changes.
+
+|05_1|	Global change format
+|05_2|	Command ranges
+|05_3|	The global command
+
+
+===========================================================================
+*05_1*	Global change format
+
+The ":substitute" command enables you to perform string replacements on a
+whole range of lines.  The general form of this command is as follows: >
+
+	:[range]s[ubstitute]/from/to/[flags]
+
+This command changes the "from" string to the "to" string in the lines
+specified with [range].  If range in ommited, the range is considered to be
+the current line.
+
+For example, you can change "Professor" to "Teacher" in all lines with the
+following command: >
+
+	:%s[ubstitute]/Professor/Teacher/
+<
+
+The "%" before the command specifies the command works on all lines.
+Without a range, ":s" only works on the current line.  More about ranges in
+the next section.
+
+By default, the ":substitute" command changes only the first occurrence on
+each line.  For example, the preceding command changes the line:
+
+	Professor Smith criticized Professor Johnson today. ~
+
+to:
+
+	Teacher Smith criticized Professor Johnson today. ~
+
+To change every occurrence on the line, you need to add the g (global) flag.
+The command: >
+
+	:%s/Professor/Teacher/g
+
+results in (starting with the original line):
+
+	Teacher Smith criticized Teacher Johnson today. ~
+
+Other flags include p (print), which causes the ":substitute" command to
+print out each line it changes.  The c (confirm) flag tells ":substitute" to
+ask you for confirmation before it performs each substitution.  Enter the
+following: >
+
+	:%s/Professor/Teacher/c
+
+Vim finds the first occurrence of "Professor" and displays the text it is
+about to change.  You get the following prompt: >
+
+	replace with Teacher (y/n/a/q/l/^E/^Y)?
+
+At this point, you must enter one of the following answers:
+
+	y		Yes; make this change.
+	n		No; skip this match.
+	a		All; make this change and all remaining ones without
+			further confirmation.
+	q		Quit; don't make any more changes.
+	l		Last; make this change and then quit.
+	CTRL-E		Scroll the text one line up.
+	CTRL-Y		Scroll the text one line down.
+
+
+The "from" part of the substitute command is actually a pattern.  The same
+kind as used for the search command.  For example, this command only
+substitutes "the" when it appears at the start of a line: >
+
+	:s/^the/these/
+
+If you are substituting with a "from" or "to" part that includes a slash,
+you need to put a backslash before it.  A simpler way is to use another
+character instead of the slash.  A plus, for example: >
+
+	:s+one/two+one or two+
+
+===========================================================================
+*05_2*	Command ranges
+
+The ":substitute" command, and many other : commands, can be applied to a
+selection of lines.  This is called a range.  The simple form of a range is
+{number},{number}.  For example: >
+
+	:1,5s/this/that/g
+
+Executes the substitute command on the lines 1 to 5.  Line 5 is included.
+The range is always placed before the command.
+
+A single number can be used to address one specific line: >
+
+	:54s/President/Fool/
+
+The first line always has number one.  How about the last line?  The "$"
+character is used for this.  For example, to substitute in the lines from
+the cursor to the end: >
+
+	:.,$s/yes/no/
+
+The "%" range that we used before, is actually a short way to say "1,$",
+from the first to the last line.
+
+
+Using a pattern in a range ~
+
+Suppose you are editing a chapter in a book, and want to replace all
+occurences of "grey" with "gray".  But only in this chapter, not in the next
+one.  You know that only chapter boundaries have the word "Chapter" in the
+first column.  This command will work then: >
+
+	:?^Chapter?,/^Chapter/s=grey=gray=g
+
+You can see a search pattern is used twice.  The first "?^Chapter?" finds
+the line above the current position that matches this pattern.  Thus the
+?pattern?  range is used to search backwards.  Similarly, "/^Chapter/" is
+used to search forward for the start of the next chapter.  To avoid
+confusion with the slashes, the "=" character was used in the substitute
+command here.  A slash or another character would have worked as well.
+
+
+Add and subtract ~
+
+There is a slight error in the above command: If the title of the next
+chapter had included "grey" it would be replaced as well.  Maybe that's what
+you wanted, but what if you didn't?  Then you can specify an offset.
+
+To search for a pattern and then use the line above it: >
+
+	/Chapter/-1
+
+You can use any number instead of the 1.  To address the second line below
+the match: >
+
+	/Chapter/+2
+
+The offsets can also be used with the other items in a range.  Look at this
+one: >
+
+	:.+3,$-5
+
+This specifies the range that starts three lines below the cursor and ends
+five lines before the last line in the file.
+
+
+Using marks ~
+
+Instead of figuring out the line numbers of certain positions, remembering
+them and typing them in a range, you can use marks.
+
+For example, use "mt" to mark the top of an area and "mb" to mark the bottom
+(More on marks in later chapters).  Then you can use this range to specify
+the lines between the marks (including the lines with the marks):
+>
+
+	:'t,'b
+
+
+Visual mode and ranges ~
+
+You can select text with Visual mode.  If you then press ":" to start a
+colon command, you will see this: >
+
+	:'<,'>
+
+Now you can type the command and it will be applied to the range of lines
+that was visually selected.
+
+Note: When using Visual mode to select part of a line, or using CTRL-V to
+select a block of text, the colon commands will still apply to whole lines.
+
+The '< and '> are actually marks, placed at the start and end of the Visual
+selection.  The marks remain at their position until another Visual
+selection is made.  Thus you can use the "'<" command to jump to the start
+of the Visual area.  And you can mix the marks with other items: >
+
+	:'>,$
+
+This addresses the lines from the end of the Visual area to the end of the
+file.
+
+
+A number of lines ~
+
+When you know how many lines you want to change, you can type the number and
+then ":".  For example, when you type "5:", you will get: >
+
+	:.,.+4
+
+Now you can type the command you want to use.  It will use the range "."
+(current line) until ".+4" (four lines down).  Thus it spans five lines.
+
+===========================================================================
+*05_3*	The global command
+
+The ":global" command is one of the more powerful features of Vim.  It
+allows you to find a match for a pattern and execute a command there.  The
+general form is: >
+
+	:[range]g[lobal/{pattern}/{command}
+
+This is similar to the ":substitute" command.  But, instead of replacing the
+matched text with other text, the command {command} is executed.
+
+Note: The command executed for ":global" must be one that starts with a
+colon.  Normal mode commands can not be used directly. The :normal
+command can do this for you.
+
+Suppose you want to change "foobar" to "barfoo", but only in C++ style
+comments.  These comments start with "//".  Use this command: >
+
+	:g+//+s/foobar/barfoo/g
+
+This starts with ":g".  That is short for ":global", just like ":s" is short
+for ":substitute".  Then the pattern, enclosed in plus characters.  Since
+the pattern we are looking for contains a slash, this uses the plus
+character to separate the pattern.  Next comes the substitute command that
+changes "foobar" into "barfoo".
+
+The default range for the global command is the whole file.  Thus no range
+was specified in this example.  This is different from ":substitute", which
+works on one line without a range.  The command isn't perfect, since it also
+matches lines where "//" appears halfway a line, and the substitution will
+also take place before the "//".
+
+Just like with ":substitute", any pattern can be used.  When you learn more
+complicated patterns later, you can use them here.
+
+===========================================================================
+
+vim:ft=help:tw=76:ts=8:nomodifiable

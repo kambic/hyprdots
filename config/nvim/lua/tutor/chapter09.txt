@@ -1,0 +1,100 @@
+
+*09*	Use of registers
+
+This chapter gives the details about using registers as temporary storage
+units.
+
+|09_1|	Storing and retrieving deleted contents
+|09_2|	Storing without deleting
+|09_3|	Retrieving in insert mode
+
+===========================================================================
+*09_1*	Storing and retrieving deleted contents
+
+Whatever you delete using some command (d, c, s or x) is stored by vim for
+later retrieval into a 'register'. It is available to you, till the register
+is overwritten by some other action. For eg. another deletion. It can be
+pasted at any position using the following commands >
+
+	p	(after the cursor)
+	P	(at the cursor)
+
+Unless explicitly specified, vim used the default register (") for its
+delete and paste operations. The user can specify other registers to be used
+for his delete and paste operations. This can be done in the following
+manner >
+
+	"adw	(Use register a)
+	"xctx	(Use register x)
+
+26 registers with the names 'a' to 'z' are available for use in this manner.
+
+NOTE: These deletion commands store the deleted text in the named register
+and the default register also.
+
+
+Appending to a register: ~
+
+You dont want the deleted characters to delete what is in the register, but
+instead should add to it. This is possible by using the name of the register
+in the uppercase >
+
+	"Acw	(Append to register a)
+	"Xsfg	(Append to register x)
+
+NOTE: Only the named 26 registers can be used in this way. The default
+register still contains the last delete only.
+
+
+Putting from a register: ~
+
+You can put the text from a register using the put commands in the following
+way >
+
+	"ap	(Put from register a)
+	"xP	(Put from register x)
+	""p	(Put from default register, same as p)
+
+
+Insert register: ~
+
+There is a special register (.) which contains your last inserted text. You
+can use this register in the same way as any other register in a put
+operation. However, you cannot use it in a delete operation.
+
+
+===========================================================================
+*09_2*	Storing without deleting
+
+You can use the yank (vim name for copy) operation for storing text into any
+register (" by default).  This operator does not delete any text, but just
+make a copy of it. >
+
+	"ayw	(Yank word in register a)
+	"xytg	(Yank till character g in register x)
+
+This stored text can be similarly be retrieved using the put command.
+
+
+===========================================================================
+*09_3*	Retrieving in insert mode
+
+If you want to insert text from a particular register after the cursor in
+the insert mode, you could always do the following >
+
+	<Esc>"api	(Putting from register a)
+
+However, there is a short-cut. You can do the following >
+
+	<CTRL-R>a	(Just two key-strokes)
+
+You can use " in place of a to put from the default register and . to put
+from insert register. In fact there is a short cut to insert from insert
+register. >
+
+	<CTRL-A>	(Just one key-stroke)
+
+
+===========================================================================
+
+vim:ft=help:tw=76:ts=8:nomodifiable

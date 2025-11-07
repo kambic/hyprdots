@@ -1,0 +1,68 @@
+
+*11*	Quick-fix commands
+
+This chapter shows how to compile and fix compilation errors from vim
+itself.
+
+|11_1|	What is QuickFix?
+|11_2|	Error navigation
+
+===========================================================================
+*11_1*	What is QuickFix?
+
+Vim has a special mode to speedup the edit-compile-edit cycle.  The idea is
+to save the error messages from the compiler in a file and use Vim to jump
+to the errors one by one.  You can then examine each problem and fix it,
+without having to remember all the error messages.
+
+You can compile your program from within vim, by issuing the following
+command >
+
+	:make [arguments]
+
+Vim has a variable 'makeprg' which is invoked when this command is called.
+By default 'makeprg' is set to "make". But if you want to compile a single
+file, set >
+
+	:set makeprg=gcc\ -c
+
+And then compile the current file using the command >
+
+	:make %
+
+You can also use the following command to use the quickfix mode >
+
+	:grep
+
+The variable which controls this command is 'grepprg'. By default its value
+is set to "grep\ -n".
+
+===========================================================================
+*11_2*	Error navigation
+
+You can see the list of errors encountered in your last compilation or grep
+invocation by issuing the command >
+
+	:cl[ist]
+
+All the commands for file navigation prefixed by the character 'c' are used
+for error navigation in this case. For example, to go to the next error, you
+can use >
+
+	:cn[ext]
+
+This would open the file and jump to the line in which the error is. You can
+fix the error and jump to the next error to fix it.
+
+Following are the other commands that you can use in the error navigation >
+
+	:cp[revious]	(Previous error)
+	:cN[ext]	(same as cprevious)
+	:cr[ewind]	(Go to first error)
+	:cfir[st]	(Same as cfirst)
+	:cla[st]	(Go to last error)
+
+===========================================================================
+
+vim:ft=help:tw=76:ts=8:nomodifiable
+

@@ -1,0 +1,74 @@
+
+*14*	How to use online-help
+
+This chapter gives some details about the usage of vim online-help
+
+|14_1|	Two manuals
+|14_2|	Finding the subject
+|14_3|	Finding about a command
+
+===========================================================================
+*14_1*	Two manuals
+
+The Vim documentation consists of two parts:
+
+1. The User manual
+   Task oriented explanations, from simple to complex.  Reads from start to
+   end like a book.
+
+2. The Reference manual
+   Precise description of how everything in Vim works.
+
+Jumping around ~
+
+The text contains hyperlinks between the two parts, allowing you to quickly
+jump between the description of an editing task and a precise explanation of
+the commands and options used for it.  Use these two commands:
+
+	Press  CTRL-]  to jump to a subject under the cursor.
+	Press  CTRL-O  to jump back (repeat to go further back).
+
+Many links are in vertical bars, like this: |14_1|.  An option name, like
+'number', a command in double quotes like ":write" and any other word can
+also be used as a link.
+
+Other subjects can be found with the ":help" command. >
+
+	:help <subject>
+
+===========================================================================
+*14_2*	Finding the subject
+
+You want to find about text objects, but dont exactly know what name they
+would be listed under. You can take a guess. Probably the topic name would
+contain the name "object". So try >
+
+	:help object<TAB>
+
+You actually type a tab after "object". This would start listing the
+possible matches cyclically. The possible completions would be displayed on
+the command line itself. When you think that you have found what you want,
+press Enter. In this case, you would find that the fourth match is
+text-objects.
+
+===========================================================================
+*14_3*	Finding about a command
+
+You can find about various commands by typing >
+
+	:help <command>
+
+By default the command is assumed to be a normal mode command. If it is an
+insert/replace mode command, try >
+
+	:help i_<command>
+
+Similarly, type the following for command line commands >
+
+	:help :<command>
+
+So go out on your explorations and happy vimming!
+
+===========================================================================
+
+vim:ft=help:tw=76:ts=8:nomodifiable

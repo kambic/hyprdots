@@ -1,0 +1,303 @@
+
+*02*	Basic motion commands
+
+This chapter covers effective ways of moving around in vim.
+
+|02_1|	Moving word-wise
+|02_2|	Moving to start or end of a line
+|02_3|	Moving to a character
+|02_4|	Matching parenthesis
+|02_5|	Moving to a specific line
+|02_6|	Telling where you are
+|02_7|	Scrolling around
+|02_8|	Readjusting the view without moving cursor
+|02_9|	Moving cursor without changing the view
+
+===========================================================================
+*02_1*	Moving word-wise
+
+To move the cursor forward one word, use the "w" command.  Like most Vim
+commands, you can use a numeric prefix to move past multiple words.  For
+example, "3w" moves three words.  This figure shows how it works:
+
+	This is a line with example text ~
+	  --->-->->----------------->
+	   w  w  w    3w
+
+Notice that "w" moves to the start of the next word if it already is at the
+start of a word.
+
+The "b" command moves backward to the start of the previous word:
+
+	This is a line with example text ~
+	<----<--<-<---------<---
+	   b   b b    2b      b
+
+There is also the "e" command that moves to the next end of a word and "ge",
+which moves to the previous end of a word:
+
+	This is a line with example text ~
+	   <-   <--- ----->   ---->
+	   ge    ge     e       e
+
+If you are at the last word of a line, the "w" command will take you to the
+first word in the next line.  Thus you can use this to move through a
+paragraph, much faster than using "l".  "b" does the same in the other
+direction.
+
+In all the above cases, the words are seperated by whitespace or punctuation
+marks. If you just want to consider words as seperated by whitespace, the
+following commands can be used: >
+
+	W
+	B
+	E
+	gE
+<
+
+===========================================================================
+*02_2*	Moving to start or end of a line
+
+The "$" command moves the cursor to the end of a line.  If your keyboard has
+an <End> key it will do the same thing.
+
+The "^" command moves to the first nonblank character of the line.  The "0"
+command (zero) moves to the very first character of the line.  The <Home>
+key does the same thing.  In a picture:
+
+		  ^
+	     <------------
+	.....This is a line with example text ~
+	<-----------------   --------------->
+		0		   $
+
+(the "....." indicates blanks here)
+
+The "$" command takes a count, like most movement commands.  But moving to
+the end of the line several times doesn't make sense.  Therefore it causes
+the editor to move to the end of another line.  For example, "1$" moves you
+to the end of the first line (the one you're on), "2$" to the end of the
+next line, and so on.  The "0" command doesn't take a count argument,
+because the "0" would be part of the count.  Unexpectedly, using a count
+with "^" doesn't have any effect.
+
+
+===========================================================================
+*02_3*	Moving to a character
+
+One of the most useful movement commands is the single-character search
+command.  The command "fx" searches forward in the line for the single
+character x.
+
+For example, you are at the beginning of the following line.  Suppose you
+want to go to the h of human.  Just execute the command "fh" and the cursor
+will be positioned over the h:
+
+	To err is human.  To really foul up you need a computer. ~
+	---------->--------------->
+	    fh		 fy
+
+This also shows that the command "fy" moves to the end of the word really.
+You can specify a count; therefore, you can go to the "l" of "foul" with
+"3fl":
+
+	To err is human.  To really foul up you need a computer. ~
+		  --------------------->
+			   3fl
+
+The "F" command searches to the left:
+
+	To err is human.  To really foul up you need a computer. ~
+		  <---------------------
+			    Fh
+
+The "tx" command works like the "fx" command, except it stops one character
+before the searched character.  Hint: "t" stands for "To".  The backward
+version of this command is "Tx".
+
+	To err is human.  To really foul up you need a computer. ~
+		   <------------  ------------->
+			Th		tn
+
+These four commands can be repeated with ";".  "," repeats in the other
+direction.  The cursor is never moved to another line.  Not even when the
+sentence continues.
+
+===========================================================================
+*02_4*	Matching parenthesis
+
+When writing a program you often end up with nested () constructs.  Then the
+"%" command is very handy: It moves to the matching paren.  If the cursor is
+on a "(" it will move to the matching ")".  If it's on a ")" it will move to
+the matching "(".
+
+			    %
+			 <----->
+		if (a == (b * c) / d) ~
+		   <---------------->
+			    %
+
+This also works for [] and {} pairs.
+
+When the cursor is not on a useful character, "%" will search forward to
+find one.  Thus if the cursor is at the start of the line of the previous
+example, "%" will search forward and find the first "(".  Then it moves to
+its match:
+
+		if (a == (b * c) / d) ~
+		---+---------------->
+			   %
+
+
+===========================================================================
+*02_5*	Moving to a specific line
+
+If you are a C or C++ programmer, you are familiar with error messages such
+as the following:
+
+	prog.c:33: j   undeclared (first use in this function) ~
+
+You can directly jump to the given line using the "G" command. With a count,
+this command positions you at the given line number.  For example, "33G"
+puts you on line 33.  With no argument, "G" positions you at the end of the
+file.  A quick way to go to the start of a file use "gg".  "1G" will do the
+same, but is a tiny bit more typing.
+
+	    |	first line of a file   ^     ~
+	    |	text text text text    |     ~
+	    |	text text text text    |  gg ~
+	7G  |	text text text text    |     ~
+	    |	text text text text          ~
+	    |	text text text text          ~
+	    V	text text text text    |     ~
+		text text text text    |  G  ~
+		text text text text    |     ~
+		last line of a file    V     ~
+
+NOTE: Many user would be accustomed to the ":33" format of command also.
+
+Another way to move to a line is using the "%" command with a count.  For
+example >
+
+	50%	(moves you to halfway the file)
+	90%	(goes to near the end)
+
+
+===========================================================================
+*02_6*	Telling where you are
+
+To see where you are in a file, there are three ways:
+
+1.  Use the CTRL-G command.  You get a message like this (assuming the
+    'ruler' option is off):
+
+	"usr_03.txt" line 233 of 650 --35%-- col 45-52~
+
+    Sometimes you will see a split column number.  For example, "col 2-9".
+    This indicates that the cursor is positioned on the second character,
+    but because character one is a tab, occupying eight spaces worth of
+    columns, the screen column is 9.
+
+2.  Set the 'number' option.  This will display a line number in front of
+    every line: >
+
+	:set number
+<
+    To switch this off again: >
+
+	:set nonumber
+<
+3.  Set the 'ruler' option.  This will display the cursor position in the
+    lower right corner of the Vim window: >
+
+	:set ruler
+<
+    Using the 'ruler' option has the advantage that it doesn't take much
+    room, thus there is more space for your text.
+
+
+===========================================================================
+*02_7*	Scrolling around
+
+The CTRL-U command scrolls down half a screen of text.  Think of looking
+through a viewing window at the text and moving this window up by half the
+height of the window.  Thus the window moves up over the text, which is
+backward in the file.
+
+The CTRL-D command moves the viewing window down half a screen in the file,
+thus scrolls the text up half a screen.
+
+				       +----------------+ ~
+				       | some text	| ~
+				       | some text	| ~
+				       | some text	| ~
+	+---------------+	       | some text	| ~
+	| some text	|  CTRL-U  --> |		| ~
+	|		|	       | 123456		| ~
+	| 123456	|	       +----------------+ ~
+	| 7890		| ~
+	|		|	       +----------------+ ~
+	| example	|  CTRL-D -->  | 7890		| ~
+	+---------------+	       |		| ~
+				       | example	| ~
+				       | example	| ~
+				       | example	| ~
+				       | example	| ~
+				       +----------------+ ~
+
+To scroll forward by a whole screen (except for two lines) use CTRL-F.  The
+other way is backward, CTRL-B is the command to use.  Fortunately CTRL-F is
+Forward and CTRL-B is Backward, that's easy to remember.
+
+===========================================================================
+*02_8*	Readjusting the view without moving cursor
+
+A common issue is that after moving around many lines using the previous
+command is that the lines you want to see are either at the bottom or at the
+top of the screen. In such occasions, you just want to change the view
+without moving the cursor. The following commands give you such an option.
+
+To scroll one line at a time use CTRL-E (scroll up) and CTRL-Y (scroll
+down).
+
+You may want the center the line on which the cursor is present. This is
+done with the "zz" command.
+
+	+------------------+		 +------------------+ ~
+	| some text	   |		 | some text	    | ~
+	| some text	   |		 | some text	    | ~
+	| some text	   |		 | some text	    | ~
+	| some text	   |   zz  -->	 | line with cursor | ~
+	| some text	   |		 | some text	    | ~
+	| some text	   |		 | some text	    | ~
+	| line with cursor |		 | some text	    | ~
+	+------------------+		 +------------------+ ~
+
+The "zt" command puts the cursor line at the top, "zb" at the bottom.
+
+
+===========================================================================
+*02_9*	Moving cursor without changing the view
+
+There are occasions where you want to move around in the area which is
+visible to you. You also dont want to change the view. This figure shows
+the three commands you can use:
+
+			+---------------------------+ ~
+		H -->	| text sample text	    | ~
+			| sample text		    | ~
+			| text sample text	    | ~
+			| sample text		    | ~
+		M -->	| text sample text	    | ~
+			| sample text		    | ~
+			| text sample text	    | ~
+			| sample text		    | ~
+		L -->	| text sample text	    | ~
+			+---------------------------+ ~
+
+Hints: "H" stands for Home, "M" for Middle and "L" for Last.
+
+
+===========================================================================
+
+vim:ft=help:tw=76:ts=8:nomodifiable

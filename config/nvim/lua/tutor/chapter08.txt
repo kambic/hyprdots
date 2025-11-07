@@ -1,0 +1,167 @@
+
+*08*	Use of marks
+
+This chapter shows how to use marks.
+
+|08_1|	What are marks?
+|08_2|	Implicit marks
+|08_3|	Named marks
+|08_4|	Global scope marks
+|08_5|	Numbered marks
+
+===========================================================================
+*08_1*	What are marks?
+
+Marks are positions in a file which are remembered and can be accessed with
+the given name. These can be thought of as bookmarks which are kept at
+various places in files. In vim, all the marks have single character names.
+
+Marks are of two types: implicit and explicit. Implicit marks are
+automatically set in the file as a part of the various editing processes.
+Explicit marks are explicitly set by the user. Explicit marks are also
+called as named marks.
+
+
+===========================================================================
+*08_2*	Implicit marks
+
+When you make a jump to a position with the "G" command, Vim remembers the
+position from before this jump.  This position is called a mark.  To go back
+where you came from, use this command: >
+
+	``
+
+This ` is a backtick. You can jump to the start of the line from where the
+last jump happened by using the single quote instead.
+
+	''
+
+If you use the same command a second time you will jump back again.  That's
+because the ` command is a jump itself, and the position from before this
+jump is remembered.
+
+Generally, every time you do a command that can move the cursor further than
+within the same line, this is called a jump.  This includes the search
+commands "/" and "n" (it doesn't matter how far away the match is).  But not
+the character searches with "fx" and "tx" or the word movements "w" and "e".
+
+Also, "j" and "k" are not considered to be a jump.  Even when you use a
+count to make them move the cursor quite a long way away.
+
+The `` command jumps back and forth, between two points.  The CTRL-O command
+jumps to older positions (Hint: O for older).  CTRL-I then jumps back to
+newer positions (Hint: I is just next to O on the keyboard).  Consider this
+sequence of commands: >
+
+	33G
+	/^The
+	CTRL-O
+
+You first jump to line 33, then search for a line that starts with "The".
+Then with CTRL-O you jump back to line 33.  Another CTRL-O takes you back to
+where you started.  If you now use CTRL-I you jump to line 33 again.  And
+to the match for "The" with another CTRL-I.
+
+
+	     |	example text   ^	     |
+	33G  |	example text   |  CTRL-O     | CTRL-I
+	     |	example text   |	     |
+	     V	line 33 text   ^	     V
+	     |	example text   |	     |
+       /^The |	example text   |  CTRL-O     | CTRL-I
+	     V	There you are  |	     V
+		example text
+
+	Note:
+	CTRL-I is the same as <Tab>.
+
+The ":jumps" command gives a list of positions you jumped to.  The entry
+which you used last is marked with a ">".
+
+Similarly the following command takes you to the place of the last change >
+
+	`.
+
+Or >
+
+	'.
+
+takes you to the line of last change
+
+===========================================================================
+*08_3*	Named marks
+
+Vim enables you to place your own marks in the text.  The command "ma" marks
+the place under the cursor as mark a.  You can place 26 marks (a through z)
+in your text.  You can't see them, it's just a position that Vim remembers.
+
+To go to a mark, use the command `{mark}, where "{mark} is the mark letter.
+Thus to move to the a mark:
+>
+	`a
+
+The command 'mark (single quotation mark, or apostrophe) moves you to the
+beginning of the line containing the mark.  This differs from the `mark
+command, which moves you to marked column.
+
+The marks can be very useful when working on two related parts in a file.
+Suppose you have some text near the start of the file you need to look at,
+while working on some text near the end of the file.
+
+Move to the text at the start and place the s (start) mark there: >
+
+	ms
+
+The move to the text you want to work on and put the e (end) mark there: >
+
+	me
+
+Now you can move around, and when you want to look at the start of the file,
+you use this to jump there: >
+
+	's
+
+Then you can use '' to jump back to where you were, or 'e to jump to the
+text you were working on at the end.
+
+There is nothing special about using s for start and e for end, they are
+just easy to remember.
+
+You can use this command to get a list of marks: >
+
+	:marks
+
+You will notice a few special marks.  These include:
+
+	'	The cursor position before doing a jump
+	"	The cursor position when last editing the file
+	[	Start of the last change
+	]	End of the last change
+
+===========================================================================
+*08_4*	Global scope marks
+
+The marks a to z are local in nature. They are local to a file. So there are
+26 such marks for each file being edited. What if you want global marks to
+jump across files. There are 26 such marks - the uppercase A to Z. You can
+set and jump to such marks in the same way as the previous commands. >
+
+	mE
+	'E
+
+===========================================================================
+*08_5*	Numbered marks
+
+There are 10 marks 0 to 9, which cannot be set directly. These are set
+automatically when you exit vim. 0 is the latest while 9 is the oldest. You
+can use this marks to your advantage. For example, you can have the
+following alias >
+
+	bash> alias vil="vi -c \"normal '0\""
+
+So typing "vil" at the bash prompt will take you to the latest file you have
+quit.
+
+===========================================================================
+
+vim:ft=help:tw=76:ts=8:nomodifiable

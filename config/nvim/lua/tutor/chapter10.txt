@@ -1,0 +1,394 @@
+
+*10*	Multiple-window handling
+
+This chapter gives tips on how to handle multiple windows and multiple
+files.
+
+|10_1|	Editing another file
+|10_2|	Specifying multiple files
+|10_3|	Hiding and unhiding buffers
+|10_4|	Multiple window operations
+|10_5|	Window size
+|10_6|	Vertical splits
+|10_7|	Moving windows
+
+===========================================================================
+*10_1*	Editing another file
+
+You have finished editing the current file. Now you want to edit another
+file >
+
+	:e[dit] otherfile
+
+This will close the current file and open a new file. If you have not saved
+the changes of the current file, this open will fail. You can first save
+those changes >
+
+	:w[rite]
+
+Or, you can choose to ignore the modifications and force the opening of
+other file >
+
+	:e[dit]! otherfile
+
+
+
+===========================================================================
+*10_2*	Specifying multiple files
+
+You can start editing multiple files by giving a list of files on command
+line argument >
+
+	bash> vim first second third
+
+This will open the first file for editing. After you have finished your
+editing, you can go to the next file using >
+
+	:n[ext]
+
+If you have made changes in first, which you want to discard >
+
+	:n[ext]!
+
+However, you would mostly want to save the changes and go to the next file >
+
+	:wn[ext]
+
+This is effectively like issuing the :write followed by :next command.
+
+
+Seeing file list ~
+
+You can have a look at the list of files by typing >
+
+	:ar[gs]
+
+
+Going back ~
+
+You can go back to previous files by using one of the following >
+
+	:prev[ious]
+	:N[ext]
+
+The variants of these commands which save the current file - wprev[ious] and
+wN[ext] are also available.
+
+
+Jumping to the start or end of list ~
+
+You can jump to the beginning or end of the list using >
+
+	:first
+	:rewind
+	:last
+
+Specifying a count ~
+
+The next and prev commands can also take counts :2next or :5prev
+
+
+===========================================================================
+*10_3*	Hiding and unhiding
+
+You have made some changes to a file. And now, you want to edit another
+file, but not write the changes in the current file yet, you can make it
+hidden >
+
+	:hid[e] n[ext]
+
+The "next" can be replaced with any edit command. For eg. >
+
+	:hid[e] e[dit] foo.txt
+
+
+Where did the changes go? ~
+
+The Vim editor uses the term buffer to describe a file being edited.
+Actually, a buffer is a copy of the file that you edit.  When you finish
+changing the buffer, you write the contents of the buffer to the file.
+Buffers not only contain file contents, but also all the marks, settings,
+and other stuff that goes with it.
+
+So when you issue the 'hide' command, the buffer which contains the edited
+contents is hidden. You can issue the following command to see the buffers
+which are existing at any particular instance >
+
+	:buffers
+
+This would produce an output which looks something like
+
+	1 #h + "first"                            line 1
+	2 %a   "second"                           line 1
+	3      "third"                            line 0
+
+The following is an alternative command to list buffers >
+
+	:ls
+
+The '%' indicates the current file, the '#' indicates the alternate file.
+The 'h' indicates that the buffer is hidden while the 'a' denotes the active
+buffer. You can switch between the '%' and '#' buffers by using the
+following command >
+
+	CTRL-^
+
+You can start editing a particular file by giving its buffer number >
+
+	:b[uffer] 3
+
+But the only way to know the number is by looking in the buffer list.  You
+can use the name, or part of it, instead: >
+
+	:b[uffer] t
+
+In this case, vim will start editing file "third" the closest match.
+
+You can move around in the buffer list with these commands: >
+
+	:bn[ext]
+	:bp[revious]
+	:bN[ext]
+	:bf[irst]
+	:br[ewind]
+	:bl[ast]
+
+===========================================================================
+*10_4*	Multiple window operations
+
+The easiest way to open a new window is to use the following command: >
+
+	:split
+
+This command splits the screen into two windows and leaves the cursor in the
+top one:
+
+	+----------------------------------+
+	|/* file one.c */		   |
+	|~				   |
+	|~				   |
+	|one.c=============================|
+	|/* file one.c */		   |
+	|~				   |
+	|one.c=============================|
+	|				   |
+	+----------------------------------+
+
+What you see here is two windows on the same file.  The line with "====" is
+that status line.  It displays information about the window above it.  (in
+practice the status line will be in reverse video.)
+
+The two windows allow you to view two parts of the same file.  For example,
+you could make the top window show the variable declarations of a program,
+and the bottom one the code that uses these variables. If you give a file
+name to the split command, the file is opened in the new window. >
+
+	:split two.c
+
+To open a window on a new, empty file, use this: >
+
+	:new
+
+The CTRL-W w command can be used to jump between the windows.  If you are in
+the top window, CTRL-W w jumps to the window below it.  If you are in the
+bottom window it will jump to the first window. (CTRL-W CTRL-W does the same
+thing, in case you let go of the CTRL key a bit later).
+
+
+Close the window ~
+
+To close a window, use the command: >
+
+	:close
+
+Actually, any command that quits editing a file works, like ":quit" and
+"ZZ".  But ":close" prevents you from accidentally exiting Vim when you
+close the last window.
+
+The following variants of the :write and :quit commands can also be used to
+perform similar operations on all windows >
+
+	:wall	(Write all)
+	:qall	(Quit all)
+	:wqall	(Write-Quit all)
+	:qall!	(Quit all discarding changes)
+
+Closing all other windows ~
+
+If you have opened a whole bunch of windows, but now want to concentrate on
+one of them, this command will be useful: >
+
+	:only
+
+This closes all windows, except for the current one.  If any of the other
+windows has changes, you will get an error message and that window won't be
+closed.
+
+
+===========================================================================
+*10_5*	Window size
+
+The :split command can take a number argument.  If specified, this will be
+the height of the new window.  For example, the following opens a new window
+three lines high and starts editing the file alpha.c: >
+
+	:3split alpha.c
+
+For existing windows you can change the size in several ways.  When you have
+a working mouse, it is easy: Move the mouse pointer to the status line that
+separates two windows, and drag it up or down.
+
+To increase the size of a window: >
+
+	CTRL-W +
+
+To decrease it: >
+
+	CTRL-W -
+
+Both of these commands take a count and increase or decrease the window size
+by that many lines.  Thus "4 CTRL-W +" make the window four lines higher.
+
+To set the window height to a specified number of lines: >
+
+	{height}CTRL-W _
+
+That's: a number {height}, CTRL-W and then an underscore (the - key with
+Shift on English-US keyboards).
+
+To make a window as high as it can be, use the CTRL-W _ command without a
+count.
+
+
+Using the mouse ~
+
+In Vim you can do many things very quickly from the keyboard.
+Unfortunately, the window resizing commands require quite a bit of typing.
+In this case, using the mouse is faster.  Position the mouse pointer on a
+status line.  Now press the left mouse button and drag.  The status line
+will move, thus making the window on one side higher and the other smaller.
+
+
+===========================================================================
+*10_6*	Vertical splits
+
+The ":split" command creates the new window above the current one.  To make
+the window appear at the left side, use: >
+
+	:vsplit
+
+or: >
+	:vsplit two.c
+
+The result looks something like this:
+
+	+--------------------------------------+
+	|/* file two.c */   |/* file one.c */  |
+	|~		    |~		       |
+	|~		    |~		       |
+	|~		    |~		       |
+	|two.c===============one.c=============|
+	|				       |
+	+--------------------------------------+
+
+Actually, the | lines in the middle will be in reverse video.  This is
+called the vertical separator.  It separates the two windows left and right
+of it.
+
+There is also the "vnew" command, to open a vertically split window on a
+new, empty file.  Another way to do this: >
+
+	:vertical new
+
+The ":vertical" command can be inserted before another command that splits a
+window.  This will cause that command to split the window vertically instead
+of horizontally.  (if the command doesn't split a window, it works
+unmodified).
+
+
+Moving between windows ~
+
+Since you can split windows horizontally and vertically as much as you like,
+you can create any layout of windows.  Then you can use these commands to
+move between them:
+
+	CTRL-W h	move to the window on the left
+	CTRL-W j	move to the window below
+	CTRL-W k	move to the window above
+	CTRL-W l	move to the window on the right
+
+	CTRL-W t	move to the TOP window
+	CTRL-W b	move to the BOTTOM window
+
+You will notice the same letters as used for moving the cursor.  And the
+cursor keys can also be used, if you like.
+
+
+===========================================================================
+*10_7*	Moving windows
+
+You have split a few windows, but now they are in the wrong place.  Then you
+need a command to move the window somewhere else.  For example, you have
+three windows like this:
+
+	+----------------------------------+
+	|/* file two.c */		   |
+	|~				   |
+	|~				   |
+	|two.c=============================|
+	|/* file three.c */		   |
+	|~				   |
+	|~				   |
+	|three.c===========================|
+	|/* file one.c */		   |
+	|~				   |
+	|one.c=============================|
+	|				   |
+	+----------------------------------+
+
+Clearly the last one should be at the top.  Go to that window (using CTRL-W
+w) and the type this command: >
+
+	CTRL-W K
+
+This uses the uppercase letter K.  What happens is that the window is moved
+to the very top.  You will notice that K is again used for moving upwards.
+
+When you have vertical splits, CTRL-W K will move the current window to the
+top and make it occupy the full with of the Vim window.  If this is your
+layout:
+
+	+-------------------------------------------+
+	|/* two.c */  |/* three.c */  |/* one.c */  |
+	|~	      |~	      |~	    |
+	|~	      |~	      |~	    |
+	|~	      |~	      |~	    |
+	|~	      |~	      |~	    |
+	|~	      |~	      |~	    |
+	|two.c=========three.c=========one.c========|
+	|					    |
+	+-------------------------------------------+
+
+Then using CTRL-W K in the middle window (three.c) will result in:
+
+	+-------------------------------------------+
+	|/* three.c */				    |
+	|~					    |
+	|~					    |
+	|three.c====================================|
+	|/* two.c */	       |/* one.c */	    |
+	|~		       |~		    |
+	|two.c==================one.c===============|
+	|					    |
+	+-------------------------------------------+
+
+The other three similar commands (you can probably guess these now):
+
+	CTRL-W H	move window to the far left
+	CTRL-W J	move window to the bottom
+	CTRL-W L	move window to the far right
+
+
+===========================================================================
+
+vim:ft=help:tw=76:ts=8:nomodifiable

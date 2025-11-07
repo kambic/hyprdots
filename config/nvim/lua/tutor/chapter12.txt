@@ -1,0 +1,134 @@
+
+*12*	Using macros
+
+This chapter shows how you can store and repeat various tasks.
+
+|12_1|	What are macros?
+|12_2|	A macro in action
+
+===========================================================================
+*12_1*	What are macros?
+
+The "." command repeats the preceding change.  But what if you want to do
+something more complex than a single change?  That's where command recording
+comes in.  There are three steps:
+
+1. The "q{register}" command starts recording keystrokes into the register
+   named {register}.  The register name must be between a and z.
+2. Type your commands.
+3. To finish recording, press q (without any extra character).
+
+You can now execute the macro by typing the command "@{register}".
+
+===========================================================================
+*12_2*	A macro in action
+
+Take a look at how to use these commands in practice.  You have a list of
+filenames that look like this:
+
+	stdio.h ~
+	fcntl.h ~
+	unistd.h ~
+	stdlib.h ~
+
+And what you want is the following:
+
+	#include "stdio.h" ~
+	#include "fcntl.h" ~
+	#include "unistd.h" ~
+	#include "stdlib.h" ~
+
+You start by moving to the first character of the first line.  Next you
+execute the following commands:
+
+    qa			Start recording a macro in register a.
+    ^			Move to the beginning of the line.
+    i#include "<Esc>	Insert the string #include " at the beginning
+    			of the line.
+    $			Move to the end of the line.
+    a"<Esc>		Append the character double quotation mark (")
+    			to the end of the line.
+    j			Go to the next line.
+    q			Stop recording the macro.
+
+Now that you have done the work once, you can repeat the change by typing
+the command "@a" three times.  The "@a" command can be preceded by a count,
+which will cause the macro to be executed that number of times.  In this
+case you would type: >
+
+	3@a
+
+
+Move and execute ~
+
+You might have the lines you want to change in various places.  Just move
+the cursor to each location and use the "@a" command.  If you have done that
+once, you can do it again with "@@".  That's a bit easier to type.  If you
+now execute register b with "@b", the next "@@" will use register b.
+
+If you compare the playback method with using ".", there are several
+differences.  First of all, "." can only repeat one change.  As seen in the
+example above, "@a" can do several changes, and move around as well.
+Secondly, "." can only remember the last change.  Executing a register
+allows you to make any changes and then still use "@a" to replay the
+recorded commands.  Finally, you can use 26 different registers.  Thus you
+can remember 26 different command sequences to execute.
+
+
+Using registers ~
+
+The registers used for recording are the same ones you used for yank and
+delete commands.  This allows you to mix recording with other commands to
+manipulate the registers.
+
+Suppose you have recorded a few commands in register n.  When you execute
+this with "@n" you notice you did something wrong.  You could try recording
+again, but perhaps you will make another mistake.  Instead, use this trick:
+
+    G		Go to the end of the file.
+    o<Esc>	Create an empty line.
+    "np		Put the text from the n register.  You now see
+    		the commands you typed as text in the file.
+    {edits}	Change the commands that were wrong.  This is
+    		just like editing text.
+    0		Go to the start of the line.
+    "ny$	Yank the corrected commands into the n
+    		register.
+    dd		Delete the scratch line.
+
+Now you can execute the corrected commands with "@n".
+
+
+Appending to a register ~
+
+So far we have used a lowercase letter for the register name.  To append to
+a register, use an uppercase letter.
+
+Suppose you have recorded a command to change a word to register c.  It
+works properly, but you would like to add a search for the next word to
+change.  This can be done with: >
+
+	qC/word<Enter>q
+
+You start with "qC", which records to the c register and appends.  Thus
+writing to an uppercase register name means to append to the register with
+the same letter, but lowercase.
+
+This works both with recording and with yank and delete commands.  For
+example, you want to collect a sequence of lines into the a register.  Yank
+the first line with: >
+
+	"aY
+
+Now move to the second line, and type: >
+
+	"AY
+
+Repeat this command for all lines.  The a register now contains all those
+lines, in the order you yanked them.
+
+
+==============================================================================
+
+vim:ft=help:tw=76:ts=8:nomodifiable
+

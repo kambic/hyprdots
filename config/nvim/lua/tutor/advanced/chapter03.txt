@@ -1,0 +1,151 @@
+
+*03*	Using external programs
+
+This chapter tells how to use external programs while editing.
+
+|03_1|	Using external programs
+|03_2|	When it doesn't work
+|03_3|	Reading command output
+|03_4|	Writing text to a command
+|03_5|	Redrawing the screen
+
+
+===========================================================================
+*03_1*	Using external programs
+
+Vim has a very powerful set of commands, it can do anything.  But there may
+still be something that an external command can do better or faster.
+
+The command "!{motion}{program}" takes a block of text and filters it
+through an external program.  In other words, it runs the system command
+represented by {program}, giving it the block of text represented by
+{motion} as input.  The output of this command then replaces the selected
+block.
+
+Because this summarizes badly if you are unfamiliar with UNIX filters, take
+a look at an example.  The sort command sorts a file.  If you execute the
+following command, the unsorted file input.txt will be sorted and written to
+output.txt. (This works on both UNIX and Microsoft Windows.) >
+
+	sort <input.txt >output.txt
+
+Now do the same thing in Vim.  You want to sort lines 1 through 5 of a file.
+You start by putting the cursor on line 1.  Next you execute the following
+command: >
+
+	!5G
+
+The "!" tells Vim that you are performing a filter operation.  The Vim
+editor expects a motion command to follow, indicating which part of the file
+to filter.  The "5G" command tells Vim to go to line 5, so it now knows that
+it is to filter lines 1 (the current line) through 5.
+
+In anticipation of the filtering, the cursor drops to the bottom of the
+screen and a ! prompt displays.  You can now type in the name of the filter
+program, in this case "sort".  Therefore, your full command is as follows: >
+
+	!5Gsort<Enter>
+
+The result is that the sort program is run on the first 5 lines.  The output
+of the program replaces these lines.
+
+	line 55			      line 11
+	line 33			      line 22
+	line 11        -->	      line 33
+	line 22			      line 44
+	line 44			      line 55
+	last line		      last line
+
+The "!!" command filters the current line through a filter.  In Unix the
+"date" command prints the current time and date.  "!!date<Enter>" replaces
+the current line with the output of "date".  This is useful to add a
+timestamp to a file.
+
+===========================================================================
+*03_2*	When it doesn't work
+
+Starting a shell, sending it text and capturing the output requires that Vim
+knows how the shell works exactly.  When you have problems with filtering,
+check the values of these options:
+
+	'shell'		specifies the program that Vim uses to execute
+			external programs.
+	'shellcmdflag'	argument to pass a command to the shell
+	'shellquote'	quote to be used around the command
+	'shellxquote'	quote to be used around the command and redirection
+	'shelltype'	kind of shell (only for the Amiga)
+	'shellslash'	use forward slashes in the command (only for
+			MS-Windows and alikes)
+	'shellredir'	string used to write the command output into a file
+
+On Unix this is hardly ever a problem, because there are two kinds of
+shells: "sh" like and "csh" like.  Vim checks the 'shell' option and sets
+related options automatically, depending on whether it sees "csh" somewhere
+in 'shell'.
+
+On MS-Windows, however, there are many different shells and you might have
+to tune the options to make filtering work.  Check the help for the options
+for more information.
+
+===========================================================================
+*03_3*	Reading command output
+
+To read the contents of the current directory into the file, use this:
+
+on Unix: >
+	:read !ls
+on MS-Windows: >
+	:read !dir
+
+The output of the "ls" or "dir" command is captured and inserted in the
+text, below the cursor.  This is similar to reading a file, except that the
+"!" is used to tell Vim that a command follows.
+
+The command may have arguments.  And a range can be used to tell where Vim
+should put the lines: >
+
+	:0read !date -u
+
+This inserts the current time and date in UTC format at the top of the file.
+(Well, if you have a date command that accepts the "-u" argument.)  Note the
+difference with using "!!date": that replaced a line, while ":read !date"
+will insert a line.
+
+
+===========================================================================
+*03_4*	Writing text to a command
+
+The Unix command "wc" counts words.  To count the words in the current file: >
+
+	:write !wc
+
+This is the same write command as before, but instead of a file name the "!"
+character is used and the name of an external command.  The written text
+will be passed to the specified command as its standard input.  The output
+could look like this:
+
+       4      47     249 ~
+
+The "wc" command isn't verbose.  This means you have 4 lines, 47 words and
+249 characters.
+
+Watch out for this mistake: >
+
+	:write! wc
+
+This will write the file "wc" in the current directory, with force.  White
+space is important here!
+
+===========================================================================
+*03_5*	Redrawing the screen
+
+If the external command produced an error message, the display may have been
+messed up.  Vim is very efficient and only redraws those parts of the screen
+that it knows need redrawing.  But it can't know about what another program
+has written.  To tell Vim to redraw the screen: >
+
+	CTRL-L
+
+===========================================================================
+
+vim:ft=help:tw=76:ts=8:nomodifiable

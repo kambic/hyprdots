@@ -1,0 +1,142 @@
+
+*04*	Basic settings
+
+This chapter gives the details of the setting which affect how Vim works.
+
+|04_1|	The .vimrc file
+|04_2|	Vim settings
+|04_3|	Basic settings
+|04_4|	Look and feel settings
+|04_5|	Editing settings
+
+===========================================================================
+*04_1*	The .vimrc file
+
+You probably got tired of typing commands that you use very often.  To start
+with all your favorite option settings and mappings, you write them in what
+is called the vimrc file.
+
+For Unix this file is always used: >
+
+	~/.vimrc
+
+The vimrc file can contain all the commands that you type after a colon.
+The most simple ones are for setting options.  For example, if you want Vim
+to always start with the 'incsearch' option on, add this line you your vimrc
+file: >
+
+	set is
+
+You can always use the full option name instead for verbosity. Here instead
+you can write >
+
+	set incsearch
+
+The colon at the start can be omitted while writing your .vimrc file.
+
+===========================================================================
+*04_2*	Vim settings
+
+There are basically two type of settings in vim. Some options can be set
+either on or off. These are called as boolean setting. These options can be
+switched on using syntax >
+
+	:set {option}
+
+and switched off using >
+
+	:set no{option}
+
+The option 'incsearch' is an example of boolean setting.
+
+The other type of options take argument. The type of arguments varies from
+setting to setting. The format for setting these options is >
+
+	:set {option}={values}
+
+An example of this type is the option 'nrformats'. >
+
+	:set nrformats=octal,hex
+
+
+Finding the value of an option ~
+
+If you want to find the current value of an option, use the command >
+
+	:set {option}?
+
+The value of the option will be displayed in a format which is specifiable
+after a set command.
+
+
+Oops! I messed up an option ~
+
+You can reset an option to its default value by typing >
+
+	:set {option}&
+
+===========================================================================
+*04_3*	Basic settings
+
+Do you want your vim to behave in a 'vi' compatible way? This can be set
+using the option 'compatible'. It is always advisable to set this option
+off, else you wont be able to use many of the powerful vim features. This
+includes manu of the commands in this tutorial. >
+
+	:se nocp
+
+What are the number of columns after which you want the text to wrap while
+editing. This can be set using either the 'textwidth' or 'wrapmargin'
+option. If a line is longer than the text width, it is broken at a
+whitespace to get the desired textwidth. If this option is set to 0,
+wrapmargin is looked at. This option indicates the number of characters from
+the right window border where wrapping starts. >
+
+	:set tw 76
+
+This sets the text width to 76. >
+
+	:set wm=4
+
+This sets the text to wrap if the line get longer than window width - 4.
+
+
+===========================================================================
+*04_4*	Look and feel settings
+
+By default the status bar is present for the last window (The windows
+adjacent to the command line) only if more than one window is open. To
+control the behaviour you can use 'laststatus' option. >
+
+	:set ls=2	(always present)
+	:set ls=1	(default, only if more than two windows)
+	:set ls=0	(never present)
+
+Note: Windows other than last window, always have status bars.
+
+You always want the statistics of the file to be displayed. You can use >
+
+	:set ru
+
+You want the mode in which you are to be shown (for modes other than
+normal), use the setting 'showmode' >
+
+	:set smd
+
+===========================================================================
+*04_5*	Editing settings
+
+Should the new line carry the indentation of the last line or should it
+start from the first column. This former can be done by switching on the
+option 'autoindent'. >
+
+	:set ai
+
+Do you want your searches and completions to be case-insensitive? You can
+set the option 'ignorecase' (This is not recommended for c/c++ code) >
+
+	:set ic
+
+===========================================================================
+
+vim:ft=help:tw=76:ts=8:nomodifiable

@@ -1,0 +1,100 @@
+
+*13*	Text objects
+
+This chapter gives the concept and usage of text objects.
+
+|13_1|	What are text objects?
+|13_2|	How to use text objects?
+|13_3|	List of text objects
+
+===========================================================================
+*13_1*	What are text objects?
+
+This is a series of commands that can only be used while in Visual mode or
+after an operator.  The commands that start with "a" select "a"n object
+including white space, the commands starting with "i" select an "inner"
+object without white space, or just the white space.  Thus the "inner"
+commands always select less text than the "a" commands.
+
+===========================================================================
+*13_2*	How to use text objects?
+
+If the cursor is in the middle of a word and want to delete that word, you
+need to move back to its start before you can do "dw".  There is a simpler
+way to do this: "daw".
+
+	this is some example text. ~
+		       daw
+
+	this is some text. ~
+
+The "d" of "daw" is the delete operator.  "aw" is a text object.  Hint: "aw"
+stands for "A Word".  Thus "daw" is "Delete A Word".
+
+Using text objects is the third way to make changes in Vim.  We already had
+operator-motion and Visual mode.  Now we add operator-text object.
+
+It is very similar to operator-motion, but instead of operating on the text
+between the cursor position before and after a movement command, the text
+object is used as a whole.  It doesn't matter where in the object the cursor
+was.
+
+To change a whole sentence use "cis".  Take this text:
+
+	Hello there.  This ~
+	is an example.  Just ~
+	some text. ~
+
+Move to the start of the second line, on "is an".  Now use "cis":
+
+	Hello there.    Just ~
+	some text. ~
+
+The cursor is in between the blanks in the first line.  Now you type the new
+sentence "Another line.":
+
+	Hello there.  Another line.  Just ~
+	some text. ~
+
+"cis" consists of the "c" (change) operator and the "is" text object.  This
+stands for "Inner Sentence".  There is also the "as" (a sentence) object.
+The difference is that "as" includes the white space after the sentence and
+"is" doesn't.  If you would delete a sentence, you want to delete the white
+space at the same time, thus use "das".  If you want to type new text the
+white space can remain, thus you use "cis".
+
+You can also use text objects in Visual mode.  It will include the text
+object in the Visual selection.  Visual mode continues, thus you can do this
+several times.  For example, start Visual mode with "v" and select a
+sentence with "as".  Now you can repeat "as" to include more sentences.
+Finally you use an operator to do something with the selected sentences.
+
+
+===========================================================================
+*13_3*	List of text objects
+
+The following is a table of text-object which can be used for editing. These
+object name can be used after an 'a' or an 'i'. For example 'w' gives "aw"
+or "iw".
+
+w		word
+W		white-space separated WORD
+s		sentence
+p		paragraph"
+[ or ]		[] block
+( or ) or b	() block
+< or >		<> block
+{ or } or B	{} block
+
+These object can be used with various operator commands to quicken your
+editing. One very useful command based on text objects is >
+
+	gqap
+
+Here "gq" is the justify operator and it is applied on "a paragraph".  This
+command justifies a paragraph according to your vim settings.
+
+===========================================================================
+
+vim:ft=help:tw=76:ts=8:nomodifiable
+

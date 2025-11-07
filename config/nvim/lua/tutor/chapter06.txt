@@ -1,0 +1,121 @@
+
+*06*	Auto-completions
+
+This chapter gives the details of how to automatically complete words and
+lines.
+
+|06_1|	Introduction
+|06_2|	Word completions
+|06_3|	Line completions
+|06_4|	Dictionary/Thesaurus completions
+|06_5|	Other searches
+
+===========================================================================
+*06_1*	Introduction
+
+In Insert and Replace modes, there are several commands to complete part of
+a keyword or line that has been typed.  This is useful if you are using
+complicated keywords. (e.g., function names with capitals and underscores).
+These commands together are termed as auto-completions.
+
+
+===========================================================================
+*06_2*	Word completions
+
+You are typing a report and have taken pains to find out the spelling of the
+word 'antidisestablishmentarianism'.  You have to use it again. What will
+you do?  Go back to the place where you have typed it first, see the
+spelling it again? No! Go there copy it and paste it where you need it
+again?  Probably, yes. But there is a still easier way to do it :). Just
+enter >
+
+	anti<CTRL-P>
+
+This would complete the word with the previous word which started with
+"anti". If this is not the word you are looking for, enter <CTRL-P> again.
+Keep doing it and you get your word! You did not even have to exit the
+Insert/Replace mode you were in.
+
+Similarly, you have gone ahead with your editing and now you have to replace
+a word you have typed earlier with a new word, you can try >
+
+	<CTRL-N>
+
+Both these commands would come back to what you have actually typed when all
+the matches have exhausted.
+
+
+===========================================================================
+*06_3*	Line completions
+
+Similar to word completions, you can complete lines also. This requires two
+keystrokes instead of one, but you can do it. Enter the start of the line
+and then enter >
+
+	<CTRL-X><CTRL-L>
+
+This would list the previous match for the line, if any.  Now, you can
+navigate through the lines using <CTRL-P> and <CTRL-N>.
+
+
+===========================================================================
+*06_4*	Dictionary/Thesaurus completions
+
+You can do spell checks on the fly by having vim complete spellings by
+looking at the dictionary. You can do this by typing the initial part of the
+word and then typing >
+
+	<CTRL-X><CTRL-K>
+
+You can always navigate using <CTRL-P> and <CTRL-N>. You could have got the
+word we saw earlier by typing >
+
+	antidis<CTRL-X><CTRL-K>
+
+To be able to use a dictionary, you should set option 'dictionary' to your
+dictionary file >
+
+	:set dictionary=/usr/dict/words,/usr/share/dict/words
+
+You can also find synonyms for a word by using the thesaurus completion
+command >
+
+	<CTRL-X><CTRL-T>
+
+You need to set the 'thesaurus' option to use this command >
+
+	:set thesaurus=<filename>
+
+
+===========================================================================
+*06_5*	Other searches
+
+Completing keywords from included files ~
+
+There are other searches that can be performed. For example, you can search
+for a keyword through included files also >
+
+	<CTRL-X><CTRL-I>
+
+The option 'path' can be used to set the directories where your include
+files are searched for. If you just want #define macros, you can use >
+
+	<CTRL-X><CTRL-D>
+
+
+Completing filenames ~
+
+This can be done using the command >
+
+	<CTRL-X><CTRL-F>
+
+
+Completing tags ~
+
+This can be done using the command >
+
+	<CTRL-X><CTRL-]>
+
+===========================================================================
+
+vim:ft=help:tw=76:ts=8:nomodifiable

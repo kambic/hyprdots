@@ -1,0 +1,106 @@
+
+*01*	Vim Refresher
+
+This chapter is a refresher to vim. It contains the review of all the basic
+features of vim.
+
+|01_1|	The first steps in Vim
+|01_2|	Modes in Vim
+|01_3|	Commonly used commands
+
+
+===========================================================================
+*01_1*	The first steps in Vim
+
+
+Open a file to edit: ~
+
+You can invoke vim with the following command >
+
+	bash> vim file.txt
+
+This opens the vim editor in your terminal itself >
+
+	bash> gvim file.txt
+
+This open the GUI version of vim.
+
+
+Edit the opened file: ~
+
+You can start entering text by pressing >
+
+	i
+
+What ever you type after it is entered into the file. To delete what ever
+you have entered, you can use backspace. When you have done entering the
+text, type >
+
+	<ESC>
+
+
+Save your changes and quit: ~
+
+You can save the changes you have made, by typing >
+
+	:w[rite]
+
+You can quit vim by typing >
+
+	:q[uit]
+
+If any changes were made, you need to save them. Else, you just need to
+exit. There are commands which do these decision making >
+
+	:x
+	:exi[t]
+	ZZ
+<
+It is generally better to use :x to quit, rather than :q or :wq. The latter
+changes the time stamp of the file, even if no changes are made.
+
+===========================================================================
+*01_2*	Modes in vim
+
+Vim operates in different modes. The basic modes for vim are 'Normal',
+'Insert' and 'Command line' modes. The following tables gives the commands
+to go from one mode to another
+
+    ------------------------------------------------------------
+    To \ From		Normal		Insert		Command ~
+    ------------------------------------------------------------
+    Normal		  --		 <ESC> 		 <ESC>  ~
+    Insert		  i		  --		 <ESC>i ~
+    Command		  :		 <ESC>:		  --    ~
+    ------------------------------------------------------------
+		
+
+
+===========================================================================
+*01_3*	Commanly used commands
+
+The list of commanly used commands are given in the table below
+
+
+    ------------------------------------------------------------
+    Command	Mode		Description ~
+    ------------------------------------------------------------
+    i		Normal		Insert new text at cursor
+    a		Normal		Append new text after cursor
+    h		Normal		Move left
+    l		Normal		Move right
+    j		Normal		Move down
+    k		Normal		Move up
+    x		Normal		Delete character below cursor
+    X		Normal		Delete character before cursor
+    u		Normal		Undo the last change
+    <CTRL-R>	Normal		Redo the last change
+    ZZ		Normal		Quit file writing changes if any
+    w		Command		Write file
+    q		Command		Quit file
+    x		Command		Quit file writing changes if any
+    ------------------------------------------------------------
+
+===========================================================================
+
+vim:ft=help:tw=76:ts=8:nomodifiable
