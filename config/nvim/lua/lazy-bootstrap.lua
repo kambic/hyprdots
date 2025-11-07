@@ -36,6 +36,7 @@ require('lazy').setup({
   { import = 'plugins' },
   require 'extra.lualine',
   require 'extra.bufferline',
+  require 'extra.snacks',
   -- require("extra.notify"),
 }, {
   -----------------------------------------------------

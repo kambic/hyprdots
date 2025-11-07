@@ -23,6 +23,13 @@ vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
 vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 local map = vim.keymap.set
 
+-- Move Lines
+map('n', '<A-j>', "<cmd>execute 'move .+' . v:count1<cr>==", { desc = 'Move Down' })
+map('n', '<A-k>', "<cmd>execute 'move .-' . (v:count1 + 1)<cr>==", { desc = 'Move Up' })
+map('i', '<A-j>', '<esc><cmd>m .+1<cr>==gi', { desc = 'Move Down' })
+map('i', '<A-k>', '<esc><cmd>m .-2<cr>==gi', { desc = 'Move Up' })
+map('v', '<A-j>', ":<C-u>execute \"'<,'>move '>+\" . v:count1<cr>gv=gv", { desc = 'Move Down' })
+map('v', '<A-k>', ":<C-u>execute \"'<,'>move '<-\" . (v:count1 + 1)<cr>gv=gv", { desc = 'Move Up' })
 -- Save current file
 map('n', '<C-s>', ':w<cr>', { desc = 'Save file', remap = true })
 
@@ -62,6 +69,20 @@ map('n', '<C-Down>', ':resize +3<CR>')
 map('n', '<C-Left>', ':vertical resize -3<CR>')
 map('n', '<C-Right>', ':vertical resize +3<CR>')
 
+-- floating terminal
+map('n', '<leader>fT', function()
+  Snacks.terminal()
+end, { desc = 'Terminal (cwd)' })
+map('n', '<leader>ft', function()
+  Snacks.terminal(nil, { cwd = LazyVim.root() })
+end, { desc = 'Terminal (Root Dir)' })
+map({ 'n', 't' }, '<c-/>', function()
+  Snacks.terminal(nil, { cwd = LazyVim.root() })
+end, { desc = 'Terminal (Root Dir)' })
+map({ 'n', 't' }, '<c-_>', function()
+  Snacks.terminal(nil, { cwd = LazyVim.root() })
+end, { desc = 'which_key_ignore' })
+
 -- Barbar
 map('n', '<Tab>', ':BufferNext<CR>', { desc = 'Move to next tab', noremap = true })
 map('n', '<S-Tab>', ':BufferPrevious<CR>', { desc = 'Move to previous tab', noremap = true })
@@ -96,4 +117,16 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+local function augroup(name)
+  return vim.api.nvim_create_augroup('lazyvim_' .. name, { clear = true })
+end
+-- resize splits if window got resized
+vim.api.nvim_create_autocmd({ 'VimResized' }, {
+  group = augroup 'resize_splits',
+  callback = function()
+    local current_tab = vim.fn.tabpagenr()
+    vim.cmd 'tabdo wincmd ='
+    vim.cmd('tabnext ' .. current_tab)
+  end,
+})
 -- vim: ts=2 sts=2 sw=2 et
