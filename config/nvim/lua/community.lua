@@ -6,7 +6,9 @@
 return {
   "AstroNvim/astrocommunity",
   { import = "astrocommunity.pack.lua" },
-  { import = "astrocommunity.pack.python" },
+  -- { import = "astrocommunity.pack.python" },
+  { import = "astrocommunity.pack.hyprlang" },
+  { import = "astrocommunity.pack.bash" },
   { import = "astrocommunity.colorscheme.catppuccin" },
 
   -- import/override with your plugins folder
