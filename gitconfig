@@ -1,47 +1,113 @@
-# vim: ft=gitconfig
-#
-
+# ~/.gitconfig
 [user]
-  email = "rok.kambic@mx.si"
-  name = "rok"
+    name = rok
+    email = rok.kambic@mx.si
 
 [init]
-    defaultBranch = master
+    defaultBranch = master          # Modern default (master is deprecated in most orgs)
+
+[core]
+    autocrlf = false              # Linux: never touch line endings
+    eol = lf                      # Enforce LF everywhere
+    fsmonitor = true              # Faster status on large repos (Git 2.37+)
+    untrackedCache = true         # Speed up status in large working trees
+    preloadIndex = true           # Faster operations on large repos
+    editor = nvim                 # Or: code --wait, vim, etc.
+    pager = delta                 # Use 'delta' if installed (beautiful diffs)
 
 [pull]
     rebase = true
+    ff = only                     # Safer fast-forward pulls
 
 [push]
-    default = simple
+    default = current             # Push only current branch (safer than 'simple')
     autoSetupRemote = true
+    recurseSubmodules = check     # Prevent pushing if submodules are behind
 
-[diff]
-    # List submodules commits in the range.
-    submodule = log
+[fetch]
+    prune = true                  # Auto-remove stale remote branches
+    pruneTags = true
+    writeCommitGraph = true       # Speed up operations on large repos
 
 [rebase]
-    # Create a temporary stash entry before the operation begins.
-    autostash = true
+    autoStash = true
+    autoSquash = true
+    updateRefs = true             # Git 2.38+: move branches during rebase
+
+[merge]
+    conflictStyle = zdiff3        # Better 3-way merge conflict markers
+    ff = only
+    tool = nvimdiff               # Or: meld, vimdiff, code --wait --diff
+
+[diff]
+    algorithm = histogram
+    colorMoved = zebra
+    mnemonicPrefix = true
+    renames = true
+    submodule = log
 
 [status]
-    # Enable submodule summary of commits.
     submoduleSummary = true
+    showUntrackedFiles = all
 
 [color]
-  ui = auto
-# [credential "https://gitlab.com"]
-# helper = !/usr/bin/glab auth git-credential
+    ui = auto
+    # Optional: enhance with delta
+    # interactive = auto
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    features = decorations
+    line-numbers = true
+    side-by-side = false
+    navigate = true
 
 [credential]
-  helper = store
+    helper = cache --timeout=86400  # Cache for 24h (safer than 'store')
+    # Or use: helper = libsecret (if using GNOME Keyring)
+    # Or: helper = /usr/libexec/git-credential-manager (if using GCM)
 
-[include]
-    # Include aliases.
-    path = .gitconfig_aliases
+[credential "https://gitlab.com"]
+    # Use glab if available
+    # helper = !/usr/bin/glab auth git-credential
 
+[credential "https://github.com"]
+    helper = cache
 
 [filter "lfs"]
-	required = true
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+
+# === Performance & Safety ===
+[gc]
+    auto = 256                    # Auto-gc when loose objects > 256
+    writeCommitGraph = true
+
+[pack]
+    threads = 0                   # Use all cores
+    windowMemory = 512m
+    useSparse = true
+
+[advice]
+    pushUpdateRejected = false
+    statusUoption = false
+
+# === Aliases (move to ~/.gitconfig_aliases if too long) ===
+[include]
+    path = ~/.gitconfig_aliases
+
+# === Optional: GitHub CLI / glab integration ===
+# [hub]
+#     protocol = ssh
+
+# === GPG Signing (recommended) ===
+# [gpg]
+#     program = gpg
+# [commit]
+#     gpgSign = true
+# [tag]
+#     gpgSign = true
