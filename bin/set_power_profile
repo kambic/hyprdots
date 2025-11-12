@@ -1,82 +1,154 @@
 #!/bin/bash
 
-check_dependencies() {
-    if ! command -v brightnessctl &> /dev/null; then
-        echo "Error: brightnessctl is not installed. Please install it to use this command."
-        exit 1
+# Get GPU device paths dynamically
+get_gpu_paths() {
+    find /sys/class/drm -name "card*" -type l | grep -v "render" | sort
+}
+
+get_hwmon_path() {
+    local card_path="$1"
+    local hwmon_dir="$card_path/device/hwmon"
+
+    if [ -d "$hwmon_dir" ]; then
+        find "$hwmon_dir" -name "hwmon*" -type d | head -1
+    fi
+}
+
+amd_gpu_max() {
+    echo "Tuning AMD GPU for maximum performance..."
+
+    local gpu_paths
+    gpu_paths=$(get_gpu_paths)
+
+    if [ -z "$gpu_paths" ]; then
+        echo "Warning: No GPU devices found"
+        return 1
     fi
 
-    if ! command -v powerprofilesctl &> /dev/null; then
-        echo "Error: Please install 'power-profiles-daemon' to use the command 'powerprofilesctl'."
-        exit 1
-    fi
+    while IFS= read -r card_path; do
+        if [ ! -d "$card_path/device" ]; then
+            continue
+        fi
 
-    if ! command -v notify-send &> /dev/null; then
-        echo "Warning: notify-send is not installed. Notifications will not be sent."
-    fi
+        # Set performance level
+        if [ -w "$card_path/device/power_dpm_force_performance_level" ]; then
+            echo "manual" >"$card_path/device/power_dpm_force_performance_level"
+        fi
+
+        # Set power profile mode
+        if [ -w "$card_path/device/pp_power_profile_mode" ]; then
+            echo "1" >"$card_path/device/pp_power_profile_mode"
+        fi
+
+        # Set memory clock
+        if [ -w "$card_path/device/pp_dpm_mclk" ]; then
+            echo "3" >"$card_path/device/pp_dpm_mclk"
+        fi
+
+        # Set power cap
+        local hwmon_path
+        hwmon_path=$(get_hwmon_path "$card_path")
+        if [ -n "$hwmon_path" ] && [ -w "$hwmon_path/power1_cap" ]; then
+            echo "156000000" >"$hwmon_path/power1_cap"
+        fi
+
+    done <<<"$gpu_paths"
 }
 
 power_saver() {
-    check_dependencies
+    echo "Setting power-saver profile..."
 
-    echo "Setting power-saver profile"
-    brightnessctl set 50% || { echo "Error: Failed to set brightness"; exit 1; }
-    powerprofilesctl set power-saver || { echo "Error: Failed to set power profile"; exit 1; }
-
-    if command -v notify-send &> /dev/null; then
-        notify-send "Power Profile" "Power-saver profile set"
+    if command -v powerprofilesctl >/dev/null 2>&1; then
+        powerprofilesctl set power-saver || {
+            echo "Error: Failed to set power-saver profile"
+            return 1
+        }
+    else
+        echo "Warning: powerprofilesctl not found"
     fi
+
+    echo "Power-saver profile activated"
 }
 
 balanced() {
-    check_dependencies
+    echo "Setting balanced profile..."
 
-    echo "Setting balanced profile"
-    brightnessctl set 100% || { echo "Error: Failed to set brightness"; exit 1; }
-    powerprofilesctl set balanced || { echo "Error: Failed to set power profile"; exit 1; }
-
-    if command -v notify-send &> /dev/null; then
-        notify-send "Power Profile" "Balanced profile set"
+    if command -v systemd-cat >/dev/null 2>&1; then
+        echo "Loading balanced" | systemd-cat
     fi
+
+    if command -v powerprofilesctl >/dev/null 2>&1; then
+        powerprofilesctl set balanced || {
+            echo "Error: Failed to set balanced profile"
+            return 1
+        }
+    else
+        echo "Warning: powerprofilesctl not found"
+    fi
+
+    echo "Balanced profile activated"
 }
 
 performance() {
-    check_dependencies
+    echo "Setting performance profile..."
 
-    echo "Setting performance profile"
-    brightnessctl set 100% || { echo "Error: Failed to set brightness"; exit 1; }
-    powerprofilesctl set performance || { echo "Error: Failed to set power profile"; exit 1; }
-
-    if command -v notify-send &> /dev/null; then
-        notify-send "Power Profile" "Performance profile set"
+    if command -v systemd-cat >/dev/null 2>&1; then
+        echo "Setting performance profile" | systemd-cat
     fi
+
+    if command -v powerprofilesctl >/dev/null 2>&1; then
+        powerprofilesctl set performance || {
+            echo "Error: Failed to set performance profile"
+            return 1
+        }
+    else
+        echo "Warning: powerprofilesctl not found"
+    fi
+
+    amd_gpu_max
+    echo "Performance profile activated"
 }
 
-case "$1" in
-    -s | --power-saver)
-        power_saver
-        ;;
-    -b | --balanced)
-        balanced
-        ;;
-    -p | --performance)
-        performance
-        ;;
-    -h | --help)
-        echo "Usage: set_power_profile [OPTION]"
-        echo "Set power profile"
-        echo
-        echo "Options:"
-        echo "  -s, --power-saver    Set power-saver profile"
-        echo "  -b, --balanced       Set balanced profile"
-        echo "  -p, --performance    Set performance profile"
-        echo "  -h, --help           Display this help and exit"
-        exit 0
-        ;;
-    *)
-        echo "Error: Invalid option '$1'"
-        echo "Usage: set_power_profile [OPTION]"
-        echo "Try 'set_power_profile --help' for more information."
-        exit 1
-        ;;
+show_help() {
+    cat <<EOF
+Usage: $(basename "$0") [OPTION]
+Set power profile for HP Z4G4 workstation
+
+Options:
+  -s, --power-saver    Set power-saver profile
+  -b, --balanced       Set balanced profile  
+  -p, --performance    Set performance profile
+  -h, --help           Display this help and exit
+
+Examples:
+  $(basename "$0") --power-saver
+  $(basename "$0") -p
+EOF
+}
+
+# Main script execution
+case "${1:-}" in
+-s | --power-saver)
+    power_saver
+    ;;
+-b | --balanced)
+    balanced
+    ;;
+-p | --performance)
+    performance
+    ;;
+-h | --help)
+    show_help
+    exit 0
+    ;;
+"")
+    echo "Error: No option provided"
+    show_help
+    exit 1
+    ;;
+*)
+    echo "Error: Invalid option '$1'"
+    show_help
+    exit 1
+    ;;
 esac

@@ -1,0 +1,21 @@
+# Python startup file
+import readline
+import rlcompleter
+import atexit
+import os
+
+# Tab completion
+readline.parse_and_bind('tab: complete')
+
+# History file
+histfile = os.path.join(os.path.expanduser('~'), '.python_history')
+try:
+    readline.read_history_file(histfile)
+    readline.set_history_length(1000)
+except FileNotFoundError:
+    pass
+
+atexit.register(readline.write_history_file, histfile)
+
+# Clean up namespace
+del readline, rlcompleter, atexit, os, histfile

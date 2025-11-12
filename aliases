@@ -6,6 +6,17 @@ if [[ -f "$HOME/.nix-profile/bin" ]]; then
   echo iiddd
 fi
 
+# Personal aliases
+alias zshrc='$EDITOR ~/.zshrc && source ~/.zshrc'
+
+# Development
+alias pyclean='find . -type f -name "*.py[co]" -delete -o -type d -name "__pycache__" -delete'
+alias ipy='ipython'
+
+# Network
+alias myip='curl ifconfig.me'
+alias ports='netstat -tulanp'
+
 alias mkdir='mkdir -p'
 alias ip='ip --color=always'
 alias lsusb='cyme'
