@@ -17,10 +17,93 @@
     ~/.config/:
         glob: true
         path: config/*
+- create:
+    - ~/notes
+- shell:
+    - [git submodule update --init --recursive, Installing submodules]
+
+- shell:
+    - command: |
+        if [ ! -d ~/.oh-my-zsh ]; then
+          sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+        fi
+      description: Installing Oh My Zsh
+
+- shell:
+    - command: |
+        ZSH_CUSTOM="${HOME}/.oh-my-zsh/custom"
+        
+        # Install missing plugins
+        plugins=(
+            "zsh-users/zsh-completions"
+            "Aloxaf/fzf-tab" 
+            "MichaelAquilina/zsh-you-should-use"
+            "GoodClover/fabric-plugin"
+        )
+        
+        for plugin in "${plugins[@]}"; do
+            plugin_name=$(basename "$plugin")
+            plugin_dir="$ZSH_CUSTOM/plugins/$plugin_name"
+            if [ ! -d "$plugin_dir" ]; then
+                echo "Installing $plugin_name..."
+                git clone -q "https://github.com/$plugin" "$plugin_dir"
+            fi
+        done
+        
+        # Install syntax highlighting and autosuggestions if missing
+        [ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ] && \
+          git clone -q https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+        
+        [ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ] && \
+          git clone -q https://github.com/zsh-users/zsh-autosuggestions.git "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
+      description: Installing Oh My Zsh plugins
+
+- shell:
+    - command: |
+        # Install Fisher (Fish plugin manager)
+        if ! command -v fish &> /dev/null; then
+          echo "Fish shell not installed, skipping Fisher setup"
+        else
+          fish -c "curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher update"
+        fi
+      description: Installing Fisher plugin manager
+
+- shell:
+    - command: |
+        # Install Yazi file manager
+        if command -v cargo &> /dev/null; then
+          cargo install yazi-fm yazi-ueberzug
+        elif command -v brew &> /dev/null; then
+          brew install yazi
+        else
+          echo "Installing Yazi from GitHub release..."
+          curl -fsSL https://github.com/sxyazi/yazi/releases/latest/download/yazi-x86_64-unknown-linux-gnu.zip -o yazi.zip
+          unzip -o yazi.zip -d ~/.local/bin/
+          rm yazi.zip
+          chmod +x ~/.local/bin/yazi
+        fi
+      description: Installing Yazi file manager
+
 
 
 - shell:
-    - [git submodule update --init --recursive, Installing submodules]
+    - command: |
+        if command -v yay &> /dev/null; then
+          yay -S fzf bat fd exa duf procs fish yazi uv
+        elif command -v apt &> /dev/null; then
+          sudo apt update && sudo apt install -y fzf bat fd-find exa duf procs fish
+        elif command -v dnf &> /dev/null; then
+          sudo dnf install -y fzf bat fd-find exa duf procs fish
+        fi
+      description: Installing system packages
+
+- shell:
+    - command: |
+        # Install Fisher plugins
+        if command -v fish &> /dev/null; then
+          fish -c "fisher install jethrokuan/z PatrickF1/fzf.fish edc/bass jorgebucaran/autopair.fish"
+        fi
+      description: Installing Fish plugins
 
 
 
