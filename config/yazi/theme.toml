@@ -1,5 +1,35 @@
-# vim:fileencoding=utf-8:foldmethod=marker
-[flavor]
-dark = "dracula"
-# light = "catppuccin-latte"
-light = "dracula"
+[manager]
+# Cursor style
+cursor = { fg = "#1e1e2e", bg = "#cba6f7" }
+
+# Border colors
+border = { fg = "#585b70" }
+
+# Current selection
+select = { fg = "#1e1e2e", bg = "#89b4fa" }
+hover = { fg = "#1e1e2e", bg = "#cba6f7" }
+
+# File type colors
+file = { fg = "#cdd6f4" }
+directory = { fg = "#89b4fa", bold = true }
+symlink = { fg = "#cba6f7" }
+executable = { fg = "#a6e3a1", bold = true }
+
+# File size colors
+file_size = { fg = "#f5c2e7" }
+
+[status]
+# Status bar colors
+mode = { fg = "#1e1e2e", bg = "#cba6f7" }
+progress = { fg = "#1e1e2e", bg = "#89b4fa" }
+perm = { fg = "#f5c2e7" }
+
+[input]
+# Input field colors
+border = { fg = "#89b4fa" }
+value = { fg = "#cdd6f4" }
+selected = { fg = "#1e1e2e", bg = "#89b4fa" }
+
+[preview]
+# Preview border
+border = { fg = "#585b70" }
