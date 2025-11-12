@@ -84,8 +84,8 @@ if [ -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting" ] |
   ZSH_HIGHLIGHT_STYLES[builtin]='fg=yellow'
   ZSH_HIGHLIGHT_STYLES[function]='fg=cyan'
   ZSH_HIGHLIGHT_STYLES[path]='underline'
-  ZSH_HIGHLIGHT_STYLES[single - hyphen - option]='fg=blue'
-  ZSH_HIGHLIGHT_STYLES[double - hyphen - option]='fg=blue'
+  # ZSH_HIGHLIGHT_STYLES[single - hyphen - option]='fg=blue'
+  # ZSH_HIGHLIGHT_STYLES[double - hyphen - option]='fg=blue'
 fi
 
 # FZF configuration
@@ -231,10 +231,6 @@ fi
 if command -v starship &>/dev/null; then
   eval "$(starship init zsh)"
 fi
-
-# ===== Startup Messages =====
-# Simple startup message without timestamp calculation
-echo "🚀 Zsh loaded successfully"
 
 # Optional: Show weather (comment out if not needed)
 # weather
