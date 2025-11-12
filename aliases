@@ -1,5 +1,10 @@
-## Always mkdir a path (this doesn't inhibit functionality to make a single dir)
-export PATH=$HOME/bin:$HOME/.nix-profile/bin:$PATH
+# vim: ft=bash
+export PATH=$HOME/bin:$PATH
+export MANPAGER="nvim +Man!"
+
+if [[ -f "$HOME/.nix-profile/bin" ]]; then
+  echo iiddd
+fi
 
 alias mkdir='mkdir -p'
 alias ip='ip --color=always'
@@ -39,31 +44,31 @@ alias .5='cd ../../../../..'
 alias wcolor="watch -ctn 1"
 
 function vv() {
-	# Assumes all configs exist in directories named ~/.config/nvim-*
-	local config=$(fd --max-depth 1 --glob 'nvim-*' ~/.config | fzf --prompt="Neovim Configs > " --height=~50% --layout=reverse --border --exit-0)
+  # Assumes all configs exist in directories named ~/.config/nvim-*
+  local config
+  config=$(fd --max-depth 1 --glob 'nvim-*' ~/.config | fzf --prompt="Neovim Configs > " --height=~50% --layout=reverse --border --exit-0)
 
-	# If I exit fzf without selecting a config, don't open Neovim
-	[[ -z $config ]] && echo "No config selected" && return
+  # If I exit fzf without selecting a config, don't open Neovim
+  [[ -z $config ]] && echo "No config selected" && return
 
-	# Open Neovim with the selected config
-	NVIM_APPNAME=$(basename $config) nvim $@
+  # Open Neovim with the selected config
+  NVIM_APPNAME=$(basename "$config") nvim "$@"
 }
 
 function fzf-pi() {
-	pacman -Slq | fzf --multi --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S
+  pacman -Slq | fzf --multi --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S
 
 }
 function fzf-pr() {
-	pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns
+  pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns
 }
 function y() {
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-	yazi "$@" --cwd-file="$tmp"
-	IFS= read -r -d '' cwd <"$tmp"
-	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
-	rm -f -- "$tmp"
+  local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+  yazi "$@" --cwd-file="$tmp"
+  IFS= read -r -d '' cwd <"$tmp"
+  [ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+  rm -f -- "$tmp"
 }
-
 
 # ~/ffmpeg.sh
 # ffprobe helpers with colorized output + JSON parsing + tabular summary w/ codec colors + bitrate
@@ -222,3 +227,84 @@ ffprobe-table() {
 #
 #   compdef _kitty kitty
 # fi
+
+# # 1. Interactive Package Search & Install (AUR + Repos)
+# fzi() {
+#   local pkg
+#   pkg=$(yay -Slq | fzf --multi --preview 'yay -Si {1}' --preview-window=right:60%)
+#   [[ -n "$pkg" ]] && yay -S $pkg
+# }
+#
+# # 2.  2. Search Installed Packages & Show Info
+# fzii() {
+#   local pkg
+#   pkg=$(pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' --preview-window=right:60%)
+#   [[ -n "$pkg" ]] && pacman -Qi $pkg
+# }
+# # 3. Remove Installed Packages (Interactive)
+# fzr() {
+#   local pkg
+#   pkg=$(pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' --preview-window=right:60%)
+#   [[ -n "$pkg" ]] && yay -Rns $pkg
+# }
+# # Update Only Selected AUR Packages
+# #
+# fzu() {
+#   local pkg
+#   pkg=$(yay -Qm | awk '{print $1}' | fzf --multi --preview 'yay -Si {1}' --preview-window=right:60%)
+#   [[ -n "$pkg" ]] && yay -S $pkg
+# }
+# # Reinstall Packages Quickly
+# fzreinstall() {
+#   local pkg
+#   pkg=$(pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' --preview-window=right:60%)
+#   [[ -n "$pkg" ]] && yay -S --needed $pkg
+# }
+#
+# #Clean Orphaned Packages with Preview
+# fzorphan() {
+#   local pkg
+#   pkg=$(pacman -Qtdq | fzf --multi --preview 'pacman -Qi {1}' --preview-window=right:60%)
+#   [[ -n "$pkg" ]] && sudo pacman -Rns $pkg
+# }
+#
+# # Browse AUR Packages You Maintain (orphan fix helper)
+# fzaurinfo() {
+#   local pkg
+#   pkg=$(yay -Qm | awk '{print $1}' | fzf --multi --preview 'yay -Si {1}' --preview-window=right:60%)
+#   [[ -n "$pkg" ]] && yay -G $pkg
+# }
+#
+# # 8. Diff Installed vs. Available Versions
+# fzvercheck() {
+#   local pkg
+#   pkg=$(yay -Q | fzf --multi --preview 'yay -Si {1} | grep Version' --preview-window=right:50%)
+# }
+#
+export FZF_DEFAULT_OPTS="
+  --height 90% --layout=reverse --border
+  --preview-window=right:60%
+  --color=16
+  --bind 'ctrl-d:preview-down,ctrl-u:preview-up,ctrl-a:select-all,ctrl-x:deselect-all'
+"
+# fzmenu() {
+#   local options=(
+#     "🔍 Search & Install"
+#     "📦 Show Installed Info"
+#     "❌ Remove Packages"
+#     "⬆️ Update AUR Packages"
+#     "🔄 Reinstall Packages"
+#     "🧹 Clean Orphans"
+#   )
+#   local choice
+#   choice=$(printf '%s\n' "${options[@]}" | fzf --prompt="Choose Action > " --height=50%)
+#
+#   case "$choice" in
+#   "🔍 Search & Install") fzi ;;
+#   "📦 Show Installed Info") fzii ;;
+#   "❌ Remove Packages") fzr ;;
+#   "⬆️ Update AUR Packages") fzu ;;
+#   "🔄 Reinstall Packages") fzreinstall ;;
+#   "🧹 Clean Orphans") fzorphan ;;
+#   esac
+# }

@@ -1,0 +1,11 @@
+{
+  "buildDir": "/tmp/yaybuild",
+  "cleanAfter": true,
+  "sudoloop": true,
+  "useAsk": false,
+  "batchInstall": true,
+  "buildPerAUR": true,
+  "parallelDownloads": true,
+  "makepkgArgs": ["-j$(nproc)"],
+  "aurParallel": 4
+}

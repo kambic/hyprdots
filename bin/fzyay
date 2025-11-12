@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+# fzyay - Interactive Arch/AUR management with fzf + yay
+# Author: ChatGPT
+# Version: 1.0
+
+set -euo pipefail
+
+# -----[ Configuration ]-----
+FZF_DEFAULT_OPTS="
+  --height 90% --layout=reverse --border
+  --preview-window=right:60%
+  --color=16
+  --bind 'ctrl-d:preview-down,ctrl-u:preview-up,ctrl-a:select-all,ctrl-x:deselect-all'
+"
+
+# Colors
+BOLD=$(tput bold)
+RESET=$(tput sgr0)
+CYAN=$(tput setaf 6)
+GREEN=$(tput setaf 2)
+RED=$(tput setaf 1)
+YELLOW=$(tput setaf 3)
+
+# -----[ Utility Functions ]-----
+msg() { echo -e "${CYAN}${BOLD}::${RESET} $*"; }
+warn() { echo -e "${YELLOW}${BOLD}!!${RESET} $*"; }
+err() { echo -e "${RED}${BOLD}**${RESET} $*" >&2; }
+
+# -----[ FZF Wrappers ]-----
+
+search_install() {
+  msg "Searching available packages..."
+  local pkg
+  pkg=$(yay -Slq | fzf --multi --preview 'yay -Si {1}' --preview-window=right:60%)
+  [[ -n "$pkg" ]] && yay -S $pkg
+}
+
+show_installed_info() {
+  local pkg
+  pkg=$(pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' --preview-window=right:60%)
+  [[ -n "$pkg" ]] && pacman -Qi $pkg
+}
+
+remove_packages() {
+  local pkg
+  pkg=$(pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' --preview-window=right:60%)
+  [[ -n "$pkg" ]] && yay -Rns $pkg
+}
+
+update_aur() {
+  local pkg
+  pkg=$(yay -Qm | awk '{print $1}' | fzf --multi --preview 'yay -Si {1}' --preview-window=right:60%)
+  [[ -n "$pkg" ]] && yay -S $pkg
+}
+
+reinstall_packages() {
+  local pkg
+  pkg=$(pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' --preview-window=right:60%)
+  [[ -n "$pkg" ]] && yay -S --needed $pkg
+}
+
+clean_orphans() {
+  local pkg
+  pkg=$(pacman -Qtdq | fzf --multi --preview 'pacman -Qi {1}' --preview-window=right:60%)
+  [[ -n "$pkg" ]] && sudo pacman -Rns $pkg
+}
+
+check_outdated() {
+  msg "Checking for outdated AUR or orphaned packages..."
+  yay -Ps | less
+}
+
+aur_pkgbuild() {
+  local pkg
+  pkg=$(yay -Qm | awk '{print $1}' | fzf --multi --preview 'yay -Si {1}' --preview-window=right:60%)
+  [[ -n "$pkg" ]] && yay -G $pkg
+}
+
+# -----[ Main Menu ]-----
+main_menu() {
+  local options=(
+    "🔍 Search & Install Packages"
+    "📦 Show Installed Package Info"
+    "❌ Remove Packages"
+    "⬆️  Update Selected AUR Packages"
+    "🔄 Reinstall Packages"
+    "🧹 Clean Orphans"
+    "🧩 Inspect AUR PKGBUILDs"
+    "📋 Check AUR Status (outdated/orphans)"
+    "🚪 Exit"
+  )
+
+  local choice
+  choice=$(printf '%s\n' "${options[@]}" | fzf --prompt="Choose Action > " --height=90%)
+
+  case "$choice" in
+    "🔍 Search & Install Packages") search_install ;;
+    "📦 Show Installed Package Info") show_installed_info ;;
+    "❌ Remove Packages") remove_packages ;;
+    "⬆️  Update Selected AUR Packages") update_aur ;;
+    "🔄 Reinstall Packages") reinstall_packages ;;
+    "🧹 Clean Orphans") clean_orphans ;;
+    "🧩 Inspect AUR PKGBUILDs") aur_pkgbuild ;;
+    "📋 Check AUR Status (outdated/orphans)") check_outdated ;;
+    "🚪 Exit" | "") exit 0 ;;
+  esac
+}
+
+# -----[ Run ]-----
+while true; do
+  main_menu
+  read -rp "Press [Enter] to return to main menu or Ctrl+C to quit..."
+done
