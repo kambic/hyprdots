@@ -6,21 +6,17 @@
 - clean: ['~', '~/.config']
 
 - link:
-    # ~/.dotfiles: ''
     ~/bin:
-    # ~/.tmux.conf:
+    ~/.aliases:
+    ~/.bashrc: bashrc
     ~/.zshrc:
     # ~/.zprofile:
-    ~/.aliases:
     ~/.gitconfig:
-    ~/.gitconfig_aliases:
     # ~/.ipython:
     ~/.config/:
         glob: true
         path: config/*
 
-    ~/.bashrc: bashrc
-    ~/.zshrc: zshrc
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]

@@ -50,14 +50,6 @@ git_prompt() {
   git branch 2>/dev/null | grep '^\*' | sed 's/^\* / (/;s/$/)/'
 }
 
-vim() {
-  if [ -w "$1" ] || [ ! -e "$1" ]; then
-    nvim "$@"
-  else
-    sudoedit "$@"
-  fi
-}
-
 # Set the prompt
 PROMPT_COMMAND=bash_prompt
 
@@ -68,13 +60,7 @@ PROMPT_COMMAND=bash_prompt
 alias cls='clear'
 # bind 'Control-l: clear-screen'
 alias ..='cd ..'
-# alias rm='rm -i'
-# alias mv='mv -i'
-# alias cp='cp -i'
-# alias cd='z'
-alias ls='lsd -lah --group-directories-first --color=auto'
-alias top='btop'
-# alias cat='bat'
+
 alias fd='fd -H --max-depth 4'
 alias zj='zellij'
 
