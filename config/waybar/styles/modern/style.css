@@ -1,483 +1,285 @@
 /* ================================================================
-=> Colors (Pywal + GTK)
-================================================================*/
-/* @import "../../../../.cache/wal/colors-waybar.css"; */
-/* @import "catppuccin-waybar.css"; */
-@define-color accent shade(alpha(@accent_color, 0.9), 1.25);
-@define-color background shade(alpha(@theme_bg_color, 0.9), 0.9);
-@define-color border alpha(@color11, 0.3);
-@define-color border-alt alpha(@color11, 0.63);
-@define-color text @theme_fg_color;
-@define-color text-alt @theme_selected_fg_color;
-@define-color hover shade(alpha(@accent_bg_color, 0.5), 1.25);
-@define-color green @success_color;
-@define-color yellow @warning_color;
-@define-color red @error_color;
+ 🧊 Frosted Catppuccin Mocha Waybar Theme
+ GTK4-compatible • Glass Blur • Subtle Animations
+================================================================ */
 
-@define-color accent #89b4fa; /* Blue */
-@define-color background #1e1e2e; /* Base */
-@define-color border #585b70; /* Surface1 */
-@define-color border-alt #45475a; /* Surface0 */
-@define-color text #cdd6f4; /* Text */
-@define-color text-alt #f5e0dc; /* Rosewater */
-@define-color hover shade(alpha(#89b4fa, 0.5), 1.25); /* Accent hover */
-@define-color green #a6e3a1; /* Green */
-@define-color yellow #f9e2af; /* Yellow */
-@define-color red #f38ba8; /* Red */
+/* === Color Palette === */
+@define-color accent #89b4fa;
+@define-color background #1e1e2e;
+@define-color border #585b70;
+@define-color text #cdd6f4;
+@define-color text-alt #f5e0dc;
+@define-color hover #89b4fa;
+@define-color red #f38ba8;
+@define-color yellow #f9e2af;
+@define-color green #a6e3a1;
 
-/* Optional derived colors */
-@define-color accent-alt shade(alpha(@accent, 0.9), 1.25);
-@define-color background-alt shade(alpha(@background, 0.9), 0.9);
-
-/* Catppuccin Mocha — Transparent Theme */
-
-@define-color accent shade(alpha(#89b4fa, 0.85), 1.25); /* Blue accent w/ slight transparency */
-@define-color background alpha(#1e1e2e, 0.75); /* Semi-transparent background */
-@define-color border alpha(#585b70, 0.25); /* Soft translucent border */
-@define-color border-alt alpha(#45475a, 0.45); /* Slightly more opaque border */
-@define-color text alpha(#cdd6f4, 0.95); /* Nearly opaque text */
-@define-color text-alt alpha(#f5e0dc, 0.95); /* Alt text color */
-@define-color hover shade(alpha(#89b4fa, 0.4), 1.25); /* Soft hover tint */
-@define-color green alpha(#a6e3a1, 0.9);
-@define-color yellow alpha(#f9e2af, 0.9);
-@define-color red alpha(#f38ba8, 0.9);
-
-/* Optional “glass” overlay effect */
-@define-color background-alt shade(alpha(#1e1e2e, 0.6), 0.9);
-
-/*================================================================
-=> General
-================================================================*/
+/* === General === */
 * {
-  margin: 0;
-  padding: 0px;
   font-family: "JetBrainsMono Nerd Font", "JetBrainsMono";
-  font-weight: bold;
+  font-weight: 600;
   font-size: 12px;
-  min-height: 15px;
+  min-height: 18px;
+  color: @text;
   background: transparent;
+  transition: background 0.15s ease, color 0.15s ease, border 0.15s ease;
 }
 
-/*================================================================
-=> Tooltip
-================================================================*/
+/* === Waybar Window === */
+window#waybar {
+  background: alpha(@background, 0.55);
+  border: 1px solid alpha(@border, 0.25);
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  padding: 3px 6px;
+}
+
+/* === Tooltips === */
 tooltip {
-  border: @border;
-  background-color: @background;
-}
-tooltip label {
+  background: alpha(@background, 0.9);
   color: @text;
-}
-
-/*================================================================
-=> App Menu
-================================================================*/
-#custom-menu {
-  margin: 2px 4px;
-  margin-left: 0px;
+  border: 1px solid alpha(@border, 0.4);
   border-radius: 6px;
-  padding: 0px 12px 0px 8px;
-  font-size: 15px;
-  color: @text;
-  background: @background;
-  border: 1px solid @border;
-}
-#custom-menu:hover {
-  color: @hover;
+  backdrop-filter: blur(8px);
 }
 
-/*================================================================
-=> Tools menu
-================================================================*/
-#custom-sysinfo,
-#power-profiles-daemon,
-#custom-hyprshade,
-#custom-hypridle,
-#cpu,
-#memory,
-#temperature {
-  margin: 2px 0px;
-  font-size: 13px;
-  border: 1px solid alpha(@border, 0.33);
-  padding: 0px 8px 0px 8px;
-  font-weight: bold;
-  background: @background;
-  color: @text;
-}
-
-#cpu,
-#memory,
-#temperature {
-  padding: 0px 8px;
-  font-size: 11px;
-  font-weight: bolder;
-}
-#power-profiles-daemon {
-  padding: 0px 12px 0px 6px;
-}
-#custom-sysinfo {
-  margin-left: 4px;
-  border-radius: 6px 0px 0px 6px;
-}
-#custom-hypridle {
-  padding-right: 10;
-  margin-right: 4px;
-  border-radius: 0px 6px 6px 0px;
-}
-#custom-sysinfo:hover,
-#custom-hyprshade:hover,
-#custom-hypridle:hover,
-#cpu:hover,
-#memory:hover,
-#temperature:hover {
-  color: @hover;
-}
-#power-profiles-daemon.balanced {
-  color: @text;
-}
-#power-profiles-daemon.performance {
-  color: @red;
-}
-#power-profiles-daemon.power-saver {
-  color: @green;
-}
-#custom-hypridle.notactive {
-  color: @red;
-}
-
-/*================================================================
+/* ================================================================
 => Workspaces
-================================================================*/
+================================================================ */
 #workspaces {
-  margin: 2px 4px;
-  border-radius: 6px;
-  padding: 1px;
-  background: @background;
-  border: 1px solid @border;
+  margin: 2px 6px;
+  padding: 3px;
+  border-radius: 8px;
+  background: alpha(@background, 0.55);
+  border: 1px solid alpha(@border, 0.35);
+  backdrop-filter: blur(6px);
 }
+
 #workspaces button {
-  min-width: 20px;
-  box-shadow: none;
-  margin: 2px 3px;
-  text-shadow: none;
+  min-width: 22px;
+  margin: 2px 4px;
+  padding: 2px 6px;
+  border-radius: 5px;
   border: none;
-  border-radius: 3px;
   background: alpha(@text, 0.1);
-  color: alpha(@text, 0.5);
-  transition: all 0.1s linear;
+  color: alpha(@text, 0.7);
+  transition: all 0.2s ease;
 }
+
+#workspaces button:hover {
+  background: alpha(@hover, 0.25);
+  color: @text-alt;
+}
+
 #workspaces button.active {
   min-width: 28px;
-  transition: all 0.1s linear;
+  background: @accent;
   color: @background;
-  background: @text;
-}
-#workspaces button:hover {
-  background: alpha(@text, 0.2);
-  border: none;
-}
-#workspaces button.urgent {
-  background-color: @red;
+  font-weight: 700;
 }
 
-/* 
-  ================================================================
-  => Taskbar
-  ================================================================
-*/
+#workspaces button.urgent {
+  background: @red;
+  color: @background;
+}
+
+/* ================================================================
+=> Window Title
+================================================================ */
+#window {
+  margin: 2px 6px;
+  padding: 0px 10px;
+  border-radius: 8px;
+  background: alpha(@background, 0.55);
+  border: 1px solid alpha(@border, 0.35);
+  backdrop-filter: blur(6px);
+}
+
+/* ================================================================
+=> Taskbar
+================================================================ */
 #taskbar {
   margin: 3px 4px;
-  padding: 0px;
   background: transparent;
   border: none;
-  font-size: 15px;
-  font-weight: bolder;
 }
+
 #taskbar button {
-  padding: 0px 3px;
-  margin-right: 2px;
   border-radius: 6px;
-  border: none;
+  padding: 2px 6px;
 }
+
 #taskbar button:hover {
-  background: @hover;
+  background: alpha(@hover, 0.25);
 }
+
 #taskbar button.active {
-  background: alpha(@hover, 0.3);
+  background: alpha(@accent, 0.35);
+  color: @text-alt;
 }
 
-/* 
-  ================================================================
-  => Active Window
-  ================================================================
-*/
-#window {
+/* ================================================================
+=> Clock
+================================================================ */
+#clock {
+  margin: 2px 6px;
+  padding: 0px 12px;
+  border-radius: 8px;
+  background: alpha(@background, 0.55);
+  border: 1px solid alpha(@border, 0.35);
+  backdrop-filter: blur(6px);
+}
+
+/* ================================================================
+=> System Modules (CPU, Mem, etc.)
+================================================================ */
+#cpu, #memory, #temperature, #power-profiles-daemon {
   margin: 2px 4px;
-  border-radius: 6px;
-  padding: 0px 8px 0px 8px;
-  border: 1px solid alpha(@border, 0.33);
-  background: @background;
-  color: @text;
+  padding: 0px 10px;
+  border-radius: 8px;
+  background: alpha(@background, 0.55);
+  border: 1px solid alpha(@border, 0.35);
+  backdrop-filter: blur(6px);
+}
+#cpu:hover, #memory:hover, #temperature:hover {
+  color: @hover;
 }
 
-/* 
-  ================================================================
-  => MPD
-  ================================================================
-*/
+/* ================================================================
+=> Audio / Backlight / Battery / Network
+================================================================ */
+#pulseaudio, #backlight, #battery, #network, #bluetooth {
+  margin: 2px 2px;
+  padding: 0px 10px;
+  border-radius: 8px;
+  background: alpha(@background, 0.55);
+  border: 1px solid alpha(@border, 0.35);
+  backdrop-filter: blur(6px);
+}
+
+#pulseaudio:hover, #backlight:hover, #battery:hover, #network:hover, #bluetooth:hover {
+  color: @hover;
+}
+
+#battery.charging, #battery.plugged { color: @green; }
+#battery.critical:not(.charging) {
+  color: @red;
+  animation: blink 0.8s ease-in-out infinite alternate;
+}
+@keyframes blink { to { opacity: 0.4; } }
+
+/* ================================================================
+=> Media Player
+================================================================ */
 #custom-mediaplayer {
-  margin: 2px 4px;
-  border-radius: 6px;
-  padding: 0px 8px 0px 8px;
-  background: @background;
-  border: 1px solid alpha(@border, 0.33);
-  color: @text;
+  margin: 2px 6px;
+  padding: 0px 10px;
+  border-radius: 8px;
+  background: alpha(@background, 0.55);
+  border: 1px solid alpha(@border, 0.35);
+  backdrop-filter: blur(6px);
 }
 #custom-mediaplayer:hover {
   color: @hover;
 }
 
-/* 
-  ================================================================
-  => Clock
-  ================================================================
-*/
-#clock {
-  margin: 2px 4px;
-  padding: 0px 8px 0px 8px;
-  border: 1px solid alpha(@border, 0.33);
-  /* border: 2px solid @accent; */
-  border-radius: 6px;
-  /* border-top: none; */
-  /* border-bottom: none; */
-  /* border-left: none; */
-  /* border-right: none; */
-  color: @text;
-  background: @background;
+/* ================================================================
+=> Updates & Weather
+================================================================ */
+#custom-updates, #custom-weather {
+  margin: 2px 6px;
+  padding: 0px 10px;
+  border-radius: 8px;
+  background: alpha(@background, 0.55);
+  border: 1px solid alpha(@border, 0.35);
+  backdrop-filter: blur(6px);
+}
+#custom-updates:hover, #custom-weather:hover {
+  color: @hover;
 }
 
-/* 
-  ================================================================
-  => Updates
-  ================================================================
-*/
-#custom-updates {
-  margin: 2px 4px;
-  border-radius: 6px;
-  padding: 1px 10px 0px 8px;
-  background: @background;
-  border: none;
+/* ================================================================
+=> Notifications & Power Menu
+================================================================ */
+#custom-notifications, #custom-power {
+  margin: 2px 6px;
+  padding: 0px 10px;
+  border-radius: 8px;
+  background: alpha(@background, 0.55);
+  border: 1px solid alpha(@border, 0.35);
+  backdrop-filter: blur(6px);
 }
-#custom-updates.green {
-  background: @text;
-  color: @background;
-}
-#custom-updates.yellow {
-  background: @yellow;
-  color: @background;
-}
-#custom-updates.red {
-  background: @red;
-  color: @background;
+#custom-notifications:hover, #custom-power:hover {
+  color: @hover;
 }
 
-/*================================================================
-=> Weather
-================================================================*/
-#custom-weather {
-  margin: 2px 4px;
-  border-radius: 6px;
-  padding: 0px 9px 0px 8px;
-  color: @text;
-  background: @background;
-  border: 1px solid @border;
-}
-
-/* 
-  ================================================================
-  => Pulse Audio
-  ================================================================
-*/
-#pulseaudio {
-  margin: 2px 0px 2px 4px;
-  padding: 0px 8px 0px 8px;
-  border: 1px solid alpha(@border, 0.33);
-  border-radius: 6px 0px 0px 6px;
-  border-right: none;
-  color: @text;
-  background: @background;
-}
-#pulseaudio:hover {
-  color: shade(@hover, 1.25);
-}
-
-/* 
-  ================================================================
-  => Backlight (brightness)
-  ================================================================
-*/
-#backlight {
-  margin: 2px 0px;
-  border: 1px solid alpha(@border, 0.33);
-  border-radius: 0px;
-  border-right: none;
-  border-left: none;
-  padding: 0px 12px 0px 8px;
-  color: @text;
-  background: @background;
-}
-#backlight:hover {
-  color: shade(@hover, 1.25);
-}
-
-/*================================================================
-=> Bluetooth
-================================================================*/
-#bluetooth {
-  margin: 2px 0px;
-  padding: 0px 8px 0px 4px;
-  border: 1px solid alpha(@border, 0.33);
-  border-radius: 0px;
-  border-right: none;
-  border-left: none;
-  color: @text;
-  background: @background;
-}
-#bluetooth:hover {
-  color: shade(@hover, 1.25);
-}
-
-/* 
-  ================================================================
-  => Battery
-  ================================================================
-*/
-#battery {
-  margin: 2px 0px;
-  padding: 0px 8px 0px 4px;
-  border: 1px solid alpha(@border, 0.33);
-  border-radius: 0px;
-  border-right: none;
-  border-left: none;
-  color: @text;
-  background: @background;
-}
-#battery:hover {
-  color: shade(@hover, 1.25);
-}
-#battery.charging,
-#battery.plugged {
-  color: @green;
-}
-@keyframes blink {
-  to {
-    color: @red;
-  }
-}
-#battery.critical:not(.charging) {
-  color: @teal;
-  animation-name: blink;
-  animation-duration: 0.5s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-}
-
-/* 
-  ================================================================
-  => Network
-  ================================================================
-*/
-#network {
-  margin: 2px 4px 2px 0px;
-  padding: 0px 12px 0px 6px;
-  border: 1px solid alpha(@border, 0.33);
-  border-radius: 0px 6px 6px 0px;
-  border-left: none;
-  color: @text;
-  background: @background;
-}
-#network:hover {
-  color: shade(@hover, 1.25);
-}
-
-/* 
-  ================================================================
-  => Tray
-  ================================================================
-*/
+/* ================================================================
+=> Tray (Frosted Popup)
+================================================================ */
 #tray {
-  margin: 3px 2px;
-  border-radius: 6px;
-  padding: 0px 4px 0px 4px;
-  background: alpha(@background, 0.5);
-  border: 1px solid alpha(@border, 0.33);
+  margin: 3px 6px;
+  padding: 3px 8px;
+  border-radius: 8px;
+  background: alpha(@background, 0.55);
+  border: 1px solid alpha(@border, 0.35);
+  backdrop-filter: blur(8px);
+  transition: background 0.2s ease, border 0.2s ease;
 }
-#tray > .passive {
-  -gtk-icon-effect: dim;
+
+#tray:hover {
+  background: alpha(@hover, 0.25);
+  border-color: alpha(@accent, 0.5);
 }
+
+/* Tray icons */
+#tray > * {
+  margin: 0 3px;
+  padding: 3px;
+  border-radius: 4px;
+}
+
+#tray > *:hover {
+  background: alpha(@hover, 0.3);
+}
+
+/* Passive & attention */
+#tray > .passive { -gtk-icon-effect: dim; opacity: 0.75; }
 #tray > .needs-attention {
   -gtk-icon-effect: highlight;
+  background: alpha(@red, 0.25);
 }
+
+/* --- Popup Menu (Glass Blur) --- */
 #tray menu {
-  border-radius: 8px;
+  background-color: alpha(@background, 0.55);
+  border: 1px solid alpha(@border, 0.3);
+  border-radius: 10px;
+  backdrop-filter: blur(12px);
   color: @text;
-  background-color: @background;
-  padding: 4px;
+  padding: 6px;
+  margin: 4px;
+  box-shadow: 0 4px 12px alpha(@background, 0.4);
 }
 
-/* 
-  ================================================================
-  => Notifications
-  ================================================================
-*/
-#custom-notifications {
-  font-size: 13px;
-  margin: 2px 4px;
-  margin-right: 0px;
-  border: 1px solid @border;
-  border-radius: 6px 0px 0px 6px;
-  border-right: none;
-  padding: 0px 11px 0px 8px;
-  color: @text;
-  background: @background;
-}
-#custom-notifications:hover {
-  color: @hover;
+#tray menuitem {
+  padding: 6px 12px;
+  border-radius: 6px;
 }
 
-/* 
-  ================================================================
-  => Power menu
-  ================================================================
-*/
-#custom-power {
-  font-size: 13px;
-  margin: 2px 4px;
-  margin-right: 0px;
-  margin-left: 0px;
-  border: 1px solid @border;
-  border-radius: 0px 6px 6px 0px;
-  padding: 0px 12px 0px 8px;
-  color: @text;
-  background: @background;
-}
-#custom-power:hover {
-  color: @hover;
+#tray menuitem:hover {
+  background: alpha(@hover, 0.3);
+  color: @text-alt;
 }
 
-/* 
-  ================================================================
-  => Hide empty modules
-  ================================================================
-*/
+/* ================================================================
+=> Hide Empty Modules
+================================================================ */
 window#waybar.empty #window,
-#custom-updates.none,
 #taskbar.empty,
 #tray.empty,
 #custom-mediaplayer.empty {
-  border: 0px;
-  background-color: transparent;
-  padding: 0px;
-  margin: 0px;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
 }
