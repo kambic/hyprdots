@@ -57,7 +57,12 @@
   min-height: 15px;
   background: transparent;
 }
-
+/* style.css */
+/* window#waybar { */
+/*     background-image: url("file:///home/$USER/.cache/waybar-blur.png"); */
+/*     background-size: cover; */
+/*     background-color: transparent; */
+/* } */
 /*================================================================
 => Tooltip
 ================================================================*/
