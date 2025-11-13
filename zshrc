@@ -1,26 +1,3 @@
-#
-# HISTFILE=~/.histfile
-# HISTSIZE=5000
-# SAVEHIST=5000
-# # Oh-my-zsh installation path
-# ZSH=~/.oh-my-zsh
-# # List of plugins used
-# plugins=(
-#   docker
-#   docker-compose
-#   fabric
-#   uv
-#   sudo
-#   supervisor
-#   starship
-#   zsh-autosuggestions
-#   zsh-syntax-highlighting
-# )
-# source $ZSH/oh-my-zsh.sh
-# source ~/.aliases
-# source <(fzf --zsh)
-# ===== Zsh Configuration =====
-# History settings
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
@@ -44,7 +21,7 @@ plugins=(
   # Core utilities
   git
   sudo
-  supervisor
+  # supervisor
   docker
   docker-compose
 
@@ -52,18 +29,19 @@ plugins=(
   python
   npm
   node
+  starship
 
   # Modern enhancements
   zsh-autosuggestions
   zsh-syntax-highlighting
   zsh-completions
   fzf-tab
-  you-should-use
+  # you-should-use
   colored-man-pages
   copyfile
-  copypath
-  dirhistory
-  web-search
+  # copypath
+  # dirhistory
+  # web-search
 )
 
 # Optional plugins - uncomment after installing
@@ -152,7 +130,7 @@ function weather() {
 
 # ===== Aliases =====
 # Source custom aliases if exists
-[ -f ~/.aliases ] && source ~/.aliases
+source ~/.aliases
 
 # Modern replacements for common commands
 if command -v exa &>/dev/null; then
@@ -167,9 +145,7 @@ else
   alias lt='tree'
 fi
 
-if command -v bat &>/dev/null; then
-  alias cat='bat'
-fi
+alias cat='bat'
 
 # Enhanced git aliases
 alias gs='git status'
@@ -189,16 +165,10 @@ alias di='docker images'
 alias drm='docker rm'
 alias drmi='docker rmi'
 
-# Python development
-alias py='python'
-alias pip='uv pip 2>/dev/null || pip' # Use uv for pip if available
-alias venv='python -m venv .venv && source .venv/bin/activate'
-
 # ===== Environment Variables =====
-export EDITOR='nvim' # or 'vim', 'code', etc.
+export EDITOR='nvim'
 export VISUAL="$EDITOR"
 export PAGER='less'
-export BROWSER='firefox'
 
 # Python development
 export PYTHONSTARTUP="$HOME/.pythonrc"
@@ -221,16 +191,8 @@ export PATH="$HOME/.local/bin:$PATH"
 autoload -Uz compinit
 compinit
 
-# ===== FZF Integration =====
-# Only source if fzf is installed
-if command -v fzf &>/dev/null; then
-  [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-fi
-
-# ===== Starship Prompt =====
-if command -v starship &>/dev/null; then
-  eval "$(starship init zsh)"
-fi
-
+source <(fzf --zsh)
+# source <(fzf --bash)
+# starship init zsh
 # Optional: Show weather (comment out if not needed)
 # weather
