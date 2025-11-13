@@ -7,91 +7,191 @@ sort_by = "modified"
 show_hidden = true
 # Show symlinks
 show_symlink = true
+# Mouse support for Wayland
+mouse_support = true
+# Line mode for better Wayland compatibility
+line_mode = false
 
 [preview]
-# Preview images with ueberzugpp
-image = "ueberzug"
-# Maximum image preview width/height
-max_width = 800
-max_height = 600
+# Wayland-optimized image preview
+image = "viuer"
+# Use sixel for terminal image display (compatible with Wayland)
+sixel = false
+# Use kitty protocol if available
+kitty = true
+# Maximum image preview dimensions
+max_width = 1200
+max_height = 800
+# Preview cache size
+cache_capacity = 1000
+
+# Image preview quality (Wayland optimized)
+image_quality = "high"
+# Animation preview for GIF/WebP
+animations = true
 
 [opener]
-# File type associations
+# Wayland-native application rules
 rules = [
     # Archives
     { mime = "application/*zip", use = "unzip -l {}" },
     { mime = "application/*tar", use = "tar -tf {}" },
     { mime = "application/*rar", use = "unrar l {}" },
+    { mime = "application/*7z", use = "7z l {}" },
     
     # Documents
     { mime = "application/pdf", use = "pdftotext {} - | head -n 100" },
-    { mime = "application/vnd.ms-excel", use = "xlsx2csv {} | head -n 20" },
+    { mime = "application/vnd.ms-excel", use = "in2csv {} | head -n 20" },
+    { mime = "application/vnd.openxmlformats-officedocument.wordprocessingml.document", use = "pandoc {} -t plain | head -n 100" },
     
     # Text files
     { mime = "text/*", use = "bat --color=always {}" },
+    { mime = "application/json", use = "jq . {} | bat -l json" },
     
-    # Images
-    { mime = "image/*", use = "ueberzug layer --silent --parser json" },
+    # Images - Wayland optimized preview
+    { mime = "image/*", use = "yazi-ueberzug" },
     
-    # Videos
-    { mime = "video/*", use = "ffmpegthumbnailer -i {} -o - -s 800" },
+    # Videos - Wayland optimized
+    { mime = "video/*", use = "ffmpegthumbnailer -i {} -o - -s 1200 | viuer" },
+    
+    # Audio
+    { mime = "audio/*", use = "ffprobe -v quiet -print_format json -show_format -show_streams {} | jq '.' | bat -l json" },
+    
+    # Markdown
+    { mime = "text/markdown", use = "glow {}" },
+    
+    # Code files
+    { mime = "text/x-*", use = "bat --color=always {}" },
+    { mime = "application/x-*", use = "bat --color=always {}" },
 ]
 
-# Default opener
+# Default opener - Wayland native applications
 open = [
+    # Text files
     { mime = "text/*", use = "$EDITOR" },
-    { mime = "image/*", use = "imv {}" },
-    { mime = "video/*", use = "mpv {}" },
-    { mime = "audio/*", use = "mpv {}" },
+    
+    # Images - Wayland native viewers
+    { mime = "image/*", use = "swayimg {}" },
+    
+    # PDFs - Wayland native
     { mime = "application/pdf", use = "zathura {}" },
+    
+    # Videos - Wayland native
+    { mime = "video/*", use = "mpv --wayland-app-id=mpv {}" },
+    
+    # Audio
+    { mime = "audio/*", use = "mpv --wayland-app-id=mpv {}" },
+    
+    # Directories
     { mime = "inode/directory", use = "yazi" },
+    
+    # URLs
+    { mime = "x-scheme-handler/http", use = "firefox {}" },
+    { mime = "x-scheme-handler/https", use = "firefox {}" },
+    
+    # Fallback for unknown types
+    { mime = "*", use = "xdg-open {}" },
 ]
+
+[finder]
+# Fuzzy finder settings
+fuzzy = true
+# Case sensitivity
+ignore_case = true
+smart_case = true
+
+[tab]
+# Tab behavior
+show_index = true
+max_preload = 3
 
 [theme]
-# Color scheme
-primary = "#89b4fa"
-secondary = "#cba6f7"
-success = "#a6e3a1"
-warning = "#f9e2af"
-error = "#f38ba8"
-info = "#74c7ec"
+# Wayland-friendly colors (can match your Wayland compositor theme)
+primary = "#89b4fa"    # Blue
+secondary = "#cba6f7"  # Purple
+success = "#a6e3a1"    # Green
+warning = "#f9e2af"    # Yellow
+error = "#f38ba8"      # Red
+info = "#74c7ec"       # Cyan
 
 [ui]
 # Cursor style
 cursor = "block"
-# Border style
+# Border style - rounded works well in Wayland
 border = "rounded"
 # Status bar position
 status = "bottom"
+# Show file size in status bar
+file_size = true
+# Show permissions
+permissions = true
+# Scrollbar style
+scrollbar = "block"
+
+[log]
+# Logging level
+level = "warn"
 
 [keymap]
-# Navigation
+# === Navigation ===
+h = "cd .."
+l = "enter"
+j = "arrow_down"
+k = "arrow_up"
+gg = "cd /"
+gh = "cd ~"
+gt = "cd /tmp"
+e = "cd /etc"
+d = "cd /usr/share"
+H = "cd -"
+
+# === File Operations ===
 a = "create"
 d = "delete"
 r = "rename"
-h = "cd ~"
-g = "cd /"
-"." = "toggle_hidden"
-space = "select"
-enter = "open"
-
-# File operations
 y = "copy"
 p = "paste"
 x = "cut"
+c = "copy_path"
+C = "copy_path_absolute"
+" " = "select"
+v = "visual_mode"
+u = "undo"
+U = "redo"
 
-# Sorting
-"s" = "sort"
-"S" = "sort reverse"
+# === Sorting & Filtering ===
+s = "sort"
+S = "sort_reverse"
+"." = "toggle_hidden"
+f = "search"
+F = "search_glob"
+"'" = "filter"
 
-# Searching
-"/" = "search"
-"n" = "search_next"
-"N" = "search_prev"
+# === Tabs ===
+T = "tab_create"
+X = "tab_close"
+J = "tab_prev"
+K = "tab_next"
+"[" = "tab_prev"
+"]" = "tab_next"
 
-# Preview
+# === Preview ===
 tab = "preview"
+i = "preview_image"
+I = "preview_code"
 
-# Quit
+# === System ===
 q = "quit"
-Q = "quit --force"
+Q = "quit_force"
+"!" = "shell"
+":" = "command"
+
+# === Wayland-specific ===
+# Clipboard operations with wl-copy
+"Y" = "copy_path | shell --block 'wl-copy'"
+"P" = "shell --block 'wl-paste > \"$YAZI_FILE_PATH\"'"
+
+# === Plugin-like functionality ===
+"z " = "search_fzf"
+"g s" = "shell --block 'git status'"
+"g d" = "shell --block 'git diff'"
