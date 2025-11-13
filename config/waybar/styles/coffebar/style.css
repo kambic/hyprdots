@@ -1,3 +1,4 @@
+/* vim: set filetype=css.gtk sw=2 ts=2 sts=2 et: */
 @define-color base00 #181818;
 @define-color base01 #2b2e37;
 @define-color base02 #3b3e47;
@@ -21,9 +22,9 @@
 }
 
 #waybar {
-	font-family: 'Source Code Pro', sans-serif;
-	font-size: 1.2em;
-	font-weight: 400;
+  font-family: 'Source Code Pro', sans-serif;
+  font-size: 1.2em;
+  font-weight: 400;
   color: @base04;
   background: @base01;
 }
@@ -38,8 +39,7 @@
   color: @base05;
 }
 
-#workspaces button.visible {
-}
+#workspaces button.visible {}
 
 #workspaces button.active {
   border-radius: 4px;
@@ -50,22 +50,54 @@
   color: rgba(238, 46, 36, 1);
 }
 
+
+
 #tray {
-  margin: 4px 4px 4px 4px;
+  margin: 4px 4px;
+  padding: 0 6px;
   border-radius: 4px;
   background-color: @base02;
+  /* Make sure tray height matches bar height */
+  min-height: 0;
 }
 
-#tray * {
-  padding: 0 6px;
+#tray>.tray-icon {
+  padding: 0 4px;
   border-left: 1px solid @base00;
 }
 
-#tray *:first-child {
+#tray>.tray-icon:first-child {
   border-left: none;
 }
 
-#mode, #battery, #cpu, #memory, #network, #pulseaudio, #idle_inhibitor, #backlight, #custom-storage, #custom-updates, #custom-weather, #custom-mail, #clock, #temperature, #language{
+#tray>.tray-icon image {
+  margin: 0;
+  padding: 0;
+  -gtk-icon-transform: scale(0.9);
+}
+
+#tray:hover,
+#workspaces button.active,
+#clock:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  transition: background 0.2s ease;
+}
+
+#mode,
+#battery,
+#cpu,
+#memory,
+#network,
+#pulseaudio,
+#idle_inhibitor,
+#backlight,
+#custom-storage,
+#custom-updates,
+#custom-weather,
+#custom-mail,
+#clock,
+#temperature,
+#language {
   margin: 4px 2px;
   padding: 0 6px;
   background-color: @base02;
@@ -93,12 +125,14 @@
 
 #window {
   font-size: 0.9em;
-	font-weight: 400;
-	font-family: sans-serif;
+  font-weight: 400;
+  font-family: sans-serif;
 }
 
 #language {
-	font-size: 0.9em;
-	font-weight: 500;
-	letter-spacing: -1px;
+  font-size: 0.9em;
+  font-weight: 500;
+  letter-spacing: -1px;
 }
+
+/* vim: set filetype=css.gtk sw=2 ts=2 sts=2 et: */
