@@ -1,0 +1,21 @@
+#!/bin/bash
+# Wayland-optimized Yazi wrapper
+
+# Use Wayland-optimized image preview
+export YAZI_PREVIEW_IMAGE="viuer"
+export YAZI_PREVIEW_SIXEL="true"
+
+# Temporary file for directory changing
+TMP_FILE=$(mktemp /tmp/yazi-cwd.XXXXXXXXXX)
+
+# Run Yazi with Wayland optimizations
+yazi "$@" --cwd-file="$TMP_FILE"
+
+# Change directory if Yazi reported a new one
+if [[ -f "$TMP_FILE" ]]; then
+    NEW_DIR=$(cat "$TMP_FILE")
+    if [[ -n "$NEW_DIR" && "$NEW_DIR" != "$PWD" ]]; then
+        cd "$NEW_DIR"
+    fi
+    rm -f "$TMP_FILE"
+fi

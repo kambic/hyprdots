@@ -1,0 +1,97 @@
+[manager]
+# Layout
+layout = "default"
+# Sort by modified time by default
+sort_by = "modified"
+# Show hidden files
+show_hidden = true
+# Show symlinks
+show_symlink = true
+
+[preview]
+# Preview images with ueberzugpp
+image = "ueberzug"
+# Maximum image preview width/height
+max_width = 800
+max_height = 600
+
+[opener]
+# File type associations
+rules = [
+    # Archives
+    { mime = "application/*zip", use = "unzip -l {}" },
+    { mime = "application/*tar", use = "tar -tf {}" },
+    { mime = "application/*rar", use = "unrar l {}" },
+    
+    # Documents
+    { mime = "application/pdf", use = "pdftotext {} - | head -n 100" },
+    { mime = "application/vnd.ms-excel", use = "xlsx2csv {} | head -n 20" },
+    
+    # Text files
+    { mime = "text/*", use = "bat --color=always {}" },
+    
+    # Images
+    { mime = "image/*", use = "ueberzug layer --silent --parser json" },
+    
+    # Videos
+    { mime = "video/*", use = "ffmpegthumbnailer -i {} -o - -s 800" },
+]
+
+# Default opener
+open = [
+    { mime = "text/*", use = "$EDITOR" },
+    { mime = "image/*", use = "imv {}" },
+    { mime = "video/*", use = "mpv {}" },
+    { mime = "audio/*", use = "mpv {}" },
+    { mime = "application/pdf", use = "zathura {}" },
+    { mime = "inode/directory", use = "yazi" },
+]
+
+[theme]
+# Color scheme
+primary = "#89b4fa"
+secondary = "#cba6f7"
+success = "#a6e3a1"
+warning = "#f9e2af"
+error = "#f38ba8"
+info = "#74c7ec"
+
+[ui]
+# Cursor style
+cursor = "block"
+# Border style
+border = "rounded"
+# Status bar position
+status = "bottom"
+
+[keymap]
+# Navigation
+a = "create"
+d = "delete"
+r = "rename"
+h = "cd ~"
+g = "cd /"
+"." = "toggle_hidden"
+space = "select"
+enter = "open"
+
+# File operations
+y = "copy"
+p = "paste"
+x = "cut"
+
+# Sorting
+"s" = "sort"
+"S" = "sort reverse"
+
+# Searching
+"/" = "search"
+"n" = "search_next"
+"N" = "search_prev"
+
+# Preview
+tab = "preview"
+
+# Quit
+q = "quit"
+Q = "quit --force"

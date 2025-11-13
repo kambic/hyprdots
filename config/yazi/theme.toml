@@ -1,5 +1,69 @@
-# vim:fileencoding=utf-8:foldmethod=marker
-[flavor]
-dark = "dracula"
-# light = "catppuccin-latte"
-light = "dracula"
+[manager]
+# Background and foreground
+background = "#1e1e2e"
+foreground = "#cdd6f4"
+
+# Cursor style (Wayland compatible)
+cursor = { fg = "#1e1e2e", bg = "#cba6f7" }
+
+# Border colors
+border = { fg = "#585b70" }
+
+# Selection colors
+select = { fg = "#1e1e2e", bg = "#89b4fa" }
+hover = { fg = "#1e1e2e", bg = "#cba6f7" }
+
+# File type colors
+file = { fg = "#cdd6f4" }
+directory = { fg = "#89b4fa", bold = true }
+symlink = { fg = "#cba6f7", italic = true }
+executable = { fg = "#a6e3a1", bold = true }
+broken = { fg = "#f38ba8", italic = true }
+
+# File size colors
+file_size = { fg = "#f5c2e7" }
+
+# Permissions colors
+perm_read = { fg = "#a6e3a1" }
+perm_write = { fg = "#f9e2af" }
+perm_exec = { fg = "#74c7ec" }
+
+[status]
+# Status bar colors
+mode_normal = { fg = "#1e1e2e", bg = "#89b4fa" }
+mode_select = { fg = "#1e1e2e", bg = "#cba6f7" }
+mode_unset = { fg = "#1e1e2e", bg = "#f38ba8" }
+progress = { fg = "#1e1e2e", bg = "#a6e3a1" }
+perm = { fg = "#f5c2e7" }
+
+[input]
+# Input field colors
+border = { fg = "#89b4fa" }
+value = { fg = "#cdd6f4" }
+selected = { fg = "#1e1e2e", bg = "#89b4fa" }
+placeholder = { fg = "#6c7086" }
+
+[preview]
+# Preview border
+border = { fg = "#585b70" }
+# Title colors
+title = { fg = "#89b4fa", bold = true }
+
+[tasks]
+# Task manager colors
+background = { fg = "#1e1e2e" }
+border = { fg = "#585b70" }
+title = { fg = "#89b4fa" }
+
+[which]
+# Which-key colors
+mask = { fg = "#1e1e2e", bg = "#1e1e2e", alpha = 200 }
+border = { fg = "#89b4fa" }
+description = { fg = "#cdd6f4" }
+key = { fg = "#f9e2af", bold = true }
+
+[notify]
+# Notification colors
+info = { fg = "#74c7ec" }
+warn = { fg = "#f9e2af" }
+error = { fg = "#f38ba8" }
