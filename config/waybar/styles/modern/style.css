@@ -151,34 +151,38 @@ tooltip label {
 #workspaces {
   margin: 2px 4px;
   border-radius: 6px;
-  padding: 1px;
-  background: @background;
-  border: 1px solid @border;
+  padding: 2px;
+  background: alpha(@background, 0.75);
+  border: 1px solid alpha(@border, 0.33);
 }
+
 #workspaces button {
   min-width: 20px;
-  box-shadow: none;
-  margin: 2px 3px;
-  text-shadow: none;
   border: none;
-  border-radius: 3px;
-  background: alpha(@text, 0.1);
-  color: alpha(@text, 0.5);
-  transition: all 0.1s linear;
+  border-radius: 4px;
+  background: alpha(@text, 0.08);
+  color: alpha(@text, 0.65);
+  margin: 2px 3px;
+  transition: background 0.2s ease, color 0.2s ease, min-width 0.1s ease;
 }
+
+#workspaces button:hover {
+  background: alpha(@hover, 0.25);
+  color: @text-alt;
+}
+
 #workspaces button.active {
   min-width: 28px;
-  transition: all 0.1s linear;
+  background: @accent;
   color: @background;
-  background: @text;
+  font-weight: bold;
 }
-#workspaces button:hover {
-  background: alpha(@text, 0.2);
-  border: none;
-}
+
 #workspaces button.urgent {
   background-color: @red;
+  color: @background;
 }
+
 
 /* 
   ================================================================
@@ -406,24 +410,65 @@ tooltip label {
   => Tray
   ================================================================
 */
+/* ================================================================
+=> Tray (fixed rendering + hover)
+================================================================*/
+
 #tray {
-  margin: 3px 2px;
+  margin: 3px 4px;
+  padding: 3px 6px;
   border-radius: 6px;
-  padding: 0px 4px 0px 4px;
-  background: alpha(@background, 0.5);
-  border: 1px solid alpha(@border, 0.33);
+  background: alpha(@background, 0.75);
+  border: 1px solid alpha(@border, 0.4);
+  transition: background 0.15s ease, border 0.15s ease;
 }
+
+#tray:hover {
+  background: alpha(@hover, 0.25);
+  border-color: alpha(@accent, 0.5);
+}
+
+/* Individual icons */
+#tray > * {
+  margin: 0 3px;
+  padding: 3px;
+  border-radius: 4px;
+  transition: background 0.1s ease;
+}
+
+#tray > *:hover {
+  background: alpha(@hover, 0.35);
+}
+
+/* Passive & attention icons */
 #tray > .passive {
   -gtk-icon-effect: dim;
+  opacity: 0.75;
 }
 #tray > .needs-attention {
   -gtk-icon-effect: highlight;
+  background: alpha(@red, 0.25);
+  border-radius: 4px;
 }
-#tray menu {
+
+/* Tray popup menus */
+#tray menu,
+#tray menu > * {
+  background-color: alpha(@background, 0.95);
   border-radius: 8px;
+  border: 1px solid alpha(@border, 0.4);
   color: @text;
-  background-color: @background;
-  padding: 4px;
+}
+
+#tray menuitem {
+  padding: 4px 10px;
+  border-radius: 6px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+#tray menuitem:hover {
+  background: alpha(@hover, 0.25);
+  color: @text-alt;
 }
 
 /* 
