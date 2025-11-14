@@ -1,13 +1,13 @@
 # ~/.gitconfig
 [user]
-    name = rok
-    email = rok.kambic@mx.si
+	name = rok
+	email = rok.kambic@telekom.si
 
 [init]
     defaultBranch = master          # Modern default (master is deprecated in most orgs)
 
 [core]
-    autocrlf = false              # Linux: never touch line endings
+	autocrlf = input
     eol = lf                      # Enforce LF everywhere
     fsmonitor = true              # Faster status on large repos (Git 2.37+)
     untrackedCache = true         # Speed up status in large working trees
@@ -63,6 +63,19 @@
     line-numbers = true
     side-by-side = false
     navigate = true
+
+
+[credential]
+    helper = store  # Cache for 24h (safer than 'store')
+    # Or use: helper = libsecret (if using GNOME Keyring)
+    # Or: helper = /usr/libexec/git-credential-manager (if using GCM)
+
+[credential "https://gitlab.com"]
+    # Use glab if available
+    # helper = !/usr/bin/glab auth git-credential
+
+[credential "https://github.com"]
+    helper = cache
 
 [filter "lfs"]
     clean = git-lfs clean -- %f

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Shaka Player with Settings Menu</title>
+
+    <!-- Link to the MVP Framework CSS -->
+    <link rel="stylesheet" href="https://andybrewer.github.io/mvp/mvp.css" />
+
+    <!-- Custom Styles -->
+    <style>
+        /* Custom styles for video container and status panel */
+        #video {
+            width: 100%;
+            max-width: 800px;
+            display: block;
+            margin: 20px auto;
+        }
+
+        #controls {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Status Panel styling */
+        #statusPanel {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        /* Status message classes for different states */
+        .status-success {
+            background-color: #4CAF50;
+        }
+
+        .status-error {
+            background-color: #f44336;
+        }
+
+        .status-loading {
+            background-color: #ff9800;
+        }
+
+        .status-buffering {
+            background-color: #2196F3;
+        }
+
+        .status-bitrate {
+            background-color: #9C27B0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="header">Shaka Player Demo</h1>
+
+        <video id="video" controls autoplay></video>
+        <div id="controls"></div>
+
+        <!-- Status Panel to display loading/error/success/buffering messages -->
+        <div id="statusPanel" class="status-loading">Loading Video...</div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.11.0/shaka-player.ui.compiled.js"></script>
+    <script>
+        // Check if the browser supports Shaka Player
+        if (!shaka.Player.isBrowserSupported()) {
+            console.error('Browser not supported!');
+            document.getElementById('statusPanel').classList.add('status-error');
+            document.getElementById('statusPanel').innerText = 'Error: Browser not supported!';
+            return;
+        }
+
+        // Get video element
+        const video = document.getElementById('video');
+        const player = new shaka.Player(video);
+
+        // Configure the player
+        player.configure({
+            streaming: {
+                bufferingGoal: 60, // Buffer 60 seconds
+                rebufferingGoal: 2, // Rebuffer goal
+                bufferBehind: 30 // Clear buffer behind
+            },
+            abr: { enabled: true } // Enable adaptive bitrate
+        });
+
+        // Load a manifest from the same directory
+        const manifestUrl = 'manifest.mpd';  // <-- relative path to manifest.mpd in the same folder
+        player.load(manifestUrl).then(() => {
+            console.log('Video loaded successfully!');
+            // Update status panel for successful load
+            document.getElementById('statusPanel').classList.remove('status-loading');
+            document.getElementById('statusPanel').classList.add('status-success');
+            document.getElementById('statusPanel').innerText = 'Video Loaded Successfully!';
+        }).catch(error => {
+            console.error('Error loading video:', error);
+            // Update status panel for error
+            document.getElementById('statusPanel').classList.remove('status-loading');
+            document.getElementById('statusPanel').classList.add('status-error');
+            document.getElementById('statusPanel').innerText = 'Error Loading Video!';
+        });
+
+        // Event listener for buffering events
+        player.addEventListener('buffering', (event) => {
+            if (event.buffering) {
+                console.log('Buffering...');
+                document.getElementById('statusPanel').classList.remove('status-success', 'status-error');
+                document.getElementById('statusPanel').classList.add('status-buffering');
+                document.getElementById('statusPanel').innerText = 'Buffering...';
+            }
+        });
+
+        // Event listener for bitrate changes (adaptive bitrate)
+        player.addEventListener('adaptation', (event) => {
+            const bitrate = event.newBandwidth;
+            console.log('New bitrate: ' + bitrate);
+            document.getElementById('statusPanel').classList.remove('status-buffering', 'status-error');
+            document.getElementById('statusPanel').classList.add('status-bitrate');
+            document.getElementById('statusPanel').innerText = `Bitrate Changed: ${Math.round(bitrate / 1000)} kbps`;
+        });
+
+        // Add control panel with settings menu
+        const controlsContainer = document.getElementById('controls');
+        const uiConfig = {
+            addSeekBar: true,
+            addBigPlayButton: true,
+            controlPanelElements: [
+                'play_pause',
+                'time_and_duration',
+                'spacer',
+                'mute',
+                'volume',
+                'settings_menu', // Adds the settings menu
+                'fullscreen'
+            ]
+        };
+
+        // Initialize UI
+        const ui = new shaka.ui.Overlay(player, video, controlsContainer);
+        ui.configure(uiConfig);
+    </script>
+</body>
+
+</html>

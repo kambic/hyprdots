@@ -7,6 +7,8 @@
 
 - link:
     ~/bin:
+    ~/Templates:
+    ~/.zshrc:
     ~/.aliases:
     ~/.bashrc: bashrc
     ~/.zshrc:
