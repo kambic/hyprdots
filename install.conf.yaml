@@ -60,33 +60,6 @@
           git clone -q https://github.com/zsh-users/zsh-autosuggestions.git "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
       description: Installing Oh My Zsh plugins
 
-- shell:
-    - command: |
-        # Install Fisher (Fish plugin manager)
-        if ! command -v fish &> /dev/null; then
-          echo "Fish shell not installed, skipping Fisher setup"
-        else
-          fish -c "curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher update"
-        fi
-      description: Installing Fisher plugin manager
-
-- shell:
-    - command: |
-        # Install Yazi file manager
-        if command -v cargo &> /dev/null; then
-          cargo install yazi-fm yazi-ueberzug
-        elif command -v brew &> /dev/null; then
-          brew install yazi
-        else
-          echo "Installing Yazi from GitHub release..."
-          curl -fsSL https://github.com/sxyazi/yazi/releases/latest/download/yazi-x86_64-unknown-linux-gnu.zip -o yazi.zip
-          unzip -o yazi.zip -d ~/.local/bin/
-          rm yazi.zip
-          chmod +x ~/.local/bin/yazi
-        fi
-      description: Installing Yazi file manager
-
-
 
 - shell:
     - command: |
@@ -98,14 +71,6 @@
           sudo dnf install -y fzf bat fd-find exa duf procs fish
         fi
       description: Installing system packages
-
-- shell:
-    - command: |
-        # Install Fisher plugins
-        if command -v fish &> /dev/null; then
-          fish -c "fisher install jethrokuan/z PatrickF1/fzf.fish edc/bass jorgebucaran/autopair.fish"
-        fi
-      description: Installing Fish plugins
 
 
 
