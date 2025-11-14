@@ -26,7 +26,6 @@ max_height = 800
 cache_capacity = 1000
 
 # Image preview quality (Wayland optimized)
-image_quality = "high"
 # Animation preview for GIF/WebP
 animations = true
 
@@ -132,66 +131,3 @@ scrollbar = "block"
 # Logging level
 level = "warn"
 
-[keymap]
-# === Navigation ===
-h = "cd .."
-l = "enter"
-j = "arrow_down"
-k = "arrow_up"
-gg = "cd /"
-gh = "cd ~"
-gt = "cd /tmp"
-e = "cd /etc"
-d = "cd /usr/share"
-H = "cd -"
-
-# === File Operations ===
-a = "create"
-d = "delete"
-r = "rename"
-y = "copy"
-p = "paste"
-x = "cut"
-c = "copy_path"
-C = "copy_path_absolute"
-" " = "select"
-v = "visual_mode"
-u = "undo"
-U = "redo"
-
-# === Sorting & Filtering ===
-s = "sort"
-S = "sort_reverse"
-"." = "toggle_hidden"
-f = "search"
-F = "search_glob"
-"'" = "filter"
-
-# === Tabs ===
-T = "tab_create"
-X = "tab_close"
-J = "tab_prev"
-K = "tab_next"
-"[" = "tab_prev"
-"]" = "tab_next"
-
-# === Preview ===
-tab = "preview"
-i = "preview_image"
-I = "preview_code"
-
-# === System ===
-q = "quit"
-Q = "quit_force"
-"!" = "shell"
-":" = "command"
-
-# === Wayland-specific ===
-# Clipboard operations with wl-copy
-"Y" = "copy_path | shell --block 'wl-copy'"
-"P" = "shell --block 'wl-paste > \"$YAZI_FILE_PATH\"'"
-
-# === Plugin-like functionality ===
-"z " = "search_fzf"
-"g s" = "shell --block 'git status'"
-"g d" = "shell --block 'git diff'"
