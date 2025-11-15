@@ -7,7 +7,6 @@
 
 - link:
     ~/bin:
-    ~/Templates:
     ~/.zshrc:
     ~/.aliases:
     ~/.bashrc: bashrc
@@ -19,8 +18,6 @@
     ~/.config/:
         glob: true
         path: config/*
-- create:
-    - ~/notes
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
 
@@ -31,46 +28,16 @@
         fi
       description: Installing Oh My Zsh
 
-- shell:
-    - command: |
-        ZSH_CUSTOM="${HOME}/.oh-my-zsh/custom"
-        
-        # Install missing plugins
-        plugins=(
-            "zsh-users/zsh-completions"
-            "Aloxaf/fzf-tab" 
-            "MichaelAquilina/zsh-you-should-use"
-            "GoodClover/fabric-plugin"
-        )
-        
-        for plugin in "${plugins[@]}"; do
-            plugin_name=$(basename "$plugin")
-            plugin_dir="$ZSH_CUSTOM/plugins/$plugin_name"
-            if [ ! -d "$plugin_dir" ]; then
-                echo "Installing $plugin_name..."
-                git clone -q "https://github.com/$plugin" "$plugin_dir"
-            fi
-        done
-        
-        # Install syntax highlighting and autosuggestions if missing
-        [ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ] && \
-          git clone -q https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
-        
-        [ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ] && \
-          git clone -q https://github.com/zsh-users/zsh-autosuggestions.git "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
-      description: Installing Oh My Zsh plugins
-
-
-- shell:
-    - command: |
-        if command -v yay &> /dev/null; then
-          yay -S fzf bat fd exa duf procs fish yazi uv
-        elif command -v apt &> /dev/null; then
-          sudo apt update && sudo apt install -y fzf bat fd-find exa duf procs fish
-        elif command -v dnf &> /dev/null; then
-          sudo dnf install -y fzf bat fd-find exa duf procs fish
-        fi
-      description: Installing system packages
+# - shell:
+#     - command: |
+#         if command -v yay &> /dev/null; then
+#           yay -S fzf bat fd exa duf procs fish yazi uv
+#         elif command -v apt &> /dev/null; then
+#           sudo apt update && sudo apt install -y fzf bat fd-find exa duf procs fish
+#         elif command -v dnf &> /dev/null; then
+#           sudo dnf install -y fzf bat fd-find exa duf procs fish
+#         fi
+#       description: Installing system packages
 
 
 

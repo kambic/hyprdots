@@ -2,3 +2,6 @@
 	path = dotbot
 	url = https://github.com/anishathalye/dotbot
 	ignore = dirty
+[submodule "config/mechabar"]
+	path = config/mechabar
+	url = https://github.com/sejjy/mechabar.git
