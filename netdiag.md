@@ -490,3 +490,199 @@ If you want, tell me:
 * Exact moment logs from sssd.log around an outage
 
 I can pinpoint the failure pattern exactly.
+
+Alright — **LDAP backend with SSSD**.
+When the backend is LDAP (not AD, not IPA), there are a few *very specific* SSSD failure modes that absolutely can cause the “server feels unreachable for a few seconds” behavior.
+
+Here’s exactly what to check and how to nail down if LDAP → SSSD is the cause.
+
+---
+
+# ✔ 1. LDAP connectivity test (this is the real choke point)
+
+If LDAP stalls even briefly, SSSD stalls with it.
+
+Run this repeatedly:
+
+```
+ldapsearch -x -H ldap://<your-ldap-host> -b "" -s base
+```
+
+If there’s **any** momentary pause, even ~1 second, that matches your outage window → this is your smoking gun.
+
+Now test over TLS if you use ldaps:
+
+```
+ldapsearch -x -H ldaps://<your-ldap-host> -b "" -s base -d 1
+```
+
+TLS delays are a *classic* cause of these micro-hangs.
+
+---
+
+# ✔ 2. SSSD logs — look for these exact LDAP errors
+
+Run:
+
+```
+tail -f /var/log/sssd/*.log | grep -iE "ldap|timeout|offline"
+```
+
+These messages tell you everything:
+
+Bad:
+
+* `LDAP connection timed out`
+* `ldap_result Error: Can't contact LDAP server`
+* `Marking domain offline due to timeout`
+* `Backend discovery timed out`
+* `Could not start TLS`
+
+If any of these appear at the same time your servers go unreachable → confirmed.
+
+---
+
+# ✔ 3. Check SSSD domain status (this will tell you if it’s flapping)
+
+```
+sssctl domain-status <yourdomain>
+```
+
+What you don’t want to see:
+
+* `online: no`
+* `offline: yes`
+* `last offline time:` jumping constantly
+
+If it’s bouncing between online/offline, that directly correlates to your brief outages.
+
+---
+
+# ✔ 4. LDAP server reachability from network perspective
+
+Since you said this is an enterprise network and hosts go unreachable briefly, check if **only LDAP communication breaks**, not the entire network.
+
+Run this continuously:
+
+```
+watch -n0.5 "nc -zv <ldap-ip> 389"
+```
+
+or for ldaps:
+
+```
+watch -n0.5 "nc -zv <ldap-ip> 636"
+```
+
+If this drops during the outage but other hosts still respond, you’ve found the real trigger.
+
+---
+
+# ✔ 5. Check NSS resolution blocking (classic with LDAP + SSSD)
+
+When LDAP is slow, SSSD blocks NSS, and this freezes processes that need:
+
+* UID/GID lookup
+* Home directory resolution
+* sudoers lookup
+* group membership evaluation
+
+This *feels* like a network freeze.
+
+Test it:
+
+```
+time getent passwd root
+time getent passwd <ldap-user>
+```
+
+If the LDAP user lookup is slow → SSSD is choking because LDAP is choking.
+
+---
+
+# ✔ 6. Check SSSD LDAP configuration for common pitfalls
+
+Open:
+
+```
+/etc/sssd/sssd.conf
+```
+
+Look for:
+
+### ❌ Missing or wrong timeouts
+
+You should have:
+
+```
+ldap_network_timeout = 3
+ldap_opt_timeout = 5
+ldap_search_timeout = 8
+```
+
+Default timeouts are **way too high**, causing multi-second hangs.
+
+### ❌ Missing `ldap_id_use_start_tls = True`
+
+If you expect TLS but it's not on, connections may flap.
+
+### ❌ Using FQDN instead of IP
+
+DNS hiccups → SSSD stalls → whole system hiccups.
+
+---
+
+# ✔ 7. Temporarily bypass SSSD to prove the point (fastest confirmation)
+
+Do this on one server:
+
+Edit `/etc/nsswitch.conf`:
+
+```
+passwd:     files
+group:      files
+```
+
+Restart nscd if present:
+
+```
+systemctl restart sssd
+```
+
+If the micro-outages **vanish completely** → SSSD/LDAP is confirmed.
+
+---
+
+# ✔ 8. Most common root causes when LDAP + SSSD misbehave
+
+In real enterprise networks, these four dominate:
+
+### 1. **LDAP server slow or overloaded**
+
+SSSD hangs waiting for LDAP search responses.
+
+### 2. **TLS handshake delays**
+
+Especially when intermediate CA or CRLs cannot be reached.
+
+### 3. **DNS intermittently failing**
+
+SSSD tries to resolve LDAP servers → stalls → system freezes momentarily.
+
+### 4. **Search base mismatch or filter too heavy**
+
+Large LDAP directories can cause slow fetches for sudo/group lookups.
+
+---
+
+# ✔ Final question — to pinpoint the issue fully
+
+Tell me:
+
+1. Is LDAP connection plaintext (389) or TLS (636)?
+2. Is your LDAP server OpenLDAP, 389-DS, or something else?
+3. Do the brief outages line up with LDAP logs on the server?
+4. Do you use LDAP for sudo rules via SSSD?
+5. Does `getent passwd <ldapuser>` ever hang for >1 second?
+
+With that info I can give you the exact weak point and the fix.

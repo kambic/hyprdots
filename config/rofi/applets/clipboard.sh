@@ -2,13 +2,14 @@
 
 # Theme
 theme="$HOME/.config/rofi/configs/dmenu.rasi"
+
 title="Clipboard History"
 
 # Rofi command
 rofi_cmd() {
-    rofi -theme-str "textbox-prompt-colon {str: '';}" \
-        -theme-str "window {width: 720px;}" \
-        -theme "$theme" \
+    rofi -theme-str 'textbox-prompt-colon {str: "";}' \
+        -theme-str 'window {width: 720px;}' \
+        -theme "${theme}" \
         -p "$title" \
         -l 8 \
         -dmenu \
@@ -21,18 +22,21 @@ run_rofi() {
 }
 
 # Copy the selected entry back to the clipboard
+
 copy_to_clipboard() {
     selected="$1"
     if [[ -n "$selected" ]]; then
-        # Copy to clipboard
-        echo -n "$selected" | wl-copy
-        notify-send -u low "Clipboard" "Copied: $selected"
+        # Remove numeric ID at the start (digits + tab)
+        cleaned="$(echo -n "$selected" | sed 's/^[0-9]\+\t//')"
 
-        # Remove from history by exact line
+        # Copy to clipboard
+        echo -n "$cleaned" | wl-copy
+        notify-send -u low "Clipboard" "Copied: $cleaned"
+
+        # Remove original entry (with ID) from history
         cliphist remove --exact "$selected"
     fi
 }
-
 # Main
 chosen="$(run_rofi)"
 if [[ -n "$chosen" ]]; then
