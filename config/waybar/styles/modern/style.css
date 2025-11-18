@@ -98,6 +98,7 @@ tooltip label {
 #power-profiles-daemon,
 #custom-hyprshade,
 #custom-hypridle,
+#idle_inhibitor,
 #cpu,
 #memory,
 #temperature {
@@ -124,6 +125,8 @@ tooltip label {
   margin-left: 4px;
   border-radius: 6px 0px 0px 6px;
 }
+
+#idle_inhibitor,
 #custom-hypridle {
   padding-right: 10;
   margin-right: 4px;
@@ -132,6 +135,7 @@ tooltip label {
 #custom-sysinfo:hover,
 #custom-hyprshade:hover,
 #custom-hypridle:hover,
+#idle_inhibitor,
 #cpu:hover,
 #memory:hover,
 #temperature:hover {
@@ -146,6 +150,8 @@ tooltip label {
 #power-profiles-daemon.power-saver {
   color: @green;
 }
+
+#idle_inhibitor.activated,
 #custom-hypridle.notactive {
   color: @red;
 }
@@ -261,31 +267,6 @@ tooltip label {
   /* border-right: none; */
   color: @text;
   background: @background;
-}
-
-/* 
-  ================================================================
-  => Updates
-  ================================================================
-*/
-#custom-updates {
-  margin: 2px 4px;
-  border-radius: 6px;
-  padding: 1px 10px 0px 8px;
-  background: @background;
-  border: none;
-}
-#custom-updates.green {
-  background: @text;
-  color: @background;
-}
-#custom-updates.yellow {
-  background: @yellow;
-  color: @background;
-}
-#custom-updates.red {
-  background: @red;
-  color: @background;
 }
 
 /*================================================================
@@ -521,7 +502,6 @@ tooltip label {
   ================================================================
 */
 window#waybar.empty #window,
-#custom-updates.none,
 #taskbar.empty,
 #tray.empty,
 #custom-mediaplayer.empty {

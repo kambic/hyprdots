@@ -25,3 +25,5 @@ end
 
 require "lazy_setup"
 require "polish"
+
+vim.api.nvim_create_user_command("Wsudo", "write !sudo tee % > /dev/null", { bang = true })
