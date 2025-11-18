@@ -1,4 +1,3 @@
-i
 #!/bin/bash
 #########################################################################
 # Steam Wrapper - Full Version
@@ -236,3 +235,6 @@ if [[ "$USE_GAMESCOPE" == 1 ]]; then
 else
   exec "$@"
 fi
+
+# Auto-clean overlayfs & ramfs on exit
+# trap "$HOME/bin/steam_wr_cleanup.sh" EXIT
