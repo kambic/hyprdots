@@ -1,17 +1,6 @@
 HISTFILE=~/.zsh_history
-HISTSIZE=10000
-SAVEHIST=10000
-setopt EXTENDED_HISTORY       # Record timestamp and duration
-setopt HIST_EXPIRE_DUPS_FIRST # Expire duplicate first
-setopt HIST_IGNORE_DUPS       # Ignore consecutive duplicates
-setopt HIST_IGNORE_ALL_DUPS   # Remove older duplicate entries
-setopt HIST_FIND_NO_DUPS      # Ignore duplicates when searching
-setopt HIST_IGNORE_SPACE      # Ignore commands starting with space
-setopt HIST_SAVE_NO_DUPS      # Don't save duplicates
-setopt HIST_REDUCE_BLANKS     # Remove superfluous blanks
-setopt SHARE_HISTORY          # Share history between sessions
-setopt INC_APPEND_HISTORY     # Append to history immediately
-
+HISTSIZE=1000
+SAVEHIST=1000
 # ===== Oh My Zsh Configuration =====
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="" # Disable OMZ themes since we're using Starship
@@ -43,29 +32,6 @@ plugins=(
   # dirhistory
   # web-search
 )
-
-# Optional plugins - uncomment after installing
-# plugins+=(fabric uv rust jsontools)
-
-# ===== Plugin Configuration =====
-# Zsh Autosuggestions
-ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-ZSH_AUTOSUGGEST_USE_ASYNC=true
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8"
-
-# Zsh Syntax Highlighting - Safe configuration
-if [ -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting" ] || [ -d "/usr/share/zsh/plugins/zsh-syntax-highlighting" ]; then
-  typeset -A ZSH_HIGHLIGHT_STYLES
-  ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
-  ZSH_HIGHLIGHT_STYLES[command]='fg=green'
-  ZSH_HIGHLIGHT_STYLES[alias]='fg=cyan'
-  ZSH_HIGHLIGHT_STYLES[builtin]='fg=yellow'
-  ZSH_HIGHLIGHT_STYLES[function]='fg=cyan'
-  ZSH_HIGHLIGHT_STYLES[path]='underline'
-  # ZSH_HIGHLIGHT_STYLES[single - hyphen - option]='fg=blue'
-  # ZSH_HIGHLIGHT_STYLES[double - hyphen - option]='fg=blue'
-fi
-
 # FZF configuration
 export FZF_DEFAULT_OPTS="--height 40% --layout=reverse --border"
 if command -v bat &>/dev/null; then
@@ -74,15 +40,9 @@ else
   export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --preview 'cat {}'"
 fi
 
-if command -v fd &>/dev/null; then
-  export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
-  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-  export FZF_ALT_C_COMMAND="fd --type d --hidden --follow --exclude .git"
-else
-  export FZF_DEFAULT_COMMAND='find . -type f -not -path "*/\.git/*"'
-  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-  export FZF_ALT_C_COMMAND="find . -type d -not -path "*/\.git/*""
-fi
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="fd --type d --hidden --follow --exclude .git"
 
 # ===== Load Oh My Zsh =====
 source $ZSH/oh-my-zsh.sh
@@ -172,27 +132,11 @@ export PAGER='less'
 
 # Python development
 export PYTHONSTARTUP="$HOME/.pythonrc"
-export PIP_REQUIRE_VIRTUALENV=false
 
-# Node.js
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" 2>/dev/null
-
-# Rust
-[ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
-
-# Go
-export PATH="$HOME/go/bin:$PATH"
-
-# Local bin directory
-export PATH="$HOME/.local/bin:$PATH"
-
-# ===== Completions =====
 autoload -Uz compinit
 compinit
 
 source <(fzf --zsh)
-# source <(fzf --bash)
 # starship init zsh
 # Optional: Show weather (comment out if not needed)
 # weather
