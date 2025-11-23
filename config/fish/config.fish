@@ -225,30 +225,28 @@ end
 
 # ===== Plugins =====
 # Fisher plugin manager (install if not present)
-if not functions -q fisher
-    curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source
-    and fisher update
-end
+# if not functions -q fisher
+#     curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source
+#     and fisher update
+# end
 
 # Plugin list (install with: fisher install <name>)
-set -g fisher_path ~/.local/share/fisher
-set -g fish_plugins \
-    jethrokuan/z \
-    PatrickF1/fzf.fish \
-    edc/bass \
-    jorgebucaran/autopair.fish
+# set -g fisher_path ~/.local/share/fisher
+# set -g fish_plugins \
+#     jethrokuan/z \
+#     PatrickF1/fzf.fish \
+#     edc/bass \
+#     jorgebucaran/autopair.fish
 
 # ===== Key Bindings =====
 # FZF key bindings
-if command -q fzf
-    fzf_configure_bindings --directory=\cp --variables=\e\cv --processes=\ep
-end
+# if command -q fzf
+#     fzf_configure_bindings --directory=\cp --variables=\e\cv --processes=\ep
+# end
 
 # ===== Startup =====
 # Welcome message
 if status is-interactive
-    echo "🐟 Fish shell loaded successfully"
-    
     # Show system info
     if command -q neofetch
         neofetch
