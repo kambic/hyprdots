@@ -32,29 +32,11 @@ end
 
 
 # ===== Path Setup =====
-fish_add_path ~/.local/bin
-fish_add_path ~/go/bin
-fish_add_path ~/.cargo/bin
+fish_add_path ~/bin
 
 # ===== Environment Variables =====
 set -gx EDITOR nvim
 set -gx VISUAL $EDITOR
-set -gx PAGER less
-set -gx BROWSER firefox
-set -gx MANPAGER "sh -c 'col -bx | bat -l man -p'"
-
-# Python
-set -gx PYTHONSTARTUP ~/.pythonrc
-set -gx PIP_REQUIRE_VIRTUALENV false
-
-# FZF
-set -gx FZF_DEFAULT_OPTS "--height 40% --layout=reverse --border --preview 'bat --color=always {} 2>/dev/null || cat {}'"
-set -gx FZF_DEFAULT_COMMAND "fd --type f --hidden --follow --exclude .git"
-set -gx FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
-set -gx FZF_ALT_C_COMMAND "fd --type d --hidden --follow --exclude .git"
-
-# Yazi
-set -gx YAZI_FILE_EDITOR $EDITOR
 
 # ===== Abbreviations (Fish equivalent of aliases) =====
 # Navigation
@@ -86,18 +68,6 @@ if command -q procs
     abbr -a ps 'procs'
 end
 
-# Git
-abbr -a gs 'git status'
-abbr -a gd 'git diff'
-abbr -a gdc 'git diff --cached'
-abbr -a gl 'git log --oneline --graph --decorate'
-abbr -a gaa 'git add .'
-abbr -a gc 'git commit'
-abbr -a gcm 'git commit -m'
-abbr -a gp 'git push'
-abbr -a gpl 'git pull'
-abbr -a gco 'git checkout'
-abbr -a gb 'git branch'
 
 # Docker
 abbr -a dps 'docker ps'
@@ -108,24 +78,7 @@ abbr -a drmi 'docker rmi'
 abbr -a dcu 'docker-compose up'
 abbr -a dcd 'docker-compose down'
 
-# Python
-abbr -a py 'python'
-abbr -a pip 'uv pip 2>/dev/null; or pip'
-abbr -a venv 'python -m venv .venv; and source .venv/bin/activate.fish'
-abbr -a activate 'source .venv/bin/activate.fish'
 abbr -a pyclean 'find . -type f -name "*.py[co]" -delete; and find . -type d -name "__pycache__" -delete'
-
-# System
-abbr -a cp 'cp -i'
-abbr -a mv 'mv -i'
-abbr -a rm 'rm -i'
-abbr -a reload 'source ~/.config/fish/config.fish'
-abbr -a zshrc '$EDITOR ~/.zshrc'
-abbr -a fishrc '$EDITOR ~/.config/fish/config.fish'
-
-# Network
-abbr -a myip 'curl ifconfig.me'
-abbr -a ports 'netstat -tulanp'
 
 # ===== Functions =====
 # Quick directory navigation with fzf
@@ -152,20 +105,6 @@ function glf
     if test -n "$commit_hash"
         git show "$commit_hash"
     end
-end
-
-# Create and cd into directory
-function mkcd
-    mkdir -p $argv[1]
-    and cd $argv[1]
-end
-
-# Quick note-taking
-function note
-    set -l note_dir (test -n "$NOTE_DIR"; and echo $NOTE_DIR; or echo ~/notes)
-    mkdir -p $note_dir
-    set -l filename "$note_dir/(date +%Y-%m-%d).md"
-    $EDITOR $filename
 end
 
 # Weather information

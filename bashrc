@@ -57,7 +57,7 @@ PROMPT_COMMAND=bash_prompt
 # PS1='\[\033[32m\]EOS \[\033[0m\]\w\[\033[33m\]$(__git_ps1 " %s")\[\033[0m\] > '
 
 # General alias
-alias cls='clear'
+alias c='clear'
 # bind 'Control-l: clear-screen'
 alias ..='cd ..'
 
