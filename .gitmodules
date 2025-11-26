@@ -8,3 +8,6 @@
 [submodule "GitCracken"]
 	path = GitCracken
 	url = https://github.com/Hao-yv/GitCracken.git
+[submodule "hyprdots"]
+	path = hyprdots
+	url = https://github.com/sebday/hyprdots.git
