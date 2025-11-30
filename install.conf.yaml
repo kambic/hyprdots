@@ -11,7 +11,7 @@
     ~/.aliases:
     ~/.bashrc: bashrc
     ~/.zshrc:
-    ~/.pythonrc:
+    # ~/.pythonrc:
     # ~/.zprofile:
     ~/.gitconfig:
     ~/.config/:
