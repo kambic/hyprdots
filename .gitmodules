@@ -11,3 +11,6 @@
 [submodule "hyprdots"]
 	path = hyprdots
 	url = https://github.com/sebday/hyprdots.git
+[submodule "dotfiles"]
+	path = dotfiles
+	url = https://github.com/mylinuxforwork/dotfiles.git

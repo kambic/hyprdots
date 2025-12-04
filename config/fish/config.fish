@@ -9,11 +9,18 @@ set -g fish_greeting
 # neofetch
 
 # Sets starship as the promt
-eval (starship init fish)
+# eval (starship init fish)
 
 # Start atuin
 # atuin init fish | source
-
+# -----------------------------------------------------
+# CUSTOMIZATION
+# -----------------------------------------------------
+oh-my-posh init fish | source
+# -----------------------------------------------------
+# Prompt
+# -----------------------------------------------------
+# eval "$($HOME/.local/bin/oh-my-posh init fish --config $HOME/.config/ohmyposh/EDM115-newline.omp.json)"
 # List Directory
 alias l='eza -lh  --icons=auto' # long list
 alias ls='eza -1   --icons=auto' # short list
@@ -156,11 +163,7 @@ function yy
     rm -f "$tmp"
 end
 
-# ===== Prompt =====
-# Use Starship if available
-if command -q starship
-    starship init fish | source
-end
+
 
 # ===== Plugins =====
 # Fisher plugin manager (install if not present)

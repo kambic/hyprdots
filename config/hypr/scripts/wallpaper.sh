@@ -8,10 +8,11 @@
 # -----------------------------------------------------
 # Check to use wallpaper cache
 # -----------------------------------------------------
+# Source library.sh
+source $HOME/.config/ml4w/library.sh
+# matugen image $1
 
-matugen image $1
-
-exit 0
+# exit 0
 
 if [ -f ~/.config/ml4w/settings/wallpaper_cache ]; then
     use_cache=1
@@ -132,9 +133,9 @@ THEME_PREF=$(grep -E '^gtk-application-prefer-dark-theme=' "$SETTINGS_FILE" | aw
 
 _writeLog "Execute matugen with $used_wallpaper"
 if [ "$THEME_PREF" -eq 1 ]; then
-    $HOME/.local/bin/matugen image $used_wallpaper -m "dark"
+    matugen image $used_wallpaper -m "dark"
 else
-    $HOME/.local/bin/matugen image $used_wallpaper -m "light"
+    matugen image $used_wallpaper -m "light"
 fi
 
 # -----------------------------------------------------
