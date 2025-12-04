@@ -1,16 +1,17 @@
 #!/usr/bin/env bash
-#  _      __     ____                      
+#  _      __     ____
 # | | /| / /__ _/ / /__  ___ ____  ___ ____
 # | |/ |/ / _ `/ / / _ \/ _ `/ _ \/ -_) __/
-# |__/|__/\_,_/_/_/ .__/\_,_/ .__/\__/_/   
-#                /_/       /_/             
-
-# Source library.sh
-source $HOME/.config/ml4w/library.sh
+# |__/|__/\_,_/_/_/ .__/\_,_/ .__/\__/_/
+#                /_/       /_/
 
 # -----------------------------------------------------
 # Check to use wallpaper cache
 # -----------------------------------------------------
+
+matugen image $1
+
+exit 0
 
 if [ -f ~/.config/ml4w/settings/wallpaper_cache ]; then
     use_cache=1
@@ -82,7 +83,7 @@ tmpwallpaper=$wallpaper
 if [ ! -f $cachefile ]; then
     touch $cachefile
 fi
-echo "$wallpaper" > $cachefile
+echo "$wallpaper" >$cachefile
 _writeLog "Path of current wallpaper copied to $cachefile"
 
 # -----------------------------------------------------
