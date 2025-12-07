@@ -2,15 +2,3 @@
 	path = dotbot
 	url = https://github.com/anishathalye/dotbot
 	ignore = dirty
-[submodule "config/mechabar"]
-	path = config/mechabar
-	url = https://github.com/sejjy/mechabar.git
-[submodule "GitCracken"]
-	path = GitCracken
-	url = https://github.com/Hao-yv/GitCracken.git
-[submodule "hyprdots"]
-	path = hyprdots
-	url = https://github.com/sebday/hyprdots.git
-[submodule "dotfiles"]
-	path = dotfiles
-	url = https://github.com/mylinuxforwork/dotfiles.git
