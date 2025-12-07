@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+# amd-mode - Switch RX 6600 XT (and most RDNA2/RDNA3) between quiet and max-performance
+# Usage: amd-mode quiet | max | show
+
+set -euo pipefail
+
+MODE="${1:-}"
+
+# Auto-detect the first AMD card (card0, card1, …)
+CARD_PATH=""
+for p in /sys/class/drm/card*/device; do
+    [[ -e "$p" ]] || continue
+    if [[ "$(cat "$p/vendor" 2>/dev/null)" == "0x1002" ]]; then
+        CARD_PATH="$p"
+        break
+    fi
+done
+
+[[ -n "$CARD_PATH" ]] || { echo "No AMD GPU found"; exit 1; }
+
+PP_PATH="$CARD_PATH/pp_od_clk_voltage"
+POWER_CAP="$(readlink -f "$CARD_PATH"/hwmon/hwmon*)/power1_cap"
+PERF_LEVEL="$CARD_PATH/power_dpm_force_performance_level"
+
+show_current() {
+    echo "Current pp_od_clk_voltage:"
+    cat "$PP_PATH"
+    echo "Power cap: $(cat "$POWER_CAP") W (max $(cat "${POWER_CAP%/*}/power1_cap_max") W)"
+}
+
+case "$MODE" in
+    quiet)
+        echo "Applying QUIET profile (lower power, cooler, silent)"
+        echo "manual" > "$PERF_LEVEL"
+        # Optional: use built-in power-saving profile if you want
+        # echo "4" > "$CARD_PATH/pp_power_profile_mode"
+
+        # Simple & safe undervolt for RX 6600 / 6600 XT
+        echo "s 0 300   750"  > "$PP_PATH"   # min state
+        echo "s 1 2200  950"  > "$PP_PATH"   # mid state
+        echo "s 2 2544 1025"  > "$PP_PATH"   # max state (stock is ~1150 mV)
+        echo "c"              > "$PP_PATH"
+
+        # 120 W power limit (very quiet)
+        echo 120000000 > "$POWER_CAP"
+        echo "Quiet profile applied"
+        ;;
+
+    max)
+        echo "Applying MAX PERFORMANCE profile"
+        echo "manual" > "$PERF_LEVEL"
+
+        # Aggressive but stable curve used by many 6600 XT owners
+        echo "s 0 300   750"  > "$PP_PATH"
+        echo "s 1 2400 1025"  > "$PP_PATH"
+        echo "s 2 2700 1125"  > "$PP_PATH"   # +150–200 MHz over stock
+        echo "c"              > "$PP_PATH"
+
+        # 156 W is a nice sweet spot (stock is ~160 W)
+        echo 156000000 > "$POWER_CAP"
+        echo "Max performance profile applied"
+        ;;
+
+    show|"")
+        show_current
+        exit 0
+        ;;
+
+    *)
+        echo "Usage: $(basename "$0") <quiet|max|show>"
+        exit 1
+        ;;
+esac
+
+show_current
