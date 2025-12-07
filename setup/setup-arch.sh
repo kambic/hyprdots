@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-yay_installed="false"
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+yay_installed="true"
 paru_installed="false"
-aur_helper=""
+aur_helper="yay"
 
 # --------------------------------------------------------------
 # Library
 # --------------------------------------------------------------
 
-source $SCRIPT_DIR/_lib.sh
+# source $SCRIPT_DIR/_lib.sh
 
 # --------------------------------------------------------------
 # General Packages
@@ -39,7 +39,7 @@ packages=(
     "grimblast-git"
     "pacman-contrib"
     "loupe"
-    "power-profiles-daemon"
+    # "power-profiles-daemon"
     # Apps
     "waypaper"
     "swaync"
@@ -169,7 +169,7 @@ _writeHeader "Arch"
 # Install yay if needed
 # --------------------------------------------------------------
 
-_checkAURHelper
+# _checkAURHelper
 
 # --------------------------------------------------------------
 # General
@@ -219,37 +219,37 @@ curl -s https://ohmyposh.dev/install.sh | bash -s -- -d ~/.local/bin
 # Prebuilt Packages
 # --------------------------------------------------------------
 
-source $SCRIPT_DIR/_prebuilt.sh
+# source $SCRIPT_DIR/_prebuilt.sh
 
 # --------------------------------------------------------------
 # ML4W Apps
 # --------------------------------------------------------------
 
-source $SCRIPT_DIR/_ml4w-apps.sh
+# source $SCRIPT_DIR/_ml4w-apps.sh
 
 # --------------------------------------------------------------
 # Flatpaks
 # --------------------------------------------------------------
 
-source $SCRIPT_DIR/_flatpaks.sh
+# source $SCRIPT_DIR/_flatpaks.sh
 
 # --------------------------------------------------------------
 # Cursors
 # --------------------------------------------------------------
 
-source $SCRIPT_DIR/_cursors.sh
+# source $SCRIPT_DIR/_cursors.sh
 
 # --------------------------------------------------------------
 # Fonts
 # --------------------------------------------------------------
 
-source $SCRIPT_DIR/_fonts.sh
+# source $SCRIPT_DIR/_fonts.sh
 
 # --------------------------------------------------------------
 # Icons
 # --------------------------------------------------------------
 
-source $SCRIPT_DIR/_icons.sh
+# source $SCRIPT_DIR/_icons.sh
 
 # --------------------------------------------------------------
 # Finish

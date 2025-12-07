@@ -3,7 +3,7 @@
 # Fonts
 # --------------------------------------------------------------
 
-sudo cp -rf $SCRIPT_DIR/fonts/FiraCode /usr/share/fonts
-sudo cp -rf $SCRIPT_DIR/fonts/Fira_Sans /usr/share/fonts
-sudo cp -rf $SCRIPT_DIR/fonts/BebasNeue-Regular /usr/share/fonts
-sudo cp -rf $SCRIPT_DIR/fonts/Material-Icons /usr/share/fonts
+sudo cp -rf $SCRIPT_DIR/fonts/FiraCode $HOME/.local/share/fonts
+sudo cp -rf $SCRIPT_DIR/fonts/Fira_Sans $HOME/.local/share/fonts
+sudo cp -rf $SCRIPT_DIR/fonts/BebasNeue-Regular $HOME/.local/share/fonts
+sudo cp -rf $SCRIPT_DIR/fonts/Material-Icons $HOME/.local/share/fonts
