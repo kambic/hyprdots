@@ -16,7 +16,7 @@
         "custom/appmenu",
         "hyprland/workspaces",
         //"wlr/taskbar",
-        //"group/quicklinks",
+        "group/quicklinks",
         //"custom/nowplaying",        
         "custom/empty"
     ],

@@ -6,6 +6,5 @@
 # Fastfetch
 # -----------------------------------------------------
 if [[ $(tty) == *"pts"* ]]; then
-    # fastfetch
     colorscript -r
 fi
