@@ -31,6 +31,6 @@ done
 # Load single customization file (if exists)
 # -----------------------------------------------------
 
-if [ -f ~/.zshrc_custom ]; then
-  source ~/.zshrc_custom
+if [ -f ~/.aliases ]; then
+  source ~/.aliases
 fi
