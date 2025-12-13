@@ -15,7 +15,7 @@
     "modules-left": [
         "custom/appmenu",
         //"wlr/taskbar",
-        "group/quicklinks",
+        //"group/quicklinks",
         "hyprland/window",
         "custom/empty"
     ],

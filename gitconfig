@@ -14,7 +14,6 @@
 
 [pull]
     rebase = true
-    ff = only                     # Safer fast-forward pulls
 
 [push]
     default = current             # Push only current branch (safer than 'simple')
