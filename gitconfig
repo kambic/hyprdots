@@ -1,23 +1,19 @@
 # ~/.gitconfig
 [user]
-    name = rok
-    email = rok.kambic@mx.si
+	name = rok
+	email = rok.kambic@gmail.com
 
 [init]
     defaultBranch = master          # Modern default (master is deprecated in most orgs)
 
 [core]
-    autocrlf = false              # Linux: never touch line endings
+	autocrlf = input
     eol = lf                      # Enforce LF everywhere
-    fsmonitor = true              # Faster status on large repos (Git 2.37+)
-    untrackedCache = true         # Speed up status in large working trees
-    preloadIndex = true           # Faster operations on large repos
     editor = nvim                 # Or: code --wait, vim, etc.
-    pager = delta                 # Use 'delta' if installed (beautiful diffs)
+    ; pager = delta                 # Use 'delta' if installed (beautiful diffs)
 
 [pull]
     rebase = true
-    ff = only                     # Safer fast-forward pulls
 
 [push]
     default = current             # Push only current branch (safer than 'simple')
@@ -35,55 +31,20 @@
     updateRefs = true             # Git 2.38+: move branches during rebase
 
 [merge]
-    conflictStyle = zdiff3        # Better 3-way merge conflict markers
+    ; conflictStyle = zdiff3        # Better 3-way merge conflict markers
     ff = only
     tool = nvimdiff               # Or: meld, vimdiff, code --wait --diff
-
-[diff]
-    algorithm = histogram
-    colorMoved = zebra
-    mnemonicPrefix = true
-    renames = true
-    submodule = log
-
-[status]
-    submoduleSummary = true
-    showUntrackedFiles = all
 
 [color]
     ui = auto
     # Optional: enhance with delta
     # interactive = auto
 
-[interactive]
-    diffFilter = delta --color-only
-
-[delta]
-    features = decorations
-    line-numbers = true
-    side-by-side = false
-    navigate = true
-
 [filter "lfs"]
     clean = git-lfs clean -- %f
     smudge = git-lfs smudge -- %f
     process = git-lfs filter-process
     required = true
-
-# === Performance & Safety ===
-[gc]
-    auto = 256                    # Auto-gc when loose objects > 256
-    writeCommitGraph = true
-
-[pack]
-    threads = 0                   # Use all cores
-    windowMemory = 512m
-    useSparse = true
-
-[advice]
-    pushUpdateRejected = false
-    statusUoption = false
-
 
 [alias]
     # Lists aliases.
@@ -128,3 +89,4 @@
     # Undos last commit.
     undo = reset HEAD~1 --mixed
 
+# vim: ft=gitconfig

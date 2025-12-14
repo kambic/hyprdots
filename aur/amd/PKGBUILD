@@ -1,0 +1,27 @@
+pkgname=amd-mode
+pkgver=1.4
+pkgrel=1
+pkgdesc="Simple user-friendly AMD GPU mode switcher (quiet / max) for RDNA2/RDNA3 – no sudo needed after install"
+arch=('any')
+url="https://github.com/yourname/amd-mode" # optional
+license=('MIT')
+depends=('bash')
+optdepends=('corectrl: GUI alternative')
+install=amd-mode.install
+source=("amd-mode"
+  "amdgpu-pp_od.conf"
+  "amd-mode.sudoers")
+sha256sums=('SKIP'
+  'SKIP'
+  'SKIP')
+
+package() {
+  # 1. Install the main script
+  install -Dm755 "amd-mode" "$pkgdir/usr/local/bin/amd-mode"
+
+  # 2. systemd-tmpfiles rule to make pp_od_clk_voltage writable by video group
+  install -Dm644 "amdgpu-pp_od.conf" "$pkgdir/usr/lib/tmpfiles.d/amdgpu-pp_od.conf"
+
+  # 3. Sudoers file (safe drop-in, only allows execution of amd-mode without password)
+  install -Dm600 "amd-mode.sudoers" "$pkgdir/etc/sudoers.d/amd-mode"
+}

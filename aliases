@@ -2,46 +2,29 @@
 export PATH=$HOME/bin:$PATH
 export MANPAGER="nvim +Man!"
 
-if [[ -f "$HOME/.nix-profile/bin" ]]; then
-  echo iiddd
-fi
-
-# Personal aliases
-alias zshrc='$EDITOR ~/.zshrc && source ~/.zshrc'
-
 # Development
 alias pyclean='find . -type f -name "*.py[co]" -delete -o -type d -name "__pycache__" -delete'
 alias ipy='ipython'
 
 # Network
 alias myip='curl ifconfig.me'
-alias ports='netstat -tulanp'
 
 alias mkdir='mkdir -p'
 alias ip='ip --color=always'
 alias lsusb='cyme'
 # SSH shortcuts
-alias sshp='ssh -p 2222' # Example for custom port servers
 alias v='$EDITOR'
-# Multiplexed SSH sessions
-alias mosh='mosh --ssh="ssh -i ~/.ssh/id_rsa"'
 
-# Quickly tail logs remotely
-function rlog() { ssh "$1" "tail -f /var/log/syslog"; }
-
-# SCP shortcut
-function scpup() { scp "$1" "$2:$3"; }
 alias s='kitten ssh'
 alias update-grub='sudo grub-mkconfig -o /boot/grub/grub.cfg'
 alias sf='sudo fish'
 
-# Helpful aliases
 alias c='clear'                                                                    # clear terminal
-alias l='eza -lh --icons=auto --hyperlink'                                         # long list
-alias ls='eza -1 --icons=auto --hyperlink'                                         # short list
-alias ll='eza -lha --icons=auto --sort=name --group-directories-first --hyperlink' # long list all
-alias ld='eza -lhD --icons=auto --hyperlink'                                       # long list dirs
-alias lt='eza --icons=auto --tree --hyperlink'                                     # list folder as tree
+alias l='eza -lh --icons=auto '                                         # long list
+alias ls='eza -1 --icons=auto '                                         # short list
+alias ll='eza -lha --icons=auto --sort=name --group-directories-first ' # long list all
+alias ld='eza -lhD --icons=auto '                                       # long list dirs
+alias lt='eza --icons=auto --tree '                                     # list folder as tree
 alias pql='yay -Ql'
 alias pqo='yay -Qo'
 
@@ -292,30 +275,3 @@ ffprobe-table() {
 #   pkg=$(yay -Q | fzf --multi --preview 'yay -Si {1} | grep Version' --preview-window=right:50%)
 # }
 #
-export FZF_DEFAULT_OPTS="
-  --height 90% --layout=reverse --border
-  --preview-window=right:60%
-  --color=16
-  --bind 'ctrl-d:preview-down,ctrl-u:preview-up,ctrl-a:select-all,ctrl-x:deselect-all'
-"
-# fzmenu() {
-#   local options=(
-#     "🔍 Search & Install"
-#     "📦 Show Installed Info"
-#     "❌ Remove Packages"
-#     "⬆️ Update AUR Packages"
-#     "🔄 Reinstall Packages"
-#     "🧹 Clean Orphans"
-#   )
-#   local choice
-#   choice=$(printf '%s\n' "${options[@]}" | fzf --prompt="Choose Action > " --height=50%)
-#
-#   case "$choice" in
-#   "🔍 Search & Install") fzi ;;
-#   "📦 Show Installed Info") fzii ;;
-#   "❌ Remove Packages") fzr ;;
-#   "⬆️ Update AUR Packages") fzu ;;
-#   "🔄 Reinstall Packages") fzreinstall ;;
-#   "🧹 Clean Orphans") fzorphan ;;
-#   esac
-# }
