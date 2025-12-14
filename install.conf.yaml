@@ -6,7 +6,6 @@
 - clean: ['~', '~/.config']
 
 - link:
-    ~/.zshrc: shell/zshrc
     ~/.bashrc: shell/bashrc
     ~/.gitconfig: shell/gitconfig
     ~/.config/: 
@@ -15,6 +14,6 @@
 
 - shell:
   - [mkdir -p ~/.local/bin, Creating local bin directory]
-  - [git submodule update --init --recursive, Updating submodules]  # Move your existing one here if preferred
+  # - [git submodule update --init --recursive, Updating submodules]  # Move your existing one here if preferred
 
 

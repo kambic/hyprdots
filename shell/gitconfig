@@ -41,7 +41,6 @@
     required = true
 
 [alias]
-    aliases = config --get-regexp ^alias\.
     c = clone --recursive
     ca = !git add -A && git commit -av
     l = log --pretty=oneline -n 20 --graph --abbrev-commit
