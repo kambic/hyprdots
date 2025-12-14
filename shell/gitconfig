@@ -1,0 +1,57 @@
+[user]
+    name = rok
+    email = rok.kambic@gmail.com
+
+[init]
+    defaultBranch = master  # Modern default (aligns with GitHub/GitLab standards)
+
+[core]
+    autocrlf = input      # Best for Linux: Auto-convert CRLF→LF on commit; checkout as LF
+    editor = nvim         # Your preferred editor
+    pager = delta         # Uncomment if 'delta' is installed (gorgeous diffs); otherwise use 'cat' or default
+
+[pull]
+    rebase = true
+
+[push]
+    default = current     # Safer: Push only current branch
+    autoSetupRemote = true
+
+[rebase]
+    autoStash = true
+    autoSquash = true
+    updateRefs = true     # Git 2.38+: Keeps branches in sync during rebase
+
+[fetch]
+    prune = true
+    pruneTags = true
+    writeCommitGraph = true  # Speeds up operations on large repos
+
+[merge]
+    ff = only             # Safer merges (no unnecessary merge commits)
+    tool = nvimdiff       # Great for resolving conflicts in nvim
+
+[color]
+    ui = auto
+
+[filter "lfs"]
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+
+[alias]
+    aliases = config --get-regexp ^alias\.
+    c = clone --recursive
+    ca = !git add -A && git commit -av
+    l = log --pretty=oneline -n 20 --graph --abbrev-commit
+    ll = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    p = pull --recurse-submodules
+    ri = "!f(){ git fetch origin && git rebase --interactive origin/${1-main}; }; f"
+    s = status -sb
+    save = !git add -A && git commit -m 'SAVEPOINT'
+    set-origin = remote set-url origin
+    st = status
+    sync = !git pull --rebase && git push
+    uncommit = reset --soft HEAD^
+    undo = reset HEAD~1 --mixed

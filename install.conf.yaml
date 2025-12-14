@@ -6,37 +6,15 @@
 - clean: ['~', '~/.config']
 
 - link:
-    ~/bin:
-    ~/.zshrc:
-    ~/.aliases:
-    ~/.bashrc: bashrc
-    ~/.zshrc:
-    # ~/.pythonrc:
-    # ~/.zprofile:
-    ~/.gitconfig:
-    ~/.config/:
-        glob: true
-        path: config/*
-- shell:
-    - [git submodule update --init --recursive, Installing submodules]
+    ~/.zshrc: shell/zshrc
+    ~/.bashrc: shell/bashrc
+    ~/.gitconfig: shell/gitconfig
+    ~/.config/: 
+      glob: true
+      path: config/*
 
 - shell:
-    - command: |
-        if [ ! -d ~/.oh-my-zsh ]; then
-          sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-        fi
-      description: Installing Oh My Zsh
-
-# - shell:
-#     - command: |
-#         if command -v yay &> /dev/null; then
-#           yay -S fzf bat fd exa duf procs fish yazi uv
-#         elif command -v apt &> /dev/null; then
-#           sudo apt update && sudo apt install -y fzf bat fd-find exa duf procs fish
-#         elif command -v dnf &> /dev/null; then
-#           sudo dnf install -y fzf bat fd-find exa duf procs fish
-#         fi
-#       description: Installing system packages
-
+  - [mkdir -p ~/.local/bin, Creating local bin directory]
+  - [git submodule update --init --recursive, Updating submodules]  # Move your existing one here if preferred
 
 
