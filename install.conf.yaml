@@ -8,6 +8,9 @@
 - link:
     ~/.bashrc: shell/bashrc
     ~/.gitconfig: shell/gitconfig
+    ~/.local/share/applications/ :
+      glob : true
+      path : local/applications/*
     ~/.config/: 
       glob: true
       path: config/*

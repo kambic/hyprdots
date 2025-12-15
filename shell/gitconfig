@@ -8,7 +8,7 @@
 [core]
     autocrlf = input      # Best for Linux: Auto-convert CRLF→LF on commit; checkout as LF
     editor = nvim         # Your preferred editor
-    pager = delta         # Uncomment if 'delta' is installed (gorgeous diffs); otherwise use 'cat' or default
+    ; pager = delta         # Uncomment if 'delta' is installed (gorgeous diffs); otherwise use 'cat' or default
 
 [pull]
     rebase = true
@@ -28,11 +28,26 @@
     writeCommitGraph = true  # Speeds up operations on large repos
 
 [merge]
-    ff = only             # Safer merges (no unnecessary merge commits)
     tool = nvimdiff       # Great for resolving conflicts in nvim
 
 [color]
     ui = auto
+
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[credential "https://gitlab.com"]
+	helper = 
+	helper = !/usr/bin/glab auth git-credential
+
 
 [filter "lfs"]
     clean = git-lfs clean -- %f
