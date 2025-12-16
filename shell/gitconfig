@@ -8,7 +8,7 @@
 [core]
     autocrlf = input      # Best for Linux: Auto-convert CRLF→LF on commit; checkout as LF
     editor = nvim         # Your preferred editor
-    ; pager = delta         # Uncomment if 'delta' is installed (gorgeous diffs); otherwise use 'cat' or default
+    pager = delta         # Uncomment if 'delta' is installed (gorgeous diffs); otherwise use 'cat' or default
 
 [pull]
     rebase = true
@@ -69,3 +69,5 @@
     sync = !git pull --rebase && git push
     uncommit = reset --soft HEAD^
     undo = reset HEAD~1 --mixed
+
+# vim: ft=gitconfig
