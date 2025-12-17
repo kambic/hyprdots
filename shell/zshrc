@@ -1,8 +1,27 @@
 # Created by Zap installer
 #
 # # Load and initialise completion system
-# autoload -Uz compinit
-# compinit
+autoload -Uz compinit
+compinit
+zstyle ':completion:*' menu select
+zstyle ':completion::complete:*' gain-privileges 1
+
+
+zstyle ':completion:*:pacman:*' force-list always
+zstyle ':completion:*:*:pacman:*' menu yes select
+
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+
+zstyle ':completion:*:*:kill:*' menu yes select
+zstyle ':completion:*:kill:*'   force-list always
+
+zstyle ':completion:*:*:killall:*' menu yes select
+zstyle ':completion:*:killall:*'   force-list always
+
+
+autoload -Uz promptinit
+promptinit
+
 # eval "$(starship init zsh)"
 #
 #	 _______| |__  _ __ ___
@@ -16,14 +35,15 @@
 # Plugins
 plug "zsh-users/zsh-autosuggestions"
 plug "zsh-users/zsh-syntax-highlighting"
-plug "esc/conda-zsh-completion"
+# plug "esc/conda-zsh-completion"
 plug "zap-zsh/supercharge"
+plug "zap-zsh/exa"
 # plug "zap-zsh/vim"
 # plug "sadikeey/zsh-ex"
 plug "zap-zsh/zap-prompt"
 
 #General Key-bindings
-bindkey -s '^o' 'lf^M'
+# bindkey -s '^o' 'lf^M'
 bindkey -s '^e' 'edit-configs^M'
 bindkey -s '^g' 'lazygit^M'
 
@@ -87,4 +107,31 @@ function y() {
   IFS= read -r -d '' cwd <"$tmp"
   [ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
   rm -f -- "$tmp"
+}
+
+function command_not_found_handler {
+    local purple='\e[1;35m' bright='\e[0;1m' green='\e[1;32m' reset='\e[0m'
+    printf 'zsh: command not found: %s\n' "$1"
+    local entries=(
+        ${(f)"$(/usr/bin/pacman -F --machinereadable -- "/usr/bin/$1")"}
+    )
+    if (( ${#entries[@]} ))
+    then
+        printf "${bright}$1${reset} may be found in the following packages:\n"
+        local pkg
+        for entry in "${entries[@]}"
+        do
+            # (repo package version file)
+            local fields=(
+                ${(0)entry}
+            )
+            if [[ "$pkg" != "${fields[2]}" ]]
+            then
+                printf "${purple}%s/${bright}%s ${green}%s${reset}\n" "${fields[1]}" "${fields[2]}" "${fields[3]}"
+            fi
+            printf '    /%s\n' "${fields[4]}"
+            pkg="${fields[2]}"
+        done
+    fi
+    return 127
 }

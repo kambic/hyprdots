@@ -10,6 +10,13 @@
     editor = nvim         # Your preferred editor
     pager = delta         # Uncomment if 'delta' is installed (gorgeous diffs); otherwise use 'cat' or default
 
+
+[interactive]
+	diffFilter = delta --color-only
+
+[delta]
+	navigate = true
+
 [pull]
     rebase = true
 
