@@ -1,0 +1,119 @@
+
+/***** USER VARIABLES *****/
+@define-color bg        rgba(30, 30, 46, 0.85);  /* Main background */
+@define-color bg-alt    rgba(49, 50, 68, 0.85);  /* Secondary panels */
+@define-color fg        #cdd6f4;                 /* Primary text */
+@define-color muted     #6c7086;                 /* Secondary/muted text */
+@define-color accent    #cba6f7;                 /* Mauve / highlight */
+@define-color warning   #fab387;                 /* Peach / warning */
+@define-color critical  #f38ba8;                 /* Red / critical */
+@define-color success   #94e2d5;                 /* Teal / good */
+/********************************/
+
+/* Global */
+* {
+  font-family: "JetBrainsMono Nerd Font", monospace;
+  font-size: 13px;
+  border: none;
+  min-height: 0;
+}
+
+/* Waybar window */
+window#waybar {
+  background: transparent; /* blur handled by Hyprland */
+  color: @fg;
+  padding: 2px 6px;
+}
+
+/* ----------------- All module pills ----------------- */
+#workspaces,
+#submap,
+#window,
+#idle_inhibitor,
+#custom-wttr,
+#wireplumber-source,
+#wireplumber-sink,
+#network,
+#group-hardware,
+#power-profiles-daemon,
+#battery,
+#clock,
+#tray,
+#custom-power {
+  background-color: @bg;
+  color: @fg;
+  margin: 2px 4px;
+  padding: 4px 10px;
+  border-radius: 18px; /* pill shape */
+  transition: background 0.2s, color 0.2s;
+  /* display: flex; */
+  /* align-items: center; */
+}
+
+/* ----------------- Hover / Active ----------------- */
+button:hover,
+#battery:hover,
+#custom-wttr:hover,
+#wireplumber-source:hover,
+#wireplumber-sink:hover {
+  background-color: @bg-alt;
+  color: @accent;
+}
+
+/* Workspaces & submap */
+#workspaces button,
+#submap button {
+  background: transparent;
+  color: @muted;
+  padding: 2px 8px;
+}
+
+#workspaces button.active,
+#submap button.active {
+  color: @accent;
+}
+
+#workspaces button:hover,
+#submap button:hover {
+  background-color: @bg-alt;
+}
+
+/* Battery */
+#battery {
+  background-color: @bg;
+  color: @fg;
+}
+
+#battery.warning { color: @warning; }
+#battery.critical { color: @critical; }
+#battery.charging { color: @accent; }
+
+/* Wireplumber */
+#wireplumber-source.muted,
+#wireplumber-sink.muted { color: @muted; }
+
+/* Network */
+#network.disconnected { color: @warning; }
+
+/* Separator styling */
+.separator {
+  background-color: @muted;
+  /* width: 1px; */
+  margin: 0 4px;
+}
+
+/* Tooltip (if any) */
+.tooltip {
+  background-color: @bg-alt;
+  color: @fg;
+  border-radius: 12px;
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+/* Clock */
+#clock { font-weight: 500; }
+
+/* Tray icons */
+#tray button { background: transparent; padding: 0 4px; border-radius: 12px; }
+#tray button:hover { background-color: @bg-alt; color: @accent; }
