@@ -18,3 +18,4 @@ config/swaync/colors.css
 config/walker/colors.css
 config/waybar/colors.css
 config/wlogout/colors.css
+config/nvim-astro/lazy-lock.json

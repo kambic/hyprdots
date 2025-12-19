@@ -20,6 +20,16 @@ return {
         -- install debuggers
         "debugpy",
 
+        "basedpyright",
+        "bash-debug-adapter",
+        "bash-language-server",
+        "black",
+        "hyprls",
+        "isort",
+        "selene",
+        "shellcheck",
+        "shfmt",
+
         -- install any other package
         -- "tree-sitter-cli",
       },
