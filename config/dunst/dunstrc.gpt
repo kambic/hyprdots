@@ -1,0 +1,74 @@
+[global]
+    # Modern font (adjust if you don't have it; Nerd Fonts are popular in Hyprland)
+    font = JetBrainsMono Nerd Font 11
+
+    # Allow markup and icons
+    markup = full
+    icon_theme = Papirus-Dark  # Or Adwaita, breeze-dark, etc.
+    enable_recursive_icon_lookup = true
+
+    # Geometry and positioning (top-right, with offsets)
+    ; width = 350
+    ; height = 120
+    width = (100, 1600)
+    height = (0, 800)
+    origin = top-right
+    offset = (10, 30) # a margin of 10 pixels from the right and 300 pixels from the top
+    notification_limit = 20
+
+    # Transparency (X11 only)
+    transparency = 10
+
+    # Background and frame (semi-transparent dark with accent frame)
+    background = "#1e1e2eee"
+    foreground = "#cdd6f4ff"
+    frame_color = "#89b4faff"  # Blue accent for modern look
+    frame_width = 3
+
+    # Rounded corners and padding
+    corner_radius = 8
+    padding = 10
+    horizontal_padding = 20
+
+    # Separator and progress bar
+    separator_height = 2
+    separator_color = frame
+
+    # Progress bar (for volume/brightness notifications)
+    progress_bar = true
+    progress_bar_height = 12
+    progress_bar_corner_radius = 2
+    progress_bar_min_width = 200
+
+
+    # Follow mouse or keyboard focus (great for Hyprland)
+    follow = mouse
+
+    # History and stacking
+    sticky_history = true
+    history_length = 20
+
+    # Mouse actions
+    mouse_left_click = close_current
+    mouse_middle_click = do_action
+    mouse_right_click = close_all
+
+[urgency_normal]
+    background = "#1e1e2eee"
+    foreground = "#cdd6f4ff"
+    frame_color = "#89b4faff"
+    timeout = 30
+
+[urgency_low]
+    background = "#1e1e2e99"
+    foreground = "#94e2d5ff"  # Teal for low priority
+    frame_color = "#94e2d5ff"
+    timeout = 50
+
+[urgency_critical]
+    background = "#1e1e2eee"
+    foreground = "#f38ba8ff"  # Pink/red for critical
+    frame_color = "#f38ba8ff"
+    timeout = 0  # Sticky until dismissed
+
+# vim: ft=gitconfig ts=2

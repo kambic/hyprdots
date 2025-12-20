@@ -40,7 +40,7 @@
     height = (0,300)
 
     # Position the notification in the top right corner
-    origin = top-center
+    origin = top-right
 
     # Offset from the origin
     offset = 0x30
@@ -133,7 +133,7 @@
 
     ### Text ###
 
-    font = "Fira Sans Semibold" 9
+    font = "Fira Sans Semibold" 13
 
     # The spacing between lines.  If the height is smaller than the
     # font height, it will get raised to the font height.
@@ -244,7 +244,8 @@
     dmenu = /usr/bin/dmenu -p dunst:
 
     # Browser for opening urls in context menu.
-    browser = /usr/bin/xdg-open
+    browser = /usr/bin/firefox
+    # browser = /usr/bin/xdg-open
 
     # Always run rule-defined scripts, even if the notification is suppressed
     always_run_script = true

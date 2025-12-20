@@ -1,0 +1,80 @@
+# Modern Dunst configuration for Hyprland (Wayland-native) - Updated for full Wayland compatibility
+# Key fixes:
+# - Replaced dmenu with wofi (native Wayland menu, similar to rofi)
+# - Changed mouse_left_click to "do_action" so left-click invokes actions directly (no need for context menu in most cases)
+# - Middle-click closes notification
+# - Right-click closes all
+# - Semi-transparent, rounded, modern look (Catppuccin-inspired)
+# - Works perfectly with dunstify for interactive/progress notifications
+
+[global]
+    # General settings
+    monitor = mouse
+    follow = mouse
+    width = (300,1200)
+    max_icon_size = 64
+    icon_position = left
+    height = 120
+    origin = top-right
+    offset = 20x50                # Adjust for your bar
+    notification_limit = 5
+    gap_size = 10
+
+    # Appearance
+    corner_radius = 16
+    frame_width = 2
+    padding = 16
+    horizontal_padding = 20
+    text_icon_padding = 10
+    separator_height = 2
+    min_icon_size = 48
+
+    # Font (use a Nerd Font for best icons)
+    font = JetBrainsMono Nerd Font 11
+
+    # Format
+    format = "<b>%s</b>\n%b"
+    markup = full
+    alignment = left
+    vertical_alignment = center
+    word_wrap = yes
+    ellipsize = middle
+    show_age_threshold = 60
+    ignore_newline = no
+
+    # Behavior
+    stack_duplicates = true
+    hide_duplicate_count = false
+    history_length = 20
+    sticky_history = true
+    show_indicators = yes
+    line_height = 4
+    separator_color = frame
+    idle_threshold = 120
+    sort = yes
+
+    # Mouse actions (adapted for Wayland – left-click now directly invokes actions)
+    mouse_left_click = do_action      # Directly run action (or default) on left click
+    mouse_middle_click = close_current
+    mouse_right_click = close_all
+
+    # dmenu replacement for context menu (when multiple actions/URLs)
+    dmenu = /usr/bin/wofi --show dmenu -p dunst:
+
+[urgency_low]
+    background = "#1e1e2eaa"
+    foreground = "#cdd6f4"
+    frame_color = "#89b4fa"
+    timeout = 5
+
+[urgency_normal]
+    background = "#1e1e2eaa"
+    foreground = "#cdd6f4"
+    frame_color = "#89b4fa"
+    timeout = 10
+
+[urgency_critical]
+    background = "#f38ba8aa"
+    foreground = "#ffffff"
+    frame_color = "#f38ba8"
+    timeout = 0

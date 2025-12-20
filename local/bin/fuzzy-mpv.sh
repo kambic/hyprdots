@@ -2,7 +2,7 @@
 # A script to find a media file with fuzzel, display Thunar thumbnails, and open it in mpv
 # Requires viewing the folders in Thunar's smallest view size to generate the thumbs
 
-export MEDIA_DIR="/mnt/pie/films"
+export MEDIA_DIR="~/Videos"
 CACHE_FILE="/tmp/fuzzympv_cache"
 FUZZEL_HELPERS="$(dirname "$0")/thumbnails.sh"
 if [ -f "$FUZZEL_HELPERS" ]; then

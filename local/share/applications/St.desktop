@@ -1,10 +1,13 @@
 [Desktop Entry]
+Version=1.0
 Type=Application
-Exec=st
-Icon=
-Terminal=false
+Name=kitty URL Launcher
+GenericName=Terminal emulator
+Comment=Open URLs with kitty
+StartupNotify=true
+TryExec=kitty
+Exec=kitty +open %U
+Icon=kitty
 Categories=System;TerminalEmulator;
-
-Name=St
-GenericName=Simple Terminal
-Comment=A simple terminal for X.
+NoDisplay=true
+MimeType=image/*;application/x-sh;application/x-shellscript;inode/directory;text/*;x-scheme-handler/kitty;x-scheme-handler/ssh;
